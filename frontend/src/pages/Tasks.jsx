@@ -1,0 +1,176 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Plus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+const USER_ID = "demo-user-123";
+
+export default function Tasks() {
+  const [tasks, setTasks] = useState({ today: [], this_week: [], later: [] });
+  const [newTask, setNewTask] = useState({ title: "", category: "today" });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get(`${API}/tasks/${USER_ID}`);
+      const grouped = {
+        today: res.data.filter((t) => t.category === "today" && !t.completed),
+        this_week: res.data.filter((t) => t.category === "this_week" && !t.completed),
+        later: res.data.filter((t) => t.category === "later" && !t.completed),
+      };
+      setTasks(grouped);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      toast.error("Failed to load tasks");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addTask = async (e) => {
+    e.preventDefault();
+    if (!newTask.title.trim()) return;
+
+    try {
+      await axios.post(`${API}/tasks`, {
+        user_id: USER_ID,
+        title: newTask.title,
+        category: newTask.category,
+      });
+      setNewTask({ title: "", category: "today" });
+      fetchTasks();
+      toast.success("Task added");
+    } catch (error) {
+      console.error("Error adding task:", error);
+      toast.error("Failed to add task");
+    }
+  };
+
+  const completeTask = async (taskId) => {
+    try {
+      await axios.patch(`${API}/tasks/${taskId}`, { completed: true });
+      fetchTasks();
+      toast.success("Well done");
+    } catch (error) {
+      toast.error("Failed to complete task");
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      await axios.delete(`${API}/tasks/${taskId}`);
+      fetchTasks();
+      toast.success("Task removed");
+    } catch (error) {
+      toast.error("Failed to delete task");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading tasks...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-8" data-testid="tasks-page">
+      <div className="text-center max-w-2xl mx-auto">
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="tasks-title">Your Tasks</h1>
+        <p className="text-lg text-stone-600 leading-relaxed font-caveat">
+          Small steps, taken gently. No pressure.
+        </p>
+      </div>
+
+      {/* Add Task */}
+      <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6">
+        <form onSubmit={addTask} className="space-y-4" data-testid="add-task-form">
+          <input
+            type="text"
+            value={newTask.title}
+            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+            placeholder="What would you like to add?"
+            data-testid="task-input"
+            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
+          />
+          <div className="flex gap-3">
+            <select
+              value={newTask.category}
+              onChange={(e) => setNewTask({ ...newTask, category: e.target.value })}
+              data-testid="task-category-select"
+              className="flex-1 bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
+            >
+              <option value="today">Today</option>
+              <option value="this_week">This Week</option>
+              <option value="later">Later</option>
+            </select>
+            <button
+              type="submit"
+              data-testid="add-task-btn"
+              className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full flex items-center gap-2"
+            >
+              <Plus strokeWidth={1.5} size={18} />
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Task Categories */}
+      <div className="space-y-8">
+        {["today", "this_week", "later"].map((category) => {
+          const categoryTasks = tasks[category];
+          const label = category === "today" ? "Today" : category === "this_week" ? "This Week" : "Later";
+
+          return (
+            <div key={category} data-testid={`tasks-category-${category}`}>
+              <h2 className="text-2xl mb-4">{label}</h2>
+              {categoryTasks.length === 0 ? (
+                <p className="text-stone-500 font-caveat text-lg">Nothing here yet. You're doing great.</p>
+              ) : (
+                <div className="space-y-3">
+                  {categoryTasks.map((task) => (
+                    <div
+                      key={task.id}
+                      className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-4 flex items-start gap-3"
+                      data-testid={`task-${task.id}`}
+                    >
+                      <button
+                        onClick={() => completeTask(task.id)}
+                        data-testid={`complete-task-btn-${task.id}`}
+                        className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary transition-colors duration-300 flex-shrink-0"
+                      />
+                      <div className="flex-1">
+                        <p className="text-stone-700">{task.title}</p>
+                        {task.description && (
+                          <p className="text-sm text-stone-500 mt-1">{task.description}</p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => deleteTask(task.id)}
+                        data-testid={`delete-task-btn-${task.id}`}
+                        className="text-stone-400 hover:text-red-500 transition-colors duration-300"
+                      >
+                        <Trash2 strokeWidth={1.5} size={18} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
