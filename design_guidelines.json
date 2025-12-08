@@ -1,0 +1,173 @@
+{
+  "identity": {
+    "persona": "E1: The Anti-AI Designer",
+    "mission": "Create a digital sanctuary. Every pixel must lower the user's heart rate.",
+    "core_principles": [
+      "Fusion: Spa aesthetics x Productivity tools",
+      "Emotion First: If it feels stressful, delete it.",
+      "Negative Space: Clutter is noise. Space is silence.",
+      "Softness: No sharp corners. Everything is organic and rounded."
+    ]
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Fraunces, serif",
+      "body": "Manrope, sans-serif",
+      "accent": "Caveat, cursive"
+    },
+    "weights": {
+      "headings": "font-light (300) or font-normal (400)",
+      "body": "font-normal (400)",
+      "bold": "font-semibold (600) - Use sparingly"
+    },
+    "usage_rules": [
+      "Headings (H1-H3) must use Fraunces. Letter spacing: tracking-tight.",
+      "Body text must use Manrope. Line height: leading-relaxed.",
+      "Use 'Caveat' for the AI's 'voice' or encouraging notes to make it feel handwritten and personal.",
+      "Never use uppercase for headings. It feels like shouting. Sentence case only."
+    ]
+  },
+  "colors": {
+    "palette_name": "Quiet Sanctuary",
+    "mode": "light",
+    "base": {
+      "background": "#FAFAF9",
+      "foreground": "#44403C",
+      "card": "#FFFFFF",
+      "card_foreground": "#44403C",
+      "popover": "#FFFFFF",
+      "popover_foreground": "#44403C",
+      "primary": "#78866B",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#E7E5E4",
+      "secondary_foreground": "#44403C",
+      "muted": "#F5F5F4",
+      "muted_foreground": "#78716C",
+      "accent": "#D6D3D1",
+      "accent_foreground": "#44403C",
+      "destructive": "#EF4444",
+      "destructive_foreground": "#FFFFFF",
+      "border": "#E7E5E4",
+      "input": "#E7E5E4",
+      "ring": "#78866B"
+    },
+    "semantic_tokens": {
+      "success": "#A3B18A",
+      "warning": "#D4A373",
+      "info": "#A5A58D",
+      "text_primary": "#292524",
+      "text_secondary": "#57534E",
+      "text_tertiary": "#A8A29E"
+    },
+    "gradients": {
+      "subtle_wash": "bg-gradient-to-b from-[#FAFAF9] to-[#F0EFEA]",
+      "warm_glow": "bg-gradient-to-tr from-[#E6E2DD] via-[#FAFAF9] to-[#E6E2DD]"
+    },
+    "rules": [
+      "Never use pure black (#000000). Use Warm Charcoal (#292524).",
+      "Never use pure white (#FFFFFF) for main backgrounds. Use Stone-50 (#FAFAF9).",
+      "Primary color is Soft Sage (#78866B). Use it for 'Done' states and primary actions.",
+      "Avoid high-contrast borders. Use subtle separation."
+    ]
+  },
+  "spacing_layout": {
+    "philosophy": "Generous & Breathable",
+    "container_padding": "p-6 md:p-12 lg:p-16",
+    "element_spacing": "space-y-8 or gap-8",
+    "border_radius": {
+      "default": "rounded-3xl",
+      "button": "rounded-full",
+      "card": "rounded-[2rem]",
+      "input": "rounded-2xl"
+    },
+    "grid_strategy": "The 'Soft Bento'",
+    "grid_rules": [
+      "Avoid rigid, equal grids. Use asymmetry.",
+      "Cards should feel like 'pebbles' or 'paper' scattered on a desk.",
+      "Max width for text blocks: max-w-prose (65ch) to prevent eye fatigue."
+    ]
+  },
+  "components": {
+    "buttons": {
+      "style": "Pill-shaped (rounded-full).",
+      "primary": "bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300",
+      "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+      "ghost": "hover:bg-stone-100 text-stone-600"
+    },
+    "cards": {
+      "style": "Flat, organic, subtle border.",
+      "classes": "bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-500"
+    },
+    "inputs": {
+      "style": "Soft, filled, no harsh borders.",
+      "classes": "bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4"
+    },
+    "navigation": {
+      "style": "Floating, glassmorphism.",
+      "classes": "bg-white/80 backdrop-blur-md border border-white/20 rounded-full shadow-sm"
+    }
+  },
+  "visual_enhancers": {
+    "textures": [
+      "Grain overlay (opacity 0.03) on backgrounds to remove digital coldness.",
+      "Soft, blurred orbs in background for 'Energy' visualization."
+    ],
+    "shadows": {
+      "soft_lift": "shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+      "inner_depth": "shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+    },
+    "motion": {
+      "speed": "Slow & Gentle (duration-500 or duration-700).",
+      "easing": "ease-out-expo",
+      "types": [
+        "Fade in up (y: 10 -> 0, opacity: 0 -> 1)",
+        "Scale in gentle (scale: 0.98 -> 1)"
+      ]
+    }
+  },
+  "images": {
+    "hero_backgrounds": [
+      {
+        "url": "https://images.unsplash.com/photo-1616627503062-6c26ed4c73b7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwxfHxjYWxtJTIwbmF0dXJlJTIwdGV4dHVyZXMlMjBzb2Z0JTIwYmVpZ2UlMjB3aGl0ZSUyMGxpbmVufGVufDB8fHx8MTc2NTIzMjQyMHww&ixlib=rb-4.1.0&q=85",
+        "description": "White gauze texture - Use for 'Morning Routine' background overlay",
+        "category": "texture"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1764867179307-fd0767e626d8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHw0fHxtaW5pbWFsaXN0JTIwaG9tZSUyMGludGVyaW9yJTIwd2FybSUyMHN1bmxpZ2h0fGVufDB8fHx8MTc2NTIzMjQyMnww&ixlib=rb-4.1.0&q=85",
+        "description": "Warm sunlight shadows - Use for 'Dashboard' or 'Welcome' screen",
+        "category": "atmosphere"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1590566996911-2d82c6b7e585?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwyfHxjYWxtJTIwbmF0dXJlJTIwdGV4dHVyZXMlMjBzb2Z0JTIwYmVpZ2UlMjB3aGl0ZSUyMGxpbmVufGVufDB8fHx8MTc2NTIzMjQyMHww&ixlib=rb-4.1.0&q=85",
+        "description": "Dried plant on white - Use for 'Tasks' or 'Focus' mode background",
+        "category": "texture"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1760783320682-760eb46774f3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwaG9tZSUyMGludGVyaW9yJTIwd2FybSUyMHN1bmxpZ2h0fGVufDB8fHx8MTc2NTIzMjQyMnww&ixlib=rb-4.1.0&q=85",
+        "description": "Plant in sunlight - Use for 'Energy Check-in' or 'Wellness' section",
+        "category": "atmosphere"
+      }
+    ]
+  },
+  "accessibility": {
+    "contrast": "Ensure text is #44403C or darker on light backgrounds. Avoid light grey text.",
+    "focus_states": "Visible ring-2 ring-primary/50 ring-offset-2.",
+    "motion": "Respect prefers-reduced-motion. Disable parallax if set."
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS: Add '@fontsource/fraunces', '@fontsource/manrope', and '@fontsource/caveat' to package.json immediately.",
+    "2. CONFIGURE TAILWIND: Update tailwind.config.js with the 'Quiet Sanctuary' color palette and border radius rules.",
+    "3. OVERRIDE SHADCN: Go into components/ui/button.jsx, card.jsx, etc., and apply the 'rounded-full' and 'rounded-[2rem]' styles by default.",
+    "4. CREATE LAYOUT: Build a 'Shell' component that applies the background texture and global padding.",
+    "5. TONE CHECK: When writing copy for the UI, use the 'Quiet Housekeeper' persona (gentle, validating).",
+    "6. IMAGES: Use the provided Unsplash URLs for backgrounds. Apply 'mix-blend-overlay' or low opacity to ensure text readability."
+  ],
+  "universal_guidelines": [
+    "DO NOT use generic 'Inter' font.",
+    "DO NOT use pure black or pure white.",
+    "DO NOT create dense, data-heavy grids. This is an anti-overwhelm app.",
+    "ALWAYS add data-testid to interactive elements.",
+    "ALWAYS use 'sonner' for toasts.",
+    "ALWAYS use 'lucide-react' for icons (use thin stroke-width={1.5})."
+  ]
+}
