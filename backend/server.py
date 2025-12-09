@@ -297,6 +297,25 @@ async def complete_routine(routine_id: str):
     await db.routines.update_one({"id": routine_id}, {"$set": {"completed_today": True}})
     return {"message": "Routine marked complete"}
 
+@api_router.patch("/routines/{routine_id}", response_model=Routine)
+async def update_routine(routine_id: str, update: RoutineCreate):
+    update_data = update.model_dump()
+    if update_data:
+        await db.routines.update_one({"id": routine_id}, {"$set": update_data})
+    routine = await db.routines.find_one({"id": routine_id}, {"_id": 0})
+    if not routine:
+        raise HTTPException(status_code=404, detail="Routine not found")
+    if isinstance(routine['created_at'], str):
+        routine['created_at'] = datetime.fromisoformat(routine['created_at'])
+    return routine
+
+@api_router.delete("/routines/{routine_id}")
+async def delete_routine(routine_id: str):
+    result = await db.routines.delete_one({"id": routine_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Routine not found")
+    return {"message": "Routine deleted"}
+
 # Bill routes
 @api_router.post("/bills", response_model=Bill)
 async def create_bill(bill: BillCreate):
