@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Sparkles, Heart, Sunrise, Sun, Moon } from "lucide-react";
+import { Sparkles, Heart, Archive, MessageCircle, CheckSquare, Calendar, DollarSign, CalendarDays, Brain } from "lucide-react";
 import { toast } from "sonner";
-import EnergyCheckIn from "@/components/EnergyCheckIn";
 import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -14,36 +13,26 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [userName, setUserName] = useState("there");
   const [loading, setLoading] = useState(true);
-  const [showEnergyCheckIn, setShowEnergyCheckIn] = useState(false);
-  const [timeOfDay, setTimeOfDay] = useState("morning");
+  const [energyLevel, setEnergyLevel] = useState(null);
+  const [showEnergyResponse, setShowEnergyResponse] = useState(false);
 
   useEffect(() => {
-    // Check if onboarding is complete
     const onboardingComplete = localStorage.getItem("onboarding_complete");
     if (!onboardingComplete) {
       navigate("/onboarding");
       return;
     }
-
-    // Determine time of day
-    const hour = new Date().getHours();
-    if (hour < 12) setTimeOfDay("morning");
-    else if (hour < 18) setTimeOfDay("midday");
-    else setTimeOfDay("evening");
-
     fetchData();
   }, [navigate]);
 
   const fetchData = async () => {
     try {
-      // Get user profile
       const userProfile = localStorage.getItem("user_profile");
       if (userProfile) {
         const profile = JSON.parse(userProfile);
         setUserName(profile.name || "there");
       }
 
-      // Get today's tasks
       const tasksRes = await axios.get(`${API}/tasks/${USER_ID}?category=today`);
       setTasks(tasksRes.data.filter((t) => !t.completed));
     } catch (error) {
@@ -57,20 +46,45 @@ export default function Dashboard() {
     try {
       await axios.patch(`${API}/tasks/${taskId}`, { completed: true });
       setTasks(tasks.filter((t) => t.id !== taskId));
-      toast.success("Well done", {
+      toast.success("Well done for showing up for yourself today.", {
         icon: <Heart className="text-success" size={16} />,
       });
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
-  const handleEnergyChecked = () => {
-    setShowEnergyCheckIn(false);
-    toast.success("Thank you for checking in", {
-      icon: <Heart className="text-success" size={16} />,
-    });
+  const handleEnergySelection = async (level) => {
+    setEnergyLevel(level);
+    setShowEnergyResponse(true);
+    try {
+      await axios.post(`${API}/energy`, {
+        user_id: USER_ID,
+        energy_level: level === "low" ? 2 : level === "okay" ? 3 : 4,
+        notes: `Energy: ${level}`,
+      });
+    } catch (error) {
+      console.error("Error saving energy level:", error);
+    }
   };
+
+  const getEnergyResponse = () => {
+    if (energyLevel === "low") {
+      return "Thank you for letting me know. Let's keep the rest of today very light.";
+    } else if (energyLevel === "okay") {
+      return "Perfect. We can tuck in one or two helpful things and still leave space to breathe.";
+    } else {
+      return "Lovely. If you'd like, we can gently tackle a bit more — still with lots of room for rest.";
+    }
+  };
+
+  const shortcuts = [
+    { icon: Brain, label: "Offload", subtitle: "Empty your mind into a safe space", path: "/brain-offload" },
+    { icon: CheckSquare, label: "Tasks", subtitle: "See your day, week, and later list", path: "/tasks" },
+    { icon: Calendar, label: "Routines", subtitle: "Small rituals that anchor you", path: "/routines" },
+    { icon: DollarSign, label: "Bills", subtitle: "I'll remember due dates for you", path: "/bills" },
+    { icon: CalendarDays, label: "Weekly", subtitle: "A calm overview of your week", path: "/weekly" },
+  ];
 
   if (loading) {
     return (
@@ -83,124 +97,126 @@ export default function Dashboard() {
     );
   }
 
-  const getCompassContent = () => {
-    if (timeOfDay === "morning") {
-      return {
-        icon: Sunrise,
-        title: "Morning Compass",
-        greeting: `Good morning, ${userName}`,
-        message: "Here are 1-3 gentle essentials for today. You don't have to do everything.",
-        grounding: "Take a breath. This is enough.",
-      };
-    } else if (timeOfDay === "midday") {
-      return {
-        icon: Sun,
-        title: "Midday Check-in",
-        greeting: `Hello, ${userName}`,
-        message: "How's your day unfolding? It's okay if things didn't go as planned.",
-        grounding: "You're doing your best, and that's more than enough.",
-      };
-    } else {
-      return {
-        icon: Moon,
-        title: "Evening Closeout",
-        greeting: `Good evening, ${userName}`,
-        message: "The day is winding down. Let's gently close what needs closing.",
-        grounding: "You made it through today. Rest now.",
-      };
-    }
-  };
-
-  const compass = getCompassContent();
-  const CompassIcon = compass.icon;
-
   return (
     <div className="space-y-8" data-testid="dashboard-page">
-      {/* Daily Compass */}
-      <div
-        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 md:p-12"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1764867179307-fd0767e626d8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHw0fHxtaW5pbWFsaXN0JTIwaG9tZSUyMGludGVyaW9yJTIwd2FybSUyMHN1bmxpZ2h0fGVufDB8fHx8MTc2NTIzMjQyMnww&ixlib=rb-4.1.0&q=85')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        data-testid="daily-compass"
-      >
-        <div className="backdrop-blur-sm bg-white/70 rounded-3xl p-8">
-          <div className="flex items-center gap-3 mb-3">
-            <CompassIcon className="text-primary" strokeWidth={1.5} size={28} />
-            <h2 className="text-2xl font-fraunces">{compass.title}</h2>
-          </div>
-          <h1 className="text-4xl md:text-5xl mb-3" data-testid="dashboard-greeting">
-            {compass.greeting}
-          </h1>
-          <p className="text-xl text-stone-600 leading-relaxed mb-4">
-            {compass.message}
-          </p>
-          <p className="text-lg font-caveat text-primary">
-            {compass.grounding}
-          </p>
-        </div>
+      {/* Header */}
+      <div className="text-center max-w-2xl mx-auto">
+        <h1 className="text-4xl md:text-5xl mb-3" data-testid="dashboard-greeting">
+          Welcome back to your MindAttic.
+        </h1>
+        <p className="text-xl text-stone-600 font-caveat">
+          Let's keep today gentle.
+        </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Today's Focus */}
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-500 p-8"
-          data-testid="todays-tasks-card"
-        >
-          <h2 className="text-2xl mb-4">Today's gentle focus</h2>
-          {tasks.length === 0 ? (
-            <p className="text-stone-600 leading-relaxed font-caveat text-lg">
-              You have a clear day ahead. Rest, or add something small if you'd like.
-            </p>
-          ) : (
-            <div className="space-y-3">
-              {tasks.slice(0, 3).map((task) => (
-                <div
-                  key={task.id}
-                  className="flex items-start gap-3 p-4 bg-stone-50 rounded-2xl"
-                  data-testid={`task-item-${task.id}`}
-                >
-                  <button
-                    onClick={() => completeTask(task.id)}
-                    data-testid={`complete-task-${task.id}`}
-                    className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary hover:border-primary transition-colors duration-300 flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <p className="text-stone-700">{task.title}</p>
-                    {task.description && (
-                      <p className="text-sm text-stone-500 mt-1">{task.description}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Energy Check-in */}
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-500 p-8"
-          data-testid="energy-checkin-card"
-        >
-          <h2 className="text-2xl mb-4">How are you feeling?</h2>
-          <p className="text-stone-600 leading-relaxed mb-6">
-            Let me know your energy level, so I can adjust your day gently.
+      {/* Today's Soft Focus */}
+      <div
+        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8"
+        data-testid="todays-soft-focus"
+      >
+        <h2 className="text-2xl mb-3">Today's Soft Focus</h2>
+        <p className="text-stone-600 leading-relaxed mb-6">
+          Here are one or two small things that will make today feel a little lighter.
+        </p>
+        {tasks.length === 0 ? (
+          <p className="text-stone-600 leading-relaxed font-caveat text-lg">
+            You have a clear day ahead. Rest, or add something small if you'd like.
           </p>
-          {!showEnergyCheckIn ? (
+        ) : (
+          <div className="space-y-3">
+            {tasks.slice(0, 2).map((task) => (
+              <div
+                key={task.id}
+                className="flex items-start gap-3 p-4 bg-stone-50 rounded-2xl"
+                data-testid={`task-item-${task.id}`}
+              >
+                <button
+                  onClick={() => completeTask(task.id)}
+                  data-testid={`complete-task-${task.id}`}
+                  className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary hover:border-primary transition-colors duration-300 flex-shrink-0"
+                />
+                <div className="flex-1">
+                  <p className="text-stone-700">{task.title}</p>
+                  {task.description && (
+                    <p className="text-sm text-stone-500 mt-1">{task.description}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        <p className="text-sm text-stone-500 mt-4 font-caveat">
+          You don't have to do everything. One small step is enough.
+        </p>
+      </div>
+
+      {/* How Are You Feeling */}
+      <div
+        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8"
+        data-testid="energy-section"
+      >
+        <h2 className="text-2xl mb-3">How are you feeling right now?</h2>
+        <p className="text-stone-600 leading-relaxed mb-6">
+          Tell me your energy, and I'll adjust your day with care.
+        </p>
+        {!showEnergyResponse ? (
+          <div className="flex gap-3">
             <button
-              onClick={() => setShowEnergyCheckIn(true)}
-              data-testid="show-energy-checkin-btn"
-              className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full"
+              onClick={() => handleEnergySelection("low")}
+              data-testid="energy-low-btn"
+              className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
             >
-              Check in now
+              Low
             </button>
-          ) : (
-            <EnergyCheckIn userId={USER_ID} onComplete={handleEnergyChecked} />
-          )}
-        </div>
+            <button
+              onClick={() => handleEnergySelection("okay")}
+              data-testid="energy-okay-btn"
+              className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
+            >
+              Okay
+            </button>
+            <button
+              onClick={() => handleEnergySelection("good")}
+              data-testid="energy-good-btn"
+              className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
+            >
+              Good
+            </button>
+          </div>
+        ) : (
+          <div className="bg-primary/5 rounded-2xl p-6 border border-primary/20">
+            <p className="text-stone-700 leading-relaxed font-caveat text-lg">
+              {getEnergyResponse()}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Shortcuts */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="shortcuts">
+        {shortcuts.map((shortcut) => {
+          const Icon = shortcut.icon;
+          return (
+            <button
+              key={shortcut.path}
+              onClick={() => navigate(shortcut.path)}
+              data-testid={`shortcut-${shortcut.label.toLowerCase()}`}
+              className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 p-6 text-left"
+            >
+              <Icon className="text-primary mb-3" strokeWidth={1.5} size={24} />
+              <h3 className="font-fraunces text-lg text-stone-800 mb-1">{shortcut.label}</h3>
+              <p className="text-sm text-stone-500">{shortcut.subtitle}</p>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Footer */}
+      <div className="max-w-3xl mx-auto text-center" data-testid="dashboard-footer">
+        <p className="text-stone-500 leading-relaxed">
+          You don't have to hold everything in your head.<br />
+          That's what your MindAttic is for.
+        </p>
       </div>
     </div>
   );
