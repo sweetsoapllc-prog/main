@@ -309,7 +309,6 @@ export default function Onboarding() {
           {/* Step 8: Life Snapshot */}
           {step === 8 && (
             <div className="space-y-6 text-center" data-testid="onboarding-step-8">
-              <Sparkles className="text-primary mx-auto mb-4" strokeWidth={1.5} size={40} />
               <h1 className="text-4xl md:text-5xl font-fraunces font-light">Your Attic Mind is ready.</h1>
               <p className="text-xl text-stone-600 leading-relaxed">
                 A soft space crafted just for you.
