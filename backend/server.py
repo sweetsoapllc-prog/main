@@ -153,7 +153,7 @@ class ChatResponse(BaseModel):
 # Routes
 @api_router.get("/")
 async def root():
-    return {"message": "Quiet Housekeeper API"}
+    return {"message": "MindAttic API"}
 
 # User routes
 @api_router.post("/users", response_model=User)
