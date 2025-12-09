@@ -186,27 +186,95 @@ export default function Tasks() {
                   {categoryTasks.map((task) => (
                     <div
                       key={task.id}
-                      className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-4 flex items-start gap-3"
+                      className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-4"
                       data-testid={`task-${task.id}`}
                     >
-                      <button
-                        onClick={() => completeTask(task.id)}
-                        data-testid={`complete-task-btn-${task.id}`}
-                        className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary transition-colors duration-300 flex-shrink-0"
-                      />
-                      <div className="flex-1">
-                        <p className="text-stone-700">{task.title}</p>
-                        {task.description && (
-                          <p className="text-sm text-stone-500 mt-1">{task.description}</p>
-                        )}
-                      </div>
-                      <button
-                        onClick={() => deleteTask(task.id)}
-                        data-testid={`delete-task-btn-${task.id}`}
-                        className="text-stone-400 hover:text-red-500 transition-colors duration-300"
-                      >
-                        <Trash2 strokeWidth={1.5} size={18} />
-                      </button>
+                      {editingTask === task.id ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            data-testid={`edit-task-input-${task.id}`}
+                            className="flex-1 bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-xl h-10 px-3 outline-none"
+                            autoFocus
+                          />
+                          <button
+                            onClick={() => saveEditTask(task.id)}
+                            data-testid={`save-edit-btn-${task.id}`}
+                            className="text-primary hover:text-primary/80 transition-colors"
+                          >
+                            <Check strokeWidth={1.5} size={18} />
+                          </button>
+                          <button
+                            onClick={cancelEdit}
+                            data-testid={`cancel-edit-btn-${task.id}`}
+                            className="text-stone-400 hover:text-stone-600 transition-colors"
+                          >
+                            <X strokeWidth={1.5} size={18} />
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex items-start gap-3">
+                            <button
+                              onClick={() => completeTask(task.id)}
+                              data-testid={`complete-task-btn-${task.id}`}
+                              className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary transition-colors duration-300 flex-shrink-0"
+                            />
+                            <div className="flex-1">
+                              <p className="text-stone-700">{task.title}</p>
+                              {task.description && (
+                                <p className="text-sm text-stone-500 mt-1">{task.description}</p>
+                              )}
+                            </div>
+                            <button
+                              onClick={() => startEditTask(task)}
+                              data-testid={`edit-task-btn-${task.id}`}
+                              className="text-stone-400 hover:text-primary transition-colors duration-300"
+                            >
+                              <Edit2 strokeWidth={1.5} size={16} />
+                            </button>
+                            <button
+                              onClick={() => setMovingTask(task.id)}
+                              data-testid={`move-task-btn-${task.id}`}
+                              className="text-stone-400 hover:text-info transition-colors duration-300"
+                            >
+                              <MoveRight strokeWidth={1.5} size={16} />
+                            </button>
+                            <button
+                              onClick={() => deleteTask(task.id)}
+                              data-testid={`delete-task-btn-${task.id}`}
+                              className="text-stone-400 hover:text-red-500 transition-colors duration-300"
+                            >
+                              <Trash2 strokeWidth={1.5} size={16} />
+                            </button>
+                          </div>
+                          
+                          {/* Move Menu */}
+                          {movingTask === task.id && (
+                            <div className="mt-3 flex gap-2" data-testid={`move-menu-${task.id}`}>
+                              <p className="text-sm text-stone-500 mr-2">Move to:</p>
+                              {["today", "this_week", "later"].filter(cat => cat !== category).map((cat) => (
+                                <button
+                                  key={cat}
+                                  onClick={() => moveTask(task.id, cat)}
+                                  data-testid={`move-to-${cat}-btn-${task.id}`}
+                                  className="text-xs bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary px-3 py-1 rounded-full transition-all"
+                                >
+                                  {cat === "today" ? "Today" : cat === "this_week" ? "This Week" : "Later"}
+                                </button>
+                              ))}
+                              <button
+                                onClick={() => setMovingTask(null)}
+                                className="text-xs text-stone-400 hover:text-stone-600"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          )}
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>
