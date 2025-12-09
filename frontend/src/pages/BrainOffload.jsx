@@ -97,8 +97,8 @@ export default function BrainOffload() {
             placeholder="What's on your mind?"
             disabled={processing}
             data-testid="brain-offload-textarea"
-            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-6 outline-none resize-none font-mono text-stone-700"
-            rows={12}
+            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl pt-8 px-6 pb-6 outline-none resize-none font-mono text-stone-700"
+            rows={10}
           />
           <button
             onClick={processOffload}
