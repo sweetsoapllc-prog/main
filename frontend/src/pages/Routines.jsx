@@ -132,21 +132,32 @@ export default function Routines() {
     );
   }
 
-  // Remove duplicate routines by name and time_of_day
+  // Remove duplicate routines by ID (keep only latest version)
   const uniqueRoutines = routines.reduce((acc, routine) => {
-    const key = `${routine.name}-${routine.time_of_day}`;
-    if (!acc.has(key)) {
-      acc.set(key, routine);
+    // If we already have this ID, keep the one with the latest created_at
+    if (acc.has(routine.id)) {
+      const existing = acc.get(routine.id);
+      if (new Date(routine.created_at) > new Date(existing.created_at)) {
+        acc.set(routine.id, routine);
+      }
+    } else {
+      acc.set(routine.id, routine);
     }
     return acc;
   }, new Map());
   
   const deduplicatedRoutines = Array.from(uniqueRoutines.values());
 
+  // Sort by created_at (newest first)
+  const sortedRoutines = deduplicatedRoutines.sort((a, b) => 
+    new Date(b.created_at) - new Date(a.created_at)
+  );
+
+  // Group by time_of_day (case-insensitive, trimmed)
   const groupedRoutines = {
-    morning: deduplicatedRoutines.filter((r) => r.time_of_day === "morning"),
-    evening: deduplicatedRoutines.filter((r) => r.time_of_day === "evening"),
-    weekly: deduplicatedRoutines.filter((r) => r.time_of_day === "weekly"),
+    morning: sortedRoutines.filter((r) => r.time_of_day?.toLowerCase().trim() === "morning"),
+    evening: sortedRoutines.filter((r) => r.time_of_day?.toLowerCase().trim() === "evening"),
+    weekly: sortedRoutines.filter((r) => r.time_of_day?.toLowerCase().trim() === "weekly"),
   };
 
   return (
