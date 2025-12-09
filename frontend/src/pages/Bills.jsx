@@ -71,6 +71,58 @@ export default function Bills() {
     }
   };
 
+  const startEditBill = (bill) => {
+    setEditingBill(bill.id);
+    setNewBill({
+      name: bill.name,
+      amount: bill.amount.toString(),
+      due_date: bill.due_date,
+      recurring: bill.recurring,
+      autopay: bill.autopay,
+      frequency: bill.frequency,
+    });
+    setShowAdd(false);
+  };
+
+  const cancelEdit = () => {
+    setEditingBill(null);
+    setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
+  };
+
+  const saveEditBill = async (e) => {
+    e.preventDefault();
+    if (!newBill.name.trim() || !newBill.amount || !newBill.due_date) return;
+
+    try {
+      await axios.patch(`${API}/bills/${editingBill}`, {
+        user_id: USER_ID,
+        name: newBill.name,
+        amount: parseFloat(newBill.amount),
+        due_date: newBill.due_date,
+        recurring: newBill.recurring,
+        autopay: newBill.autopay,
+        frequency: newBill.frequency,
+      });
+      setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
+      setEditingBill(null);
+      fetchBills();
+      toast.success("Bill updated. I've got that saved.");
+    } catch (error) {
+      console.error("Error updating bill:", error);
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
+    }
+  };
+
+  const deleteBill = async (billId) => {
+    try {
+      await axios.delete(`${API}/bills/${billId}`);
+      fetchBills();
+      toast.success("Bill removed gently.");
+    } catch (error) {
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
