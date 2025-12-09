@@ -98,7 +98,8 @@ export default function Dashboard() {
           Welcome back to The Attic Mind.
         </h1>
         <p className="text-xl text-stone-600 font-caveat">
-          A quiet place for everything you're carrying. Let's keep today gentle.
+          A quiet place for everything you're carrying.<br />
+          One soft step at a time.
         </p>
       </div>
 
