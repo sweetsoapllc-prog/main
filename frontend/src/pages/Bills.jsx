@@ -235,9 +235,10 @@ export default function Bills() {
                   <button
                     onClick={() => payBill(bill.id)}
                     data-testid={`pay-bill-btn-${bill.id}`}
-                    className="text-stone-300 hover:text-success transition-colors duration-300"
+                    className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1"
                   >
-                    <CheckCircle2 strokeWidth={1.5} size={24} />
+                    <CheckCircle2 strokeWidth={1.5} size={16} />
+                    Mark as Paid
                   </button>
                 </div>
                 <div className="flex items-center justify-between pt-3 border-t border-stone-100">
@@ -286,9 +287,10 @@ export default function Bills() {
                   <button
                     onClick={() => payBill(bill.id)}
                     data-testid={`pay-bill-btn-${bill.id}`}
-                    className="text-stone-300 hover:text-success transition-colors duration-300"
+                    className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1"
                   >
-                    <CheckCircle2 strokeWidth={1.5} size={24} />
+                    <CheckCircle2 strokeWidth={1.5} size={16} />
+                    Mark as Paid
                   </button>
                 </div>
                 <div className="flex items-center justify-between pt-3 border-t border-stone-100">
