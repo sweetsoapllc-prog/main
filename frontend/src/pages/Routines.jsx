@@ -65,6 +65,52 @@ export default function Routines() {
     }
   };
 
+  const startEditRoutine = (routine) => {
+    setEditingRoutine(routine.id);
+    setNewRoutine({
+      name: routine.name,
+      time_of_day: routine.time_of_day,
+      items: [...routine.items],
+    });
+    setShowAdd(false);
+  };
+
+  const cancelEdit = () => {
+    setEditingRoutine(null);
+    setNewRoutine({ name: "", time_of_day: "morning", items: [""] });
+  };
+
+  const saveEditRoutine = async (e) => {
+    e.preventDefault();
+    if (!newRoutine.name.trim()) return;
+
+    try {
+      await axios.patch(`${API}/routines/${editingRoutine}`, {
+        user_id: USER_ID,
+        name: newRoutine.name,
+        time_of_day: newRoutine.time_of_day,
+        items: newRoutine.items.filter((item) => item.trim()),
+      });
+      setNewRoutine({ name: "", time_of_day: "morning", items: [""] });
+      setEditingRoutine(null);
+      fetchRoutines();
+      toast.success("Routine updated. I've got that saved.");
+    } catch (error) {
+      console.error("Error updating routine:", error);
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
+    }
+  };
+
+  const deleteRoutine = async (routineId) => {
+    try {
+      await axios.delete(`${API}/routines/${routineId}`);
+      fetchRoutines();
+      toast.success("Routine removed gently.");
+    } catch (error) {
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
+    }
+  };
+
   const addItem = () => {
     setNewRoutine({ ...newRoutine, items: [...newRoutine.items, ""] });
   };
