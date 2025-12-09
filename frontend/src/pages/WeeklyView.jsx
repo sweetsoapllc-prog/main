@@ -203,7 +203,12 @@ export default function WeeklyView() {
             <h2 className="text-xl font-fraunces">Today</h2>
           </div>
           {todayTasks.length === 0 ? (
-            <p className="text-stone-500 text-sm font-caveat">Nothing planned. Rest if you need to.</p>
+            <div className="space-y-3">
+              <p className="text-stone-500 text-sm font-caveat">Nothing planned. Rest if you need to.</p>
+              <a href="/tasks" className="text-xs text-primary hover:text-primary/80 transition-colors">
+                Add a task if something comes up →
+              </a>
+            </div>
           ) : (
             <ul className="space-y-2">
               {todayTasks.map((task) => (
@@ -228,7 +233,12 @@ export default function WeeklyView() {
             <h2 className="text-xl font-fraunces">This Week</h2>
           </div>
           {weekTasks.length === 0 ? (
-            <p className="text-stone-500 text-sm font-caveat">Nothing scheduled yet.</p>
+            <div className="space-y-3">
+              <p className="text-stone-500 text-sm font-caveat">Nothing scheduled yet.</p>
+              <a href="/tasks" className="text-xs text-primary hover:text-primary/80 transition-colors">
+                Plan something gently →
+              </a>
+            </div>
           ) : (
             <ul className="space-y-2">
               {weekTasks.map((task) => (
@@ -253,7 +263,12 @@ export default function WeeklyView() {
             <h2 className="text-xl font-fraunces">Later</h2>
           </div>
           {laterTasks.length === 0 ? (
-            <p className="text-stone-500 text-sm font-caveat">Nothing parked here.</p>
+            <div className="space-y-3">
+              <p className="text-stone-500 text-sm font-caveat">Nothing parked here.</p>
+              <a href="/brain-offload" className="text-xs text-primary hover:text-primary/80 transition-colors">
+                Offload some thoughts →
+              </a>
+            </div>
           ) : (
             <p className="text-stone-600 text-sm">
               {laterTasks.length} {laterTasks.length === 1 ? "item" : "items"} gently parked
