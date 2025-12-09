@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Plus, DollarSign, CheckCircle2, AlertCircle, Zap } from "lucide-react";
+import { Plus, DollarSign, CheckCircle2, AlertCircle, Zap, Edit2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -11,6 +11,7 @@ export default function Bills() {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
+  const [editingBill, setEditingBill] = useState(null);
   const [newBill, setNewBill] = useState({
     name: "",
     amount: "",
