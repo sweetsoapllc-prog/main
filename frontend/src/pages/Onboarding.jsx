@@ -105,7 +105,6 @@ export default function Onboarding() {
           {/* Step 1: Welcome */}
           {step === 1 && (
             <div className="space-y-6 text-center" data-testid="onboarding-step-1">
-              <Sparkles className="text-primary mx-auto mb-4" strokeWidth={1.5} size={40} />
               <h1 className="text-4xl md:text-5xl font-fraunces font-light">Welcome to The Attic Mind</h1>
               <p className="text-xl text-stone-600 leading-relaxed">
                 A quiet place for everything you're carrying.
