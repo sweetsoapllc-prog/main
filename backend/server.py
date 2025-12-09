@@ -408,6 +408,64 @@ async def get_chat_history(user_id: str, session_id: str):
             msg['created_at'] = datetime.fromisoformat(msg['created_at'])
     return messages
 
+# Brain Offload routes
+@api_router.post("/brain-offload", response_model=BrainOffloadResponse)
+async def organize_brain_offload(request: BrainOffloadRequest):
+    """
+    Takes raw stream-of-consciousness text and uses AI to sort it into tasks
+    categorized as Today, This Week, or Later
+    """
+    
+    brain_offload_prompt = """You are The Attic Mind's gentle organizing assistant. A user has shared their thoughts, worries, and to-dos in a stream-of-consciousness way. Your job is to:
+
+1. Extract actionable tasks from their text
+2. Sort each task into one of three categories:
+   - "today" - things that feel urgent or time-sensitive for today
+   - "this_week" - things that matter this week but don't need immediate attention
+   - "later" - things to remember but can wait
+
+3. Keep task titles SHORT (3-8 words), clear, and gentle
+4. Don't add tasks that aren't in the original text
+5. If something is vague, interpret it kindly
+
+Return ONLY a JSON array in this exact format:
+[
+  {"title": "Task description", "category": "today"},
+  {"title": "Another task", "category": "this_week"},
+  {"title": "Future item", "category": "later"}
+]
+
+Do not include any other text, explanations, or markdown - just the JSON array."""
+
+    try:
+        chat_client = LlmChat(
+            api_key=os.environ.get('EMERGENT_LLM_KEY'),
+            session_id="brain-offload-" + request.user_id,
+            system_message=brain_offload_prompt
+        ).with_model("openai", "gpt-5.1")
+        
+        user_message = UserMessage(text=f"Here's what's on my mind:\n\n{request.raw_text}")
+        response = await chat_client.send_message(user_message)
+        
+        # Parse the JSON response
+        import json
+        import re
+        
+        # Extract JSON from the response (in case there's extra text)
+        json_match = re.search(r'\[.*\]', response, re.DOTALL)
+        if json_match:
+            tasks_data = json.loads(json_match.group())
+        else:
+            tasks_data = json.loads(response)
+        
+        sorted_tasks = [SortedTask(**task) for task in tasks_data]
+        
+        return BrainOffloadResponse(tasks=sorted_tasks)
+        
+    except Exception as e:
+        logging.error(f"Brain offload error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error organizing thoughts: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
