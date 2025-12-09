@@ -121,14 +121,14 @@ export default function BrainOffload() {
         </div>
       ) : (
         <div className="space-y-6" data-testid="brain-offload-organized">
-          <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8">
+          <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8">
             <h2 className="text-2xl mb-4 font-fraunces">Here's what I organized for you</h2>
-            <p className="text-stone-600 leading-relaxed font-caveat text-lg mb-6">
+            <p className="text-stone-600 leading-relaxed font-caveat text-lg mb-8">
               I sorted everything into gentle steps. You can adjust these anytime.
             </p>
 
             {/* Today */}
-            <div className="mb-6">
+            <div className="mb-8">
               <h3 className="text-lg font-fraunces text-primary mb-3">Today (1-3 gentle steps)</h3>
               {organized.today.length === 0 ? (
                 <p className="text-stone-500 font-caveat">Nothing urgent. Rest if you need to.</p>
@@ -145,7 +145,7 @@ export default function BrainOffload() {
             </div>
 
             {/* This Week */}
-            <div className="mb-6">
+            <div className="mb-8">
               <h3 className="text-lg font-fraunces text-info mb-3">This Week</h3>
               {organized.this_week.length === 0 ? (
                 <p className="text-stone-500 font-caveat">Nothing here yet.</p>
