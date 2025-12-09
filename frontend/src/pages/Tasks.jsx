@@ -27,7 +27,7 @@ export default function Tasks() {
       setTasks(grouped);
     } catch (error) {
       console.error("Error fetching tasks:", error);
-      toast.error("Failed to load tasks");
+      toast.error("I'm having trouble loading your tasks right now. Can we try again in a moment?");
     } finally {
       setLoading(false);
     }
@@ -48,7 +48,7 @@ export default function Tasks() {
       toast.success("I've got this down for you. Well done for adding it.");
     } catch (error) {
       console.error("Error adding task:", error);
-      toast.error("Failed to add task");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
@@ -58,7 +58,7 @@ export default function Tasks() {
       fetchTasks();
       toast.success("Well done for showing up for yourself today.");
     } catch (error) {
-      toast.error("Failed to complete task");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
@@ -68,7 +68,7 @@ export default function Tasks() {
       fetchTasks();
       toast.success("Got it — I've taken care of that.");
     } catch (error) {
-      toast.error("Failed to delete task");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
