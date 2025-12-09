@@ -11,7 +11,6 @@ const USER_ID = "demo-user-123";
 export default function Dashboard() {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
-  const [userName, setUserName] = useState("there");
   const [loading, setLoading] = useState(true);
   const [energyLevel, setEnergyLevel] = useState(null);
   const [showEnergyResponse, setShowEnergyResponse] = useState(false);
@@ -27,12 +26,6 @@ export default function Dashboard() {
 
   const fetchData = async () => {
     try {
-      const userProfile = localStorage.getItem("user_profile");
-      if (userProfile) {
-        const profile = JSON.parse(userProfile);
-        setUserName(profile.name || "there");
-      }
-
       const tasksRes = await axios.get(`${API}/tasks/${USER_ID}?category=today`);
       setTasks(tasksRes.data.filter((t) => !t.completed));
     } catch (error) {
@@ -80,10 +73,10 @@ export default function Dashboard() {
 
   const shortcuts = [
     { icon: Brain, label: "Offload", subtitle: "Empty your mind into a safe space", path: "/brain-offload" },
-    { icon: CheckSquare, label: "Tasks", subtitle: "Your day, your week, your later list", path: "/tasks" },
-    { icon: Calendar, label: "Routines", subtitle: "Small rituals to anchor you", path: "/routines" },
-    { icon: DollarSign, label: "Bills", subtitle: "I'll remember due dates for you", path: "/bills" },
-    { icon: CalendarDays, label: "Weekly", subtitle: "A gentle overview of your week", path: "/weekly" },
+    { icon: CheckSquare, label: "Tasks", subtitle: "Today, this week, and later — softly organized", path: "/tasks" },
+    { icon: Calendar, label: "Routines", subtitle: "Small rituals to anchor your days", path: "/routines" },
+    { icon: DollarSign, label: "Bills", subtitle: "I'll remember dates so you don't have to", path: "/bills" },
+    { icon: CalendarDays, label: "Weekly", subtitle: "A calm overview of your week", path: "/weekly" },
   ];
 
   if (loading) {
@@ -102,10 +95,10 @@ export default function Dashboard() {
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="text-4xl md:text-5xl mb-3" data-testid="dashboard-greeting">
-          Welcome back to TheAtticMind.
+          Welcome back to The Attic Mind.
         </h1>
         <p className="text-xl text-stone-600 font-caveat">
-          A quiet space for your mind. Let's keep today gentle.
+          A quiet place for everything you're carrying. Let's keep today gentle.
         </p>
       </div>
 
@@ -116,7 +109,7 @@ export default function Dashboard() {
       >
         <h2 className="text-2xl mb-3">Today's Soft Focus</h2>
         <p className="text-stone-600 leading-relaxed mb-6">
-          Here are one or two small things that would make today feel a little lighter.
+          Just one or two small things that help today feel lighter.
         </p>
         {tasks.length === 0 ? (
           <p className="text-stone-600 leading-relaxed font-caveat text-lg">
@@ -146,7 +139,7 @@ export default function Dashboard() {
           </div>
         )}
         <p className="text-sm text-stone-500 mt-4 font-caveat">
-          You don't have to do everything. One tiny step is enough.
+          You don't have to finish everything. One small step is enough.
         </p>
       </div>
 
@@ -157,7 +150,7 @@ export default function Dashboard() {
       >
         <h2 className="text-2xl mb-3">How are you feeling?</h2>
         <p className="text-stone-600 leading-relaxed mb-6">
-          Tell me your energy, and I'll shape the rest of your day softly.
+          Tell me your energy, and I'll shape your day with care.
         </p>
         {!showEnergyResponse ? (
           <div className="flex gap-3">
@@ -192,30 +185,33 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Shortcuts */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="shortcuts">
-        {shortcuts.map((shortcut) => {
-          const Icon = shortcut.icon;
-          return (
-            <button
-              key={shortcut.path}
-              onClick={() => navigate(shortcut.path)}
-              data-testid={`shortcut-${shortcut.label.toLowerCase()}`}
-              className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 p-6 text-left"
-            >
-              <Icon className="text-primary mb-3" strokeWidth={1.5} size={24} />
-              <h3 className="font-fraunces text-lg text-stone-800 mb-1">{shortcut.label}</h3>
-              <p className="text-sm text-stone-500">{shortcut.subtitle}</p>
-            </button>
-          );
-        })}
+      {/* Your Spaces */}
+      <div>
+        <h2 className="text-2xl mb-4 text-center">Your Spaces</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="shortcuts">
+          {shortcuts.map((shortcut) => {
+            const Icon = shortcut.icon;
+            return (
+              <button
+                key={shortcut.path}
+                onClick={() => navigate(shortcut.path)}
+                data-testid={`shortcut-${shortcut.label.toLowerCase()}`}
+                className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 p-6 text-left"
+              >
+                <Icon className="text-primary mb-3" strokeWidth={1.5} size={24} />
+                <h3 className="font-fraunces text-lg text-stone-800 mb-1">{shortcut.label}</h3>
+                <p className="text-sm text-stone-500">{shortcut.subtitle}</p>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Footer */}
       <div className="max-w-3xl mx-auto text-center" data-testid="dashboard-footer">
         <p className="text-stone-500 leading-relaxed">
-          You don't have to hold everything.<br />
-          Your AtticMind will hold it for you.
+          You don't have to hold everything alone.<br />
+          Your Attic Mind will hold it for you.
         </p>
       </div>
     </div>
