@@ -322,6 +322,12 @@ export default function Onboarding() {
                     <p className="text-lg font-fraunces">{data.name}</p>
                   </div>
                 )}
+                {data.tone_preference && (
+                  <div>
+                    <p className="text-sm text-stone-500">Tone</p>
+                    <p className="text-lg capitalize">{data.tone_preference}</p>
+                  </div>
+                )}
                 {data.day_type && (
                   <div>
                     <p className="text-sm text-stone-500">Your days are</p>
@@ -332,6 +338,18 @@ export default function Onboarding() {
                   <div>
                     <p className="text-sm text-stone-500">You manage</p>
                     <p className="text-lg">{data.responsibilities.join(", ")}</p>
+                  </div>
+                )}
+                {data.emotional_support && (
+                  <div>
+                    <p className="text-sm text-stone-500">Support style</p>
+                    <p className="text-lg">{data.emotional_support}</p>
+                  </div>
+                )}
+                {data.energy_checkins && (
+                  <div>
+                    <p className="text-sm text-stone-500">Daily check-ins</p>
+                    <p className="text-lg capitalize">{data.energy_checkins === 'when-asked' ? 'Only when asked' : data.energy_checkins === 'never' ? 'Never' : data.energy_checkins === 'softly' ? 'Yes, but softly' : 'Yes, daily'}</p>
                   </div>
                 )}
               </div>
