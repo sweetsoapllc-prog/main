@@ -133,31 +133,38 @@ export default function Routines() {
   }
 
   // Remove duplicate routines by ID (keep only latest version)
-  const uniqueRoutines = routines.reduce((acc, routine) => {
-    // If we already have this ID, keep the one with the latest created_at
-    if (acc.has(routine.id)) {
-      const existing = acc.get(routine.id);
+  const uniqueRoutines = new Map();
+  routines.forEach(routine => {
+    if (!routine.id || !routine.time_of_day) return; // Skip invalid routines
+    
+    if (uniqueRoutines.has(routine.id)) {
+      const existing = uniqueRoutines.get(routine.id);
       if (new Date(routine.created_at) > new Date(existing.created_at)) {
-        acc.set(routine.id, routine);
+        uniqueRoutines.set(routine.id, routine);
       }
     } else {
-      acc.set(routine.id, routine);
+      uniqueRoutines.set(routine.id, routine);
     }
-    return acc;
-  }, new Map());
+  });
   
   const deduplicatedRoutines = Array.from(uniqueRoutines.values());
 
-  // Sort by created_at (newest first)
-  const sortedRoutines = deduplicatedRoutines.sort((a, b) => 
-    new Date(b.created_at) - new Date(a.created_at)
-  );
+  // Normalize category values and group
+  const normalizeCategory = (category) => {
+    if (!category) return '';
+    return category.toLowerCase().trim();
+  };
 
-  // Group by time_of_day (case-insensitive, trimmed)
   const groupedRoutines = {
-    morning: sortedRoutines.filter((r) => r.time_of_day?.toLowerCase().trim() === "morning"),
-    evening: sortedRoutines.filter((r) => r.time_of_day?.toLowerCase().trim() === "evening"),
-    weekly: sortedRoutines.filter((r) => r.time_of_day?.toLowerCase().trim() === "weekly"),
+    morning: deduplicatedRoutines
+      .filter((r) => normalizeCategory(r.time_of_day) === "morning")
+      .sort((a, b) => a.name.localeCompare(b.name)), // Alphabetical order
+    evening: deduplicatedRoutines
+      .filter((r) => normalizeCategory(r.time_of_day) === "evening")
+      .sort((a, b) => a.name.localeCompare(b.name)), // Alphabetical order
+    weekly: deduplicatedRoutines
+      .filter((r) => normalizeCategory(r.time_of_day) === "weekly")
+      .sort((a, b) => a.name.localeCompare(b.name)), // Alphabetical order
   };
 
   return (
