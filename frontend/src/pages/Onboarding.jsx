@@ -12,13 +12,12 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState({
     name: "",
-    email: "",
-    household_size: "",
+    tone_preference: "gentle",
+    day_type: "",
     responsibilities: [],
-    bills: [],
-    energy_pattern: "",
-    overwhelm_areas: [],
-    support_needed: "",
+    bills_reminders: true,
+    emotional_support: "",
+    energy_checkins: "daily",
   });
 
   const updateData = (field, value) => {
@@ -35,7 +34,7 @@ export default function Onboarding() {
   };
 
   const nextStep = () => {
-    if (step < 6) setStep(step + 1);
+    if (step < 8) setStep(step + 1);
   };
 
   const prevStep = () => {
@@ -44,24 +43,20 @@ export default function Onboarding() {
 
   const completeOnboarding = async () => {
     try {
-      // Create user profile with onboarding data
       try {
         await axios.post(`${API}/users`, {
           name: data.name || "Friend",
-          email: data.email || "demo@example.com",
+          email: "demo@example.com",
         });
       } catch (err) {
-        // User might already exist, that's okay
         console.log("User creation skipped:", err.message);
       }
       
-      // Store onboarding data
       localStorage.setItem("onboarding_complete", "true");
       localStorage.setItem("user_profile", JSON.stringify(data));
       
-      toast.success("Welcome! Your space is ready.");
+      toast.success("Welcome! Your Attic Mind is ready.");
       
-      // Force navigate after a short delay to ensure localStorage is set
       setTimeout(() => {
         window.location.href = "/";
       }, 500);
@@ -77,29 +72,37 @@ export default function Onboarding() {
         {/* Progress */}
         <div className="mb-8" data-testid="onboarding-progress">
           <div className="flex justify-between mb-2">
-            {[1, 2, 3, 4, 5, 6].map((s) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
               <div
                 key={s}
-                className={`w-12 h-1 rounded-full transition-all duration-500 ${
+                className={`flex-1 h-1 rounded-full transition-all duration-500 mx-1 ${
                   s <= step ? "bg-primary" : "bg-stone-200"
                 }`}
               />
             ))}
           </div>
-          <p className="text-sm text-stone-500 text-center">Step {step} of 6</p>
+          <p className="text-sm text-stone-500 text-center">Step {step} of 8</p>
         </div>
 
         {/* Content Card */}
         <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 md:p-12">
-          {/* Step 1: About You */}
+          {/* Step 1: Welcome */}
           {step === 1 && (
-            <div className="space-y-6" data-testid="onboarding-step-1">
-              <div className="flex items-center gap-3 mb-6">
-                <Sparkles className="text-primary" strokeWidth={1.5} size={28} />
-                <h1 className="text-3xl md:text-4xl">About You</h1>
-              </div>
-              <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-                Let's start gently. I'm here to learn about you, not to judge or rush you.
+            <div className="space-y-6 text-center" data-testid="onboarding-step-1">
+              <Sparkles className="text-primary mx-auto mb-4" strokeWidth={1.5} size={40} />
+              <h1 className="text-4xl md:text-5xl font-fraunces font-light">Welcome to The Attic Mind</h1>
+              <p className="text-xl text-stone-600 leading-relaxed">
+                A quiet place for everything you're carrying.
+              </p>
+            </div>
+          )}
+
+          {/* Step 2: About You */}
+          {step === 2 && (
+            <div className="space-y-6" data-testid="onboarding-step-2">
+              <h1 className="text-3xl md:text-4xl mb-2">Tell me a little about you</h1>
+              <p className="text-lg text-stone-600 leading-relaxed">
+                So I can support your days gently.
               </p>
               <div className="space-y-4">
                 <input
@@ -110,50 +113,22 @@ export default function Onboarding() {
                   data-testid="onboarding-name-input"
                   className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-14 px-6 text-lg outline-none"
                 />
-                <input
-                  type="email"
-                  value={data.email}
-                  onChange={(e) => updateData("email", e.target.value)}
-                  placeholder="Your email (optional, for reminders)"
-                  data-testid="onboarding-email-input"
-                  className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-14 px-6 text-lg outline-none"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Step 2: Home & Responsibilities */}
-          {step === 2 && (
-            <div className="space-y-6" data-testid="onboarding-step-2">
-              <h1 className="text-3xl md:text-4xl mb-4">Home & Responsibilities</h1>
-              <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-                What does your daily life look like? Select what resonates.
-              </p>
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  value={data.household_size}
-                  onChange={(e) => updateData("household_size", e.target.value)}
-                  placeholder="How many people in your household?"
-                  data-testid="onboarding-household-input"
-                  className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-14 px-6 text-lg outline-none"
-                />
                 <div>
-                  <p className="text-sm text-stone-600 mb-3">What do you manage?</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {["Childcare", "Meal planning", "Cleaning", "Laundry", "Scheduling", "Bills", "Grocery shopping", "Pet care"].map((resp) => (
+                  <p className="text-sm text-stone-600 mb-3">Preferred tone</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    {["Softest", "Gentle", "Neutral"].map((tone) => (
                       <button
-                        key={resp}
+                        key={tone}
                         type="button"
-                        onClick={() => toggleArrayItem("responsibilities", resp)}
-                        data-testid={`responsibility-${resp.toLowerCase().replace(/ /g, '-')}`}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
-                          data.responsibilities.includes(resp)
+                        onClick={() => updateData("tone_preference", tone.toLowerCase())}
+                        data-testid={`tone-${tone.toLowerCase()}`}
+                        className={`p-4 rounded-2xl border-2 transition-all duration-300 ${
+                          data.tone_preference === tone.toLowerCase()
                             ? "border-primary bg-primary/5"
                             : "border-stone-200 hover:border-stone-300"
                         }`}
                       >
-                        {resp}
+                        {tone}
                       </button>
                     ))}
                   </div>
@@ -162,125 +137,179 @@ export default function Onboarding() {
             </div>
           )}
 
-          {/* Step 3: Bills & Admin */}
+          {/* Step 3: Your Days */}
           {step === 3 && (
             <div className="space-y-6" data-testid="onboarding-step-3">
-              <h1 className="text-3xl md:text-4xl mb-4">Bills & Admin</h1>
-              <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-                I can help you remember these, so you don't have to hold them all.
+              <h1 className="text-3xl md:text-4xl mb-2">What does a typical day look like?</h1>
+              <p className="text-lg text-stone-600 leading-relaxed">
+                This helps me understand your rhythm.
               </p>
-              <div>
-                <p className="text-sm text-stone-600 mb-3">What bills do you typically manage?</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {["Rent/Mortgage", "Utilities", "Phone/Internet", "Insurance", "Subscriptions", "Credit cards", "Childcare", "Medical"].map((bill) => (
-                    <button
-                      key={bill}
-                      type="button"
-                      onClick={() => toggleArrayItem("bills", bill)}
-                      data-testid={`bill-${bill.toLowerCase().replace(/\//g, '-').replace(/ /g, '-')}`}
-                      className={`p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
-                        data.bills.includes(bill)
-                          ? "border-primary bg-primary/5"
-                          : "border-stone-200 hover:border-stone-300"
-                      }`}
-                    >
-                      {bill}
-                    </button>
-                  ))}
-                </div>
+              <div className="space-y-3">
+                {["Busy", "Structured", "Unpredictable", "Slow"].map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => updateData("day_type", type)}
+                    data-testid={`day-type-${type.toLowerCase()}`}
+                    className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
+                      data.day_type === type
+                        ? "border-primary bg-primary/5"
+                        : "border-stone-200 hover:border-stone-300"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Step 4: Energy & Check-ins */}
+          {/* Step 4: Responsibilities */}
           {step === 4 && (
             <div className="space-y-6" data-testid="onboarding-step-4">
-              <h1 className="text-3xl md:text-4xl mb-4">Energy & Check-ins</h1>
-              <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-                When do you typically feel most overwhelmed?
+              <h1 className="text-3xl md:text-4xl mb-2">What do you manage regularly?</h1>
+              <p className="text-lg text-stone-600 leading-relaxed">
+                Select all that apply.
               </p>
-              <div>
-                <div className="space-y-3">
-                  {[
-                    { value: "morning", label: "Mornings (getting everyone ready)" },
-                    { value: "afternoon", label: "Afternoons (juggling work & home)" },
-                    { value: "evening", label: "Evenings (dinner, bedtime, cleanup)" },
-                    { value: "variable", label: "It varies day to day" },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => updateData("energy_pattern", option.value)}
-                      data-testid={`energy-pattern-${option.value}`}
-                      className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
-                        data.energy_pattern === option.value
-                          ? "border-primary bg-primary/5"
-                          : "border-stone-200 hover:border-stone-300"
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
+              <div className="grid grid-cols-2 gap-3">
+                {["Tasks", "Work", "Home care", "Kids", "Errands", "Bills", "Reminders", "Other"].map((resp) => (
+                  <button
+                    key={resp}
+                    type="button"
+                    onClick={() => toggleArrayItem("responsibilities", resp)}
+                    data-testid={`responsibility-${resp.toLowerCase().replace(/ /g, '-')}`}
+                    className={`p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
+                      data.responsibilities.includes(resp)
+                        ? "border-primary bg-primary/5"
+                        : "border-stone-200 hover:border-stone-300"
+                    }`}
+                  >
+                    {resp}
+                  </button>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Step 5: Emotional Layer */}
+          {/* Step 5: Bills & Admin */}
           {step === 5 && (
             <div className="space-y-6" data-testid="onboarding-step-5">
-              <h1 className="text-3xl md:text-4xl mb-4">Emotional Layer</h1>
-              <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-                What feels heaviest right now?
+              <h1 className="text-3xl md:text-4xl mb-2">Would you like me to remember important dates?</h1>
+              <p className="text-lg text-stone-600 leading-relaxed">
+                Bills, renewals, reminders.
               </p>
-              <div>
-                <div className="grid grid-cols-2 gap-3">
-                  {["Remembering everything", "Feeling behind", "Managing everyone else", "No time for myself", "Financial stress", "Guilt about not doing enough"].map((area) => (
-                    <button
-                      key={area}
-                      type="button"
-                      onClick={() => toggleArrayItem("overwhelm_areas", area)}
-                      data-testid={`overwhelm-${area.toLowerCase().replace(/ /g, '-')}`}
-                      className={`p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
-                        data.overwhelm_areas.includes(area)
-                          ? "border-primary bg-primary/5"
-                          : "border-stone-200 hover:border-stone-300"
-                      }`}
-                    >
-                      {area}
-                    </button>
-                  ))}
-                </div>
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => updateData("bills_reminders", true)}
+                  data-testid="bills-yes"
+                  className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
+                    data.bills_reminders
+                      ? "border-primary bg-primary/5"
+                      : "border-stone-200 hover:border-stone-300"
+                  }`}
+                >
+                  Yes, please remind me gently
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateData("bills_reminders", false)}
+                  data-testid="bills-no"
+                  className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
+                    !data.bills_reminders
+                      ? "border-primary bg-primary/5"
+                      : "border-stone-200 hover:border-stone-300"
+                  }`}
+                >
+                  No, I'll manage on my own
+                </button>
               </div>
-              <textarea
-                value={data.support_needed}
-                onChange={(e) => updateData("support_needed", e.target.value)}
-                placeholder="Anything else you'd like me to know? (optional)"
-                data-testid="onboarding-support-textarea"
-                className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-4 outline-none resize-none"
-                rows={4}
-              />
             </div>
           )}
 
-          {/* Step 6: Life Snapshot */}
+          {/* Step 6: Emotional Layer */}
           {step === 6 && (
             <div className="space-y-6" data-testid="onboarding-step-6">
-              <h1 className="text-3xl md:text-4xl mb-4">Your Life Snapshot</h1>
-              <p className="text-lg text-stone-600 leading-relaxed font-caveat mb-6">
-                Here's what I understand. You can always adjust this later.
+              <h1 className="text-3xl md:text-4xl mb-2">How should The Attic Mind show up for you?</h1>
+              <p className="text-lg text-stone-600 leading-relaxed">
+                Choose what feels right.
               </p>
-              <div className="space-y-4 bg-stone-50 rounded-2xl p-6">
+              <div className="space-y-3">
+                {[
+                  "Gently encouraging",
+                  "Very soft, minimal nudging",
+                  "Open-hearted & supportive",
+                  "Quiet & unobtrusive"
+                ].map((support) => (
+                  <button
+                    key={support}
+                    type="button"
+                    onClick={() => updateData("emotional_support", support)}
+                    data-testid={`support-${support.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                    className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
+                      data.emotional_support === support
+                        ? "border-primary bg-primary/5"
+                        : "border-stone-200 hover:border-stone-300"
+                    }`}
+                  >
+                    {support}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 7: Energy Check-ins */}
+          {step === 7 && (
+            <div className="space-y-6" data-testid="onboarding-step-7">
+              <h1 className="text-3xl md:text-4xl mb-2">Would you like gentle daily check-ins?</h1>
+              <p className="text-lg text-stone-600 leading-relaxed">
+                To help me adjust your day softly.
+              </p>
+              <div className="space-y-3">
+                {[
+                  { value: "daily", label: "Yes, daily" },
+                  { value: "softly", label: "Yes, but softly" },
+                  { value: "when-asked", label: "Only when I ask" },
+                  { value: "never", label: "Never" }
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => updateData("energy_checkins", option.value)}
+                    data-testid={`checkin-${option.value}`}
+                    className={`w-full p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
+                      data.energy_checkins === option.value
+                        ? "border-primary bg-primary/5"
+                        : "border-stone-200 hover:border-stone-300"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 8: Life Snapshot */}
+          {step === 8 && (
+            <div className="space-y-6 text-center" data-testid="onboarding-step-8">
+              <Sparkles className="text-primary mx-auto mb-4" strokeWidth={1.5} size={40} />
+              <h1 className="text-4xl md:text-5xl font-fraunces font-light">Your Attic Mind is ready.</h1>
+              <p className="text-xl text-stone-600 leading-relaxed">
+                A soft space crafted just for you.
+              </p>
+              <div className="space-y-4 bg-stone-50 rounded-2xl p-6 mt-6 text-left">
                 {data.name && (
                   <div>
                     <p className="text-sm text-stone-500">I'll call you</p>
                     <p className="text-lg font-fraunces">{data.name}</p>
                   </div>
                 )}
-                {data.household_size && (
+                {data.day_type && (
                   <div>
-                    <p className="text-sm text-stone-500">Household</p>
-                    <p className="text-lg">{data.household_size} people</p>
+                    <p className="text-sm text-stone-500">Your days are</p>
+                    <p className="text-lg">{data.day_type}</p>
                   </div>
                 )}
                 {data.responsibilities.length > 0 && (
@@ -289,16 +318,7 @@ export default function Onboarding() {
                     <p className="text-lg">{data.responsibilities.join(", ")}</p>
                   </div>
                 )}
-                {data.overwhelm_areas.length > 0 && (
-                  <div>
-                    <p className="text-sm text-stone-500">What feels heavy</p>
-                    <p className="text-lg">{data.overwhelm_areas.join(", ")}</p>
-                  </div>
-                )}
               </div>
-              <p className="text-stone-600 leading-relaxed font-caveat text-lg text-center mt-6">
-                I'm here to hold this with you. Let's get started.
-              </p>
             </div>
           )}
 
@@ -314,13 +334,13 @@ export default function Onboarding() {
                 Back
               </button>
             )}
-            {step < 6 ? (
+            {step < 8 ? (
               <button
                 onClick={nextStep}
                 data-testid="onboarding-next-btn"
                 className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-4 rounded-full flex items-center justify-center gap-2"
               >
-                Continue
+                {step === 1 ? "Begin" : "Continue"}
                 <ArrowRight strokeWidth={1.5} size={18} />
               </button>
             ) : (
@@ -329,7 +349,7 @@ export default function Onboarding() {
                 data-testid="onboarding-complete-btn"
                 className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-4 rounded-full flex items-center justify-center gap-2"
               >
-                Complete Setup
+                Enter The Attic Mind
                 <Sparkles strokeWidth={1.5} size={18} />
               </button>
             )}
