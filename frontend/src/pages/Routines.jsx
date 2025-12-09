@@ -172,10 +172,10 @@ export default function Routines() {
         </div>
       )}
 
-      {/* Add Routine Form */}
-      {showAdd && (
+      {/* Add/Edit Routine Form */}
+      {(showAdd || editingRoutine) && (
         <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6">
-          <form onSubmit={addRoutine} className="space-y-4" data-testid="add-routine-form">
+          <form onSubmit={editingRoutine ? saveEditRoutine : addRoutine} className="space-y-4" data-testid="add-routine-form">
             <input
               type="text"
               value={newRoutine.name}
