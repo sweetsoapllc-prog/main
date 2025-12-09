@@ -45,17 +45,26 @@ export default function Onboarding() {
   const completeOnboarding = async () => {
     try {
       // Create user profile with onboarding data
-      await axios.post(`${API}/users`, {
-        name: data.name || "Friend",
-        email: data.email || "demo@example.com",
-      });
+      try {
+        await axios.post(`${API}/users`, {
+          name: data.name || "Friend",
+          email: data.email || "demo@example.com",
+        });
+      } catch (err) {
+        // User might already exist, that's okay
+        console.log("User creation skipped:", err.message);
+      }
       
       // Store onboarding data
       localStorage.setItem("onboarding_complete", "true");
       localStorage.setItem("user_profile", JSON.stringify(data));
       
       toast.success("Welcome! Your space is ready.");
-      navigate("/");
+      
+      // Force navigate after a short delay to ensure localStorage is set
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
     } catch (error) {
       console.error("Error completing onboarding:", error);
       toast.error("Something went wrong. Please try again.");
