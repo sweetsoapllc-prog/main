@@ -73,10 +73,15 @@ export default function Bills() {
 
   const startEditBill = (bill) => {
     setEditingBill(bill.id);
+    // Ensure date is in YYYY-MM-DD format for date input
+    const dateValue = bill.due_date.includes('T') 
+      ? bill.due_date.split('T')[0] 
+      : bill.due_date;
+    
     setNewBill({
       name: bill.name,
       amount: bill.amount.toString(),
-      due_date: bill.due_date,
+      due_date: dateValue,
       recurring: bill.recurring,
       autopay: bill.autopay,
       frequency: bill.frequency,
