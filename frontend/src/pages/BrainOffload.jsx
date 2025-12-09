@@ -90,7 +90,7 @@ Be gentle and supportive. Extract clear, actionable items.`;
         )
       );
 
-      toast.success("Everything is organized. You can breathe now.");
+      toast.success("I've organized everything for you. Your mind can rest now.");
       navigate("/tasks");
     } catch (error) {
       console.error("Error saving tasks:", error);

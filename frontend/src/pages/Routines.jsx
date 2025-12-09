@@ -47,7 +47,7 @@ export default function Routines() {
       setNewRoutine({ name: "", time_of_day: "morning", items: [""] });
       setShowAdd(false);
       fetchRoutines();
-      toast.success("Routine added");
+      toast.success("I've saved this ritual for you. It's here whenever you need it.");
     } catch (error) {
       console.error("Error adding routine:", error);
       toast.error("Failed to add routine");
@@ -58,7 +58,7 @@ export default function Routines() {
     try {
       await axios.patch(`${API}/routines/${routineId}/complete`);
       fetchRoutines();
-      toast.success("Routine completed!");
+      toast.success("You completed this ritual. That's something to feel good about.");
     } catch (error) {
       toast.error("Failed to complete routine");
     }

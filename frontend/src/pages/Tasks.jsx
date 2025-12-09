@@ -45,7 +45,7 @@ export default function Tasks() {
       });
       setNewTask({ title: "", category: "today" });
       fetchTasks();
-      toast.success("Task added");
+      toast.success("I've got this down for you. Well done for adding it.");
     } catch (error) {
       console.error("Error adding task:", error);
       toast.error("Failed to add task");
@@ -56,7 +56,7 @@ export default function Tasks() {
     try {
       await axios.patch(`${API}/tasks/${taskId}`, { completed: true });
       fetchTasks();
-      toast.success("Well done");
+      toast.success("Well done for showing up for yourself today.");
     } catch (error) {
       toast.error("Failed to complete task");
     }
@@ -66,7 +66,7 @@ export default function Tasks() {
     try {
       await axios.delete(`${API}/tasks/${taskId}`);
       fetchTasks();
-      toast.success("Task removed");
+      toast.success("Got it — I've taken care of that.");
     } catch (error) {
       toast.error("Failed to delete task");
     }

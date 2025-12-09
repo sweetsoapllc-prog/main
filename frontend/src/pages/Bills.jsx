@@ -53,7 +53,7 @@ export default function Bills() {
       setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
       setShowAdd(false);
       fetchBills();
-      toast.success("Bill added gently");
+      toast.success("I've got this bill noted. You don't have to remember it now.");
     } catch (error) {
       console.error("Error adding bill:", error);
       toast.error("Something went wrong");
