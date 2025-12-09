@@ -19,7 +19,7 @@ export default function Layout({ children }) {
       {/* App Title */}
       <div className="fixed top-6 left-6 z-50 flex items-center gap-2">
         <div className="text-stone-700">
-          <h1 className="text-xl font-fraunces font-light">MindAttic</h1>
+          <h1 className="text-xl font-fraunces font-light">TheAtticMind</h1>
           <p className="text-xs text-stone-500">Declutter your mind. Keep your peace.</p>
         </div>
       </div>

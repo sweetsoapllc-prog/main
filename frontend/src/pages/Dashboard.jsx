@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Sparkles, Heart, Archive, MessageCircle, CheckSquare, Calendar, DollarSign, CalendarDays, Brain } from "lucide-react";
+import { Heart, Brain, CheckSquare, Calendar, DollarSign, CalendarDays } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -80,10 +80,10 @@ export default function Dashboard() {
 
   const shortcuts = [
     { icon: Brain, label: "Offload", subtitle: "Empty your mind into a safe space", path: "/brain-offload" },
-    { icon: CheckSquare, label: "Tasks", subtitle: "See your day, week, and later list", path: "/tasks" },
-    { icon: Calendar, label: "Routines", subtitle: "Small rituals that anchor you", path: "/routines" },
+    { icon: CheckSquare, label: "Tasks", subtitle: "Your day, your week, your later list", path: "/tasks" },
+    { icon: Calendar, label: "Routines", subtitle: "Small rituals to anchor you", path: "/routines" },
     { icon: DollarSign, label: "Bills", subtitle: "I'll remember due dates for you", path: "/bills" },
-    { icon: CalendarDays, label: "Weekly", subtitle: "A calm overview of your week", path: "/weekly" },
+    { icon: CalendarDays, label: "Weekly", subtitle: "A gentle overview of your week", path: "/weekly" },
   ];
 
   if (loading) {
@@ -102,10 +102,10 @@ export default function Dashboard() {
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="text-4xl md:text-5xl mb-3" data-testid="dashboard-greeting">
-          Welcome back to your MindAttic.
+          Welcome back to TheAtticMind.
         </h1>
         <p className="text-xl text-stone-600 font-caveat">
-          Let's keep today gentle.
+          A quiet space for your mind. Let's keep today gentle.
         </p>
       </div>
 
@@ -116,7 +116,7 @@ export default function Dashboard() {
       >
         <h2 className="text-2xl mb-3">Today's Soft Focus</h2>
         <p className="text-stone-600 leading-relaxed mb-6">
-          Here are one or two small things that will make today feel a little lighter.
+          Here are one or two small things that would make today feel a little lighter.
         </p>
         {tasks.length === 0 ? (
           <p className="text-stone-600 leading-relaxed font-caveat text-lg">
@@ -146,7 +146,7 @@ export default function Dashboard() {
           </div>
         )}
         <p className="text-sm text-stone-500 mt-4 font-caveat">
-          You don't have to do everything. One small step is enough.
+          You don't have to do everything. One tiny step is enough.
         </p>
       </div>
 
@@ -155,9 +155,9 @@ export default function Dashboard() {
         className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8"
         data-testid="energy-section"
       >
-        <h2 className="text-2xl mb-3">How are you feeling right now?</h2>
+        <h2 className="text-2xl mb-3">How are you feeling?</h2>
         <p className="text-stone-600 leading-relaxed mb-6">
-          Tell me your energy, and I'll adjust your day with care.
+          Tell me your energy, and I'll shape the rest of your day softly.
         </p>
         {!showEnergyResponse ? (
           <div className="flex gap-3">
@@ -214,8 +214,8 @@ export default function Dashboard() {
       {/* Footer */}
       <div className="max-w-3xl mx-auto text-center" data-testid="dashboard-footer">
         <p className="text-stone-500 leading-relaxed">
-          You don't have to hold everything in your head.<br />
-          That's what your MindAttic is for.
+          You don't have to hold everything.<br />
+          Your AtticMind will hold it for you.
         </p>
       </div>
     </div>
