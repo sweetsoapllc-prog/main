@@ -188,12 +188,12 @@ export default function Onboarding() {
                 Select all that apply.
               </p>
               <div className="grid grid-cols-2 gap-3">
-                {["Tasks", "Work", "Home care", "Kids", "Errands", "Bills", "Reminders", "Other"].map((resp) => (
+                {["Tasks", "Work", "Home care & responsibilities", "Kids", "Errands", "Bills", "Self-care", "Reminders", "Other"].map((resp) => (
                   <button
                     key={resp}
                     type="button"
                     onClick={() => toggleArrayItem("responsibilities", resp)}
-                    data-testid={`responsibility-${resp.toLowerCase().replace(/ /g, '-')}`}
+                    data-testid={`responsibility-${resp.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                     className={`p-4 rounded-2xl border-2 text-left transition-all duration-300 ${
                       data.responsibilities.includes(resp)
                         ? "border-primary bg-primary/5"
