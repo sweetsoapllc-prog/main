@@ -85,10 +85,21 @@ export default function Routines() {
     );
   }
 
+  // Remove duplicate routines by name and time_of_day
+  const uniqueRoutines = routines.reduce((acc, routine) => {
+    const key = `${routine.name}-${routine.time_of_day}`;
+    if (!acc.has(key)) {
+      acc.set(key, routine);
+    }
+    return acc;
+  }, new Map());
+  
+  const deduplicatedRoutines = Array.from(uniqueRoutines.values());
+
   const groupedRoutines = {
-    morning: routines.filter((r) => r.time_of_day === "morning"),
-    evening: routines.filter((r) => r.time_of_day === "evening"),
-    weekly: routines.filter((r) => r.time_of_day === "weekly"),
+    morning: deduplicatedRoutines.filter((r) => r.time_of_day === "morning"),
+    evening: deduplicatedRoutines.filter((r) => r.time_of_day === "evening"),
+    weekly: deduplicatedRoutines.filter((r) => r.time_of_day === "weekly"),
   };
 
   return (
