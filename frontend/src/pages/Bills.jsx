@@ -319,7 +319,10 @@ export default function Bills() {
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => setShowAdd(false)}
+                onClick={() => {
+                  setShowAdd(false);
+                  cancelEdit();
+                }}
                 data-testid="cancel-bill-btn"
                 className="flex-1 bg-stone-100 text-stone-600 hover:bg-stone-200 transition-all duration-300 py-3 rounded-full"
               >
