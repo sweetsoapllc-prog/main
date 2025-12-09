@@ -212,7 +212,7 @@ export default function Onboarding() {
             <div className="space-y-6" data-testid="onboarding-step-5">
               <h1 className="text-3xl md:text-4xl mb-2">Would you like me to remember important dates?</h1>
               <p className="text-lg text-stone-600 leading-relaxed">
-                Bills, renewals, reminders.
+                Bills, renewals, appointments, and gentle reminders.
               </p>
               <div className="space-y-3">
                 <button
