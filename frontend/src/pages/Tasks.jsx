@@ -86,7 +86,7 @@ export default function Tasks() {
   return (
     <div className="space-y-8" data-testid="tasks-page">
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="tasks-title">Your Tasks</h1>
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="tasks-title">Tasks</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
           Small steps, taken gently. No pressure.
         </p>
@@ -99,7 +99,7 @@ export default function Tasks() {
             type="text"
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            placeholder="What would you like to add?"
+            placeholder="Write anything you need to remember…"
             data-testid="task-input"
             className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
           />
