@@ -59,6 +59,27 @@ class UserCreate(BaseModel):
     name: str
     email: str
 
+class OnboardingProfile(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    user_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    tone_preference: str = "gentle"
+    day_type: str = ""
+    responsibilities: List[str] = []
+    bills_reminders: bool = True
+    emotional_support: str = ""
+    energy_checkins: str = "daily"
+    completed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class OnboardingProfileCreate(BaseModel):
+    name: str
+    tone_preference: str = "gentle"
+    day_type: str = ""
+    responsibilities: List[str] = []
+    bills_reminders: bool = True
+    emotional_support: str = ""
+    energy_checkins: str = "daily"
+
 class Task(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
