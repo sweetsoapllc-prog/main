@@ -19,48 +19,24 @@ export default function BrainOffload() {
 
     setProcessing(true);
     try {
-      // Call AI to organize the brain dump
-      const sessionId = "brain-offload-" + Date.now();
-      const prompt = `The user just did a brain dump. Please organize these thoughts into three categories:
-1. Today (urgent, needs attention today)
-2. This Week (important but not urgent)
-3. Later (can be parked for now)
-
-User's brain dump:
-${input}
-
-Please respond with a JSON object in this format:
-{
-  "today": ["task 1", "task 2"],
-  "this_week": ["task 3", "task 4"],
-  "later": ["task 5", "task 6"]
-}
-
-Be gentle and supportive. Extract clear, actionable items.`;
-
-      const chatRes = await axios.post(`${API}/chat`, {
+      // Call the brain offload API endpoint
+      const response = await axios.post(`${API}/brain-offload`, {
         user_id: USER_ID,
-        session_id: sessionId,
-        message: prompt,
+        raw_text: input,
       });
 
-      // Parse AI response
-      let aiResponse = chatRes.data.message;
-      
-      // Try to extract JSON from response
-      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        setOrganized(parsed);
-      } else {
-        // Fallback: create simple organization
-        const lines = input.split('\n').filter(l => l.trim());
-        setOrganized({
-          today: lines.slice(0, Math.ceil(lines.length / 3)),
-          this_week: lines.slice(Math.ceil(lines.length / 3), Math.ceil(2 * lines.length / 3)),
-          later: lines.slice(Math.ceil(2 * lines.length / 3)),
-        });
-      }
+      // Organize tasks by category
+      const tasksByCategory = {
+        today: [],
+        this_week: [],
+        later: [],
+      };
+
+      response.data.tasks.forEach(task => {
+        tasksByCategory[task.category].push(task.title);
+      });
+
+      setOrganized(tasksByCategory);
     } catch (error) {
       console.error("Error processing offload:", error);
       toast.error("I'm having trouble organizing this right now. Take a breath — let's try again.");
