@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, MessageCircle, CheckSquare, Calendar, DollarSign, CalendarDays } from "lucide-react";
+import { Home, MessageCircle, CheckSquare, Calendar, DollarSign, CalendarDays, Brain } from "lucide-react";
 
 export default function Layout({ children }) {
   const location = useLocation();
@@ -8,6 +8,7 @@ export default function Layout({ children }) {
     { path: "/", icon: Home, label: "Home" },
     { path: "/chat", icon: MessageCircle, label: "Chat" },
     { path: "/tasks", icon: CheckSquare, label: "Tasks" },
+    { path: "/brain-offload", icon: Brain, label: "Offload" },
     { path: "/routines", icon: Calendar, label: "Routines" },
     { path: "/bills", icon: DollarSign, label: "Bills" },
     { path: "/weekly", icon: CalendarDays, label: "Weekly" },
