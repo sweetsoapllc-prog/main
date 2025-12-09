@@ -171,6 +171,14 @@ export default function Tasks() {
           );
         })}
       </div>
+
+      {/* Footer */}
+      <div className="max-w-3xl mx-auto text-center" data-testid="tasks-footer">
+        <p className="text-stone-500 font-caveat text-lg">
+          One small task at a time is enough.<br />
+          You don't have to do everything today.
+        </p>
+      </div>
     </div>
   );
 }
