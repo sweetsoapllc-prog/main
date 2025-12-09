@@ -87,8 +87,8 @@ export default function BrainOffload() {
       </div>
 
       {!organized ? (
-        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8">
-          <p className="text-stone-600 mb-4 leading-relaxed">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8">
+          <p className="text-stone-600 mb-6 leading-relaxed">
             Type everything that's swirling in your head. Tasks, worries, reminders, ideas — anything. Don't worry about organizing it. Just let it out.
           </p>
           <textarea
@@ -104,7 +104,7 @@ export default function BrainOffload() {
             onClick={processOffload}
             disabled={!input.trim() || processing}
             data-testid="brain-offload-process-btn"
-            className="w-full mt-4 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-4 rounded-full disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full mt-6 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-4 rounded-full disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {processing ? (
               <>
