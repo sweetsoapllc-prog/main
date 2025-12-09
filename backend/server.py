@@ -107,6 +107,7 @@ class Bill(BaseModel):
     paid: bool = False
     recurring: bool = False
     autopay: bool = False
+    frequency: str = "Monthly"
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class BillCreate(BaseModel):
@@ -116,6 +117,7 @@ class BillCreate(BaseModel):
     due_date: str
     recurring: bool = False
     autopay: bool = False
+    frequency: str = "Monthly"
 
 class EnergyCheckIn(BaseModel):
     model_config = ConfigDict(extra="ignore")
