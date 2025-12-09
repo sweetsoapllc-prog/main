@@ -17,6 +17,7 @@ export default function Bills() {
     due_date: "",
     recurring: false,
     autopay: false,
+    frequency: "Monthly",
   });
 
   useEffect(() => {
@@ -47,8 +48,9 @@ export default function Bills() {
         due_date: newBill.due_date,
         recurring: newBill.recurring,
         autopay: newBill.autopay,
+        frequency: newBill.frequency,
       });
-      setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false });
+      setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
       setShowAdd(false);
       fetchBills();
       toast.success("Bill added gently");
@@ -58,11 +60,11 @@ export default function Bills() {
     }
   };
 
-  const payBill = async (billId) => {
+  const payBill = async (bill) => {
     try {
-      await axios.patch(`${API}/bills/${billId}/pay`);
+      await axios.patch(`${API}/bills/${bill.id}/pay`);
       fetchBills();
-      toast.success("Marked as paid");
+      toast.success(`Got it. I've marked ${bill.name} as paid.`);
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -87,19 +89,72 @@ export default function Bills() {
     const dueDate = new Date(b.due_date);
     return dueDate >= today && dueDate <= nextWeek;
   });
-  const upcomingBills = unpaidBills.filter((b) => {
-    const dueDate = new Date(b.due_date);
-    return dueDate > nextWeek;
-  });
   const paidBills = bills.filter((b) => b.paid);
 
-  const getBillColor = (bill) => {
-    if (bill.autopay) return "border-success/30 bg-success/5";
-    const dueDate = new Date(bill.due_date);
-    const daysUntil = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
-    if (daysUntil <= 3) return "border-warning/30 bg-warning/5";
-    return "border-stone-200";
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
   };
+
+  const BillCard = ({ bill, isPaid }) => (
+    <div
+      className="bg-white rounded-2xl border border-stone-200 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 space-y-4"
+      data-testid={`bill-${bill.id}`}
+    >
+      {/* Bill Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+            <DollarSign className="text-primary" strokeWidth={1.5} size={20} />
+          </div>
+          <div>
+            <h3 className="font-fraunces text-lg text-stone-800">{bill.name}</h3>
+            <p className="text-sm text-stone-500">Due: {formatDate(bill.due_date)}</p>
+          </div>
+        </div>
+        {isPaid ? (
+          <span className="text-xs bg-success/10 text-success px-3 py-1.5 rounded-full flex items-center gap-1 font-medium">
+            <CheckCircle2 strokeWidth={2} size={14} />
+            Paid
+          </span>
+        ) : (
+          <button
+            onClick={() => payBill(bill)}
+            data-testid={`pay-bill-btn-${bill.id}`}
+            className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium"
+          >
+            <CheckCircle2 strokeWidth={1.5} size={16} />
+            Mark as Paid
+          </button>
+        )}
+      </div>
+
+      {/* Bill Details */}
+      <div className="border-t border-stone-100 pt-4 space-y-2">
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-stone-500">Amount</span>
+          <span className="text-2xl font-fraunces text-primary">${bill.amount.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-stone-500">Autopay</span>
+          <span className="text-sm text-stone-700">
+            {bill.autopay ? (
+              <span className="flex items-center gap-1 text-success">
+                <Zap size={14} />
+                Yes
+              </span>
+            ) : (
+              "No"
+            )}
+          </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-stone-500">Frequency</span>
+          <span className="text-sm text-stone-700">{bill.frequency || "Monthly"}</span>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-8" data-testid="bills-page">
@@ -155,6 +210,17 @@ export default function Bills() {
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
 
+            <select
+              value={newBill.frequency}
+              onChange={(e) => setNewBill({ ...newBill, frequency: e.target.value })}
+              data-testid="bill-frequency-select"
+              className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
+            >
+              <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+
             <div className="space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -164,7 +230,7 @@ export default function Bills() {
                   data-testid="bill-recurring-checkbox"
                   className="w-5 h-5 rounded border-stone-300 text-primary focus:ring-2 focus:ring-primary/10"
                 />
-                <span className="text-stone-600">Recurring monthly</span>
+                <span className="text-stone-600">Recurring</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -202,119 +268,27 @@ export default function Bills() {
         </div>
       )}
 
-      {/* Due Soon */}
+      {/* Due Soon Section */}
       {dueSoon.length > 0 && (
         <div data-testid="due-soon-section">
           <div className="flex items-center gap-2 mb-4">
             <AlertCircle className="text-warning" strokeWidth={1.5} size={20} />
             <h2 className="text-2xl">Due Soon (Next 7 Days)</h2>
           </div>
-          <p className="text-stone-600 font-caveat text-lg mb-4">
+          <p className="text-stone-600 font-caveat text-lg mb-6">
             These are the bills that need your attention soon.<br />
             You can handle them one at a time — there's no rush.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             {dueSoon.map((bill) => (
-              <div
-                key={bill.id}
-                className={`bg-white rounded-2xl border-2 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 ${getBillColor(bill)}`}
-                data-testid={`bill-${bill.id}`}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className="w-10 h-10 bg-warning/10 rounded-full flex items-center justify-center">
-                      <DollarSign className="text-warning" strokeWidth={1.5} size={20} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-fraunces text-lg">{bill.name}</h3>
-                      <p className="text-sm text-stone-500">
-                        Due: {new Date(bill.due_date).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => payBill(bill.id)}
-                    data-testid={`pay-bill-btn-${bill.id}`}
-                    className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1"
-                  >
-                    <CheckCircle2 strokeWidth={1.5} size={16} />
-                    Mark as Paid
-                  </button>
-                </div>
-                <div className="flex items-center justify-between pt-3 border-t border-stone-100">
-                  <span className="text-2xl font-fraunces text-primary">${bill.amount.toFixed(2)}</span>
-                  <div className="flex gap-2">
-                    {bill.autopay && (
-                      <span className="text-xs bg-success/10 text-success px-3 py-1 rounded-full flex items-center gap-1">
-                        <Zap size={12} />
-                        Autopay
-                      </span>
-                    )}
-                    {bill.recurring && (
-                      <span className="text-xs bg-info/10 text-info px-3 py-1 rounded-full">Monthly</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Upcoming Bills */}
-      {upcomingBills.length > 0 && (
-        <div data-testid="upcoming-bills-section">
-          <h2 className="text-2xl mb-4">Upcoming</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {upcomingBills.map((bill) => (
-              <div
-                key={bill.id}
-                className={`bg-white rounded-2xl border-2 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 ${getBillColor(bill)}`}
-                data-testid={`bill-${bill.id}`}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <DollarSign className="text-primary" strokeWidth={1.5} size={20} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-fraunces text-lg">{bill.name}</h3>
-                      <p className="text-sm text-stone-500">
-                        Due: {new Date(bill.due_date).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => payBill(bill.id)}
-                    data-testid={`pay-bill-btn-${bill.id}`}
-                    className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1"
-                  >
-                    <CheckCircle2 strokeWidth={1.5} size={16} />
-                    Mark as Paid
-                  </button>
-                </div>
-                <div className="flex items-center justify-between pt-3 border-t border-stone-100">
-                  <span className="text-2xl font-fraunces text-primary">${bill.amount.toFixed(2)}</span>
-                  <div className="flex gap-2">
-                    {bill.autopay && (
-                      <span className="text-xs bg-success/10 text-success px-3 py-1 rounded-full flex items-center gap-1">
-                        <Zap size={12} />
-                        Autopay
-                      </span>
-                    )}
-                    {bill.recurring && (
-                      <span className="text-xs bg-info/10 text-info px-3 py-1 rounded-full">Monthly</span>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <BillCard key={bill.id} bill={bill} isPaid={false} />
             ))}
           </div>
         </div>
       )}
 
       {/* Empty State */}
-      {unpaidBills.length === 0 && (
+      {dueSoon.length === 0 && unpaidBills.length === 0 && (
         <div className="text-center py-12">
           <p className="text-stone-500 font-caveat text-xl">All caught up! Nothing due right now.</p>
         </div>
@@ -323,23 +297,10 @@ export default function Bills() {
       {/* Paid Bills */}
       {paidBills.length > 0 && (
         <div data-testid="paid-bills-section">
-          <h2 className="text-2xl mb-4">Paid</h2>
-          <div className="space-y-2">
-            {paidBills.slice(0, 5).map((bill) => (
-              <div
-                key={bill.id}
-                className="bg-stone-50 rounded-2xl p-4 flex items-center justify-between opacity-60"
-                data-testid={`paid-bill-${bill.id}`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs bg-success/10 text-success px-3 py-1 rounded-full flex items-center gap-1">
-                    <CheckCircle2 strokeWidth={1.5} size={12} />
-                    Paid
-                  </span>
-                  <span>{bill.name}</span>
-                </div>
-                <span className="text-stone-600">${bill.amount.toFixed(2)}</span>
-              </div>
+          <h2 className="text-2xl mb-4">Paid Recently</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {paidBills.slice(0, 6).map((bill) => (
+              <BillCard key={bill.id} bill={bill} isPaid={true} />
             ))}
           </div>
         </div>
