@@ -309,8 +309,8 @@ export default function Bills() {
       {/* Footnote */}
       <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl p-6 border border-primary/20" data-testid="bills-footnote">
         <p className="text-stone-600 leading-relaxed text-center">
-          If anything changes — dates, amounts, autopay — you can update it anytime.<br />
-          I'll always remind you gently before something becomes urgent.
+          If anything changes — dates, amounts, or autopay — you can update it anytime.<br />
+          Your MindAttic will always remind you gently before something becomes urgent.
         </p>
       </div>
     </div>
