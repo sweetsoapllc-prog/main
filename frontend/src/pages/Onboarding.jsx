@@ -44,27 +44,40 @@ export default function Onboarding() {
   };
 
   const completeOnboarding = async () => {
+    setSaving(true);
     try {
+      // Create user if doesn't exist
       try {
         await axios.post(`${API}/users`, {
           name: data.name || "Friend",
           email: "demo@example.com",
         });
       } catch (err) {
-        console.log("User creation skipped:", err.message);
+        console.log("User may already exist:", err.message);
       }
       
+      // Save onboarding profile
+      await axios.post(`${API}/onboarding`, {
+        ...data,
+        name: data.name || "Friend"
+      });
+      
+      // Store in localStorage
       localStorage.setItem("onboarding_complete", "true");
       localStorage.setItem("user_profile", JSON.stringify(data));
+      localStorage.setItem("user_id", USER_ID);
       
-      toast.success("Welcome! Your Attic Mind is ready.");
+      toast.success("Welcome! Your Attic Mind is ready.", {
+        duration: 2000,
+      });
       
       setTimeout(() => {
-        window.location.href = "/";
-      }, 500);
+        navigate("/");
+      }, 1000);
     } catch (error) {
       console.error("Error completing onboarding:", error);
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Something didn't save. Let's try that again.");
+      setSaving(false);
     }
   };
 
