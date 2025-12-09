@@ -235,7 +235,7 @@ export default function Bills() {
       </div>
 
       {/* Add Bill Button */}
-      {!showAdd && (
+      {!showAdd && !editingBill && (
         <div className="text-center">
           <button
             onClick={() => setShowAdd(true)}
@@ -248,10 +248,10 @@ export default function Bills() {
         </div>
       )}
 
-      {/* Add Bill Form */}
-      {showAdd && (
+      {/* Add/Edit Bill Form */}
+      {(showAdd || editingBill) && (
         <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6">
-          <form onSubmit={addBill} className="space-y-4" data-testid="add-bill-form">
+          <form onSubmit={editingBill ? saveEditBill : addBill} className="space-y-4" data-testid="add-bill-form">
             <input
               type="text"
               value={newBill.name}
