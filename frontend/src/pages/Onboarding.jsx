@@ -58,6 +58,7 @@ export default function Onboarding() {
       
       // Save onboarding profile
       await axios.post(`${API}/onboarding`, {
+        user_id: USER_ID,
         ...data,
         name: data.name || "Friend"
       });
