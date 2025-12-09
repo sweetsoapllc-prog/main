@@ -33,7 +33,7 @@ export default function WeeklyView() {
       setBills(billsRes.data.filter((b) => !b.paid));
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error("Failed to load weekly view");
+      toast.error("I'm having trouble loading your weekly view right now. Can we try again in a moment?");
     } finally {
       setLoading(false);
     }

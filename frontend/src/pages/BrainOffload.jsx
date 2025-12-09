@@ -63,7 +63,7 @@ Be gentle and supportive. Extract clear, actionable items.`;
       }
     } catch (error) {
       console.error("Error processing offload:", error);
-      toast.error("Something went wrong. Please try again.");
+      toast.error("I'm having trouble organizing this right now. Take a breath — let's try again.");
     } finally {
       setProcessing(false);
     }
@@ -94,7 +94,7 @@ Be gentle and supportive. Extract clear, actionable items.`;
       navigate("/tasks");
     } catch (error) {
       console.error("Error saving tasks:", error);
-      toast.error("Failed to save tasks");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 

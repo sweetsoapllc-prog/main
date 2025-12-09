@@ -27,7 +27,7 @@ export default function Routines() {
       setRoutines(res.data);
     } catch (error) {
       console.error("Error fetching routines:", error);
-      toast.error("Failed to load routines");
+      toast.error("I'm having trouble loading your routines right now. Can we try again in a moment?");
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ export default function Routines() {
       toast.success("I've saved this ritual for you. It's here whenever you need it.");
     } catch (error) {
       console.error("Error adding routine:", error);
-      toast.error("Failed to add routine");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
@@ -60,7 +60,7 @@ export default function Routines() {
       fetchRoutines();
       toast.success("You completed this ritual. That's something to feel good about.");
     } catch (error) {
-      toast.error("Failed to complete routine");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
