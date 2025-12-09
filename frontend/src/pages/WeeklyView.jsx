@@ -84,9 +84,9 @@ export default function WeeklyView() {
   return (
     <div className="space-y-8" data-testid="weekly-view-page">
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">Weekly Overview</h1>
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">This Week in Your MindAttic</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          A gentle look at what's ahead. You don't have to do it all at once.
+          A calm overview to help your week feel lighter, not heavier.
         </p>
       </div>
 
@@ -312,7 +312,7 @@ export default function WeeklyView() {
         <p className="text-2xl font-caveat text-stone-700 leading-relaxed">
           You have {todayTasks.length + weekTasks.length} tasks and {upcomingBills.length} bills this week.
           <br />
-          Take it one gentle step at a time. You don't have to do everything.
+          Weeks don't have to be packed to be meaningful. A few intentional steps are enough.
         </p>
       </div>
     </div>

@@ -86,7 +86,7 @@ export default function Chat() {
               <Sparkles className="text-primary" strokeWidth={1.5} size={20} />
             </div>
             <div>
-              <h1 className="text-2xl" data-testid="chat-title">Quiet Housekeeper</h1>
+              <h1 className="text-2xl" data-testid="chat-title">Chat</h1>
               <p className="text-sm text-stone-500 font-caveat">Your gentle second brain</p>
             </div>
           </div>
