@@ -57,7 +57,7 @@ export default function Bills() {
       toast.success("I've got this bill noted. You don't have to remember it now.");
     } catch (error) {
       console.error("Error adding bill:", error);
-      toast.error("Something went wrong");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
@@ -67,7 +67,7 @@ export default function Bills() {
       fetchBills();
       toast.success(`Got it. I've marked ${bill.name} as paid.`);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
     }
   };
 
@@ -84,7 +84,7 @@ export default function Bills() {
       due_date: dateValue,
       recurring: bill.recurring,
       autopay: bill.autopay,
-      frequency: bill.frequency,
+      frequency: bill.frequency || "Monthly",
     });
     setShowAdd(false);
   };
@@ -151,26 +151,26 @@ export default function Bills() {
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   const BillCard = ({ bill, isPaid }) => (
     <div
-      className="bg-white rounded-2xl border border-stone-200 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 space-y-4"
+      className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 space-y-4"
       data-testid={`bill-${bill.id}`}
     >
       {/* Bill Header */}
       <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+        <div className="flex items-center gap-3 flex-1">
+          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
             <DollarSign className="text-primary" strokeWidth={1.5} size={20} />
           </div>
-          <div>
+          <div className="flex-1">
             <h3 className="font-fraunces text-lg text-stone-800">{bill.name}</h3>
             <p className="text-sm text-stone-500">Due: {formatDate(bill.due_date)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => startEditBill(bill)}
             data-testid={`edit-bill-btn-${bill.id}`}
@@ -194,7 +194,7 @@ export default function Bills() {
             <button
               onClick={() => payBill(bill)}
               data-testid={`pay-bill-btn-${bill.id}`}
-              className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium"
+              className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium whitespace-nowrap"
             >
               <CheckCircle2 strokeWidth={1.5} size={16} />
               Mark as Paid
@@ -348,13 +348,10 @@ export default function Bills() {
       {/* Due Soon Section */}
       {dueSoon.length > 0 && (
         <div data-testid="due-soon-section">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertCircle className="text-warning" strokeWidth={1.5} size={20} />
+          <div className="mb-4">
             <h2 className="text-2xl">Due Soon (Next 7 Days)</h2>
+            <p className="text-sm text-stone-500 mt-1">Gentle reminders for what needs your attention soon.</p>
           </div>
-          <p className="text-stone-600 font-caveat text-lg mb-6">
-            Gentle reminders for what needs your attention soon.
-          </p>
           <div className="grid md:grid-cols-2 gap-4">
             {dueSoon.map((bill) => (
               <BillCard key={bill.id} bill={bill} isPaid={false} />
@@ -363,22 +360,40 @@ export default function Bills() {
         </div>
       )}
 
-      {/* Empty State */}
-      {dueSoon.length === 0 && unpaidBills.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-stone-500 font-caveat text-xl">All caught up! Nothing due right now.</p>
+      {/* Upcoming Bills */}
+      {unpaidBills.filter(b => !dueSoon.includes(b)).length > 0 && (
+        <div data-testid="upcoming-bills-section">
+          <div className="mb-4">
+            <h2 className="text-2xl">Upcoming</h2>
+            <p className="text-sm text-stone-500 mt-1">Coming up later this month.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {unpaidBills.filter(b => !dueSoon.includes(b)).map((bill) => (
+              <BillCard key={bill.id} bill={bill} isPaid={false} />
+            ))}
+          </div>
         </div>
       )}
 
       {/* Paid Bills */}
       {paidBills.length > 0 && (
         <div data-testid="paid-bills-section">
-          <h2 className="text-2xl mb-4">Paid Recently</h2>
+          <div className="mb-4">
+            <h2 className="text-2xl">Paid Recently</h2>
+            <p className="text-sm text-stone-500 mt-1">These are taken care of.</p>
+          </div>
           <div className="grid md:grid-cols-2 gap-4">
-            {paidBills.slice(0, 6).map((bill) => (
+            {paidBills.map((bill) => (
               <BillCard key={bill.id} bill={bill} isPaid={true} />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {bills.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-stone-500 font-caveat text-lg">No bills yet. You're all clear.</p>
         </div>
       )}
 
