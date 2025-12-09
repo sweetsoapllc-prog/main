@@ -99,7 +99,7 @@ export default function Tasks() {
             type="text"
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            placeholder="Write anything you need to remember…"
+            placeholder="What would you like to remember…?"
             data-testid="task-input"
             className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
           />
@@ -131,9 +131,9 @@ export default function Tasks() {
         {["today", "this_week", "later"].map((category) => {
           const categoryTasks = tasks[category];
           const label = category === "today" ? "Today" : category === "this_week" ? "This Week" : "Later";
-          const subtitle = category === "today" ? "Just for today — only what truly matters." : 
+          const subtitle = category === "today" ? "Just the few things that matter for today." : 
                           category === "this_week" ? "Gentle intentions for the days ahead." : 
-                          "Important, but not for right now. Stored safely in your AtticMind.";
+                          "Important, but not for right now — safely stored in your Attic Mind.";
 
           return (
             <div key={category} data-testid={`tasks-category-${category}`}>
@@ -181,8 +181,7 @@ export default function Tasks() {
       {/* Footer */}
       <div className="max-w-3xl mx-auto text-center" data-testid="tasks-footer">
         <p className="text-stone-500 font-caveat text-lg">
-          One small task at a time is enough.<br />
-          You're allowed to move slowly.
+          You're allowed to move slowly. One task at a time is enough.
         </p>
       </div>
     </div>
