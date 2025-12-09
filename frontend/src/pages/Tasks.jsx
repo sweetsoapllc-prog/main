@@ -75,6 +75,41 @@ export default function Tasks() {
     }
   };
 
+  const startEditTask = (task) => {
+    setEditingTask(task.id);
+    setEditTitle(task.title);
+  };
+
+  const cancelEdit = () => {
+    setEditingTask(null);
+    setEditTitle("");
+  };
+
+  const saveEditTask = async (taskId) => {
+    if (!editTitle.trim()) return;
+
+    try {
+      await axios.patch(`${API}/tasks/${taskId}`, { title: editTitle });
+      setEditingTask(null);
+      setEditTitle("");
+      fetchTasks();
+      toast.success("Updated. I've got that saved.");
+    } catch (error) {
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
+    }
+  };
+
+  const moveTask = async (taskId, newCategory) => {
+    try {
+      await axios.patch(`${API}/tasks/${taskId}`, { category: newCategory });
+      setMovingTask(null);
+      fetchTasks();
+      toast.success("Moved gently to a new space.");
+    } catch (error) {
+      toast.error("Something didn't save properly. It's okay — let's try that again.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
