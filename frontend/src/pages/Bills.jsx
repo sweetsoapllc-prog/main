@@ -165,21 +165,37 @@ export default function Bills() {
             <p className="text-sm text-stone-500">Due: {formatDate(bill.due_date)}</p>
           </div>
         </div>
-        {isPaid ? (
-          <span className="text-xs bg-success/10 text-success px-3 py-1.5 rounded-full flex items-center gap-1 font-medium">
-            <CheckCircle2 strokeWidth={2} size={14} />
-            Paid
-          </span>
-        ) : (
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => payBill(bill)}
-            data-testid={`pay-bill-btn-${bill.id}`}
-            className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium"
+            onClick={() => startEditBill(bill)}
+            data-testid={`edit-bill-btn-${bill.id}`}
+            className="text-stone-400 hover:text-primary transition-colors duration-300"
           >
-            <CheckCircle2 strokeWidth={1.5} size={16} />
-            Mark as Paid
+            <Edit2 strokeWidth={1.5} size={18} />
           </button>
-        )}
+          <button
+            onClick={() => deleteBill(bill.id)}
+            data-testid={`delete-bill-btn-${bill.id}`}
+            className="text-stone-400 hover:text-red-500 transition-colors duration-300"
+          >
+            <Trash2 strokeWidth={1.5} size={18} />
+          </button>
+          {isPaid ? (
+            <span className="text-xs bg-success/10 text-success px-3 py-1.5 rounded-full flex items-center gap-1 font-medium">
+              <CheckCircle2 strokeWidth={2} size={14} />
+              Paid
+            </span>
+          ) : (
+            <button
+              onClick={() => payBill(bill)}
+              data-testid={`pay-bill-btn-${bill.id}`}
+              className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium"
+            >
+              <CheckCircle2 strokeWidth={1.5} size={16} />
+              Mark as Paid
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Bill Details */}
