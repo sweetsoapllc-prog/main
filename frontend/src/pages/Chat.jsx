@@ -95,9 +95,14 @@ export default function Chat() {
         {/* Messages */}
         <div className="h-[500px] overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
           {messages.length === 0 && (
-            <div className="text-center text-stone-400 mt-20">
-              <p className="font-caveat text-xl">Start a conversation...</p>
-              <p className="text-sm mt-2">I'm here to help you feel lighter and more supported.</p>
+            <div className="text-center text-stone-400 mt-20 max-w-md mx-auto">
+              <p className="font-caveat text-xl mb-4">Start a conversation…</p>
+              <p className="text-sm leading-relaxed">
+                I'm here whenever you need a soft place to land — whether you're overwhelmed, trying to organize your day, or just need someone to hold a few thoughts for you.
+              </p>
+              <p className="text-sm leading-relaxed mt-3">
+                You can talk to me about anything you're carrying. I'll help you sort it, soften it, or make it feel more manageable.
+              </p>
             </div>
           )}
           {messages.map((msg) => (
