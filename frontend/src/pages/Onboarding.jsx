@@ -6,10 +6,12 @@ import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+const USER_ID = "demo-user-123";
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [saving, setSaving] = useState(false);
   const [data, setData] = useState({
     name: "",
     tone_preference: "gentle",
