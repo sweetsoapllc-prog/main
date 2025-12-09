@@ -333,7 +333,7 @@ export default function Bills() {
                 data-testid="save-bill-btn"
                 className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-3 rounded-full"
               >
-                Save Bill
+                {editingBill ? "Update Bill" : "Save Bill"}
               </button>
             </div>
           </form>
