@@ -131,8 +131,8 @@ export default function Tasks() {
       </div>
 
       {/* Add Task */}
-      <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6">
-        <form onSubmit={addTask} className="space-y-4" data-testid="add-task-form">
+      <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8">
+        <form onSubmit={addTask} className="space-y-5" data-testid="add-task-form">
           <input
             type="text"
             value={newTask.title}
@@ -141,7 +141,7 @@ export default function Tasks() {
             data-testid="task-input"
             className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
           />
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <select
               value={newTask.category}
               onChange={(e) => setNewTask({ ...newTask, category: e.target.value })}
@@ -155,7 +155,7 @@ export default function Tasks() {
             <button
               type="submit"
               data-testid="add-task-btn"
-              className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full flex items-center gap-2"
+              className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full flex items-center justify-center gap-2"
             >
               <Plus strokeWidth={1.5} size={18} />
               Add
@@ -165,7 +165,7 @@ export default function Tasks() {
       </div>
 
       {/* Task Categories */}
-      <div className="space-y-8">
+      <div className="space-y-10">
         {["today", "this_week", "later"].map((category) => {
           const categoryTasks = tasks[category];
           const label = category === "today" ? "Today" : category === "this_week" ? "This Week" : "Later";
@@ -175,9 +175,9 @@ export default function Tasks() {
 
           return (
             <div key={category} data-testid={`tasks-category-${category}`}>
-              <div className="mb-4">
-                <h2 className="text-2xl">{label}</h2>
-                <p className="text-sm text-stone-500 mt-1">{subtitle}</p>
+              <div className="mb-5">
+                <h2 className="text-2xl mb-2">{label}</h2>
+                <p className="text-sm text-stone-500">{subtitle}</p>
               </div>
               {categoryTasks.length === 0 ? (
                 <p className="text-stone-500 font-caveat text-lg">Nothing here yet. You're doing great.</p>
