@@ -25,8 +25,8 @@ export default function Layout({ children }) {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-white/20 rounded-full shadow-sm px-4 py-3">
-        <ul className="flex gap-2" data-testid="main-nav">
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-white/20 rounded-full shadow-sm px-2 sm:px-4 py-3">
+        <ul className="flex gap-1 sm:gap-2 overflow-x-auto" data-testid="main-nav">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -35,7 +35,7 @@ export default function Layout({ children }) {
                 <Link
                   to={item.path}
                   data-testid={`nav-${item.label.toLowerCase()}`}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
+                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full transition-all duration-300 whitespace-nowrap ${
                     isActive
                       ? "bg-primary text-white shadow-sm"
                       : "text-stone-600 hover:bg-stone-100"
@@ -51,7 +51,7 @@ export default function Layout({ children }) {
       </nav>
 
       {/* Content */}
-      <main className="pt-24 pb-12 px-6 max-w-7xl mx-auto">{children}</main>
+      <main className="pt-24 pb-12 px-4 sm:px-6 max-w-7xl mx-auto">{children}</main>
     </div>
   );
 }
