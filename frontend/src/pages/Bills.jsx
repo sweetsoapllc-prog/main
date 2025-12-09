@@ -308,7 +308,7 @@ export default function Bills() {
       {/* Footnote */}
       <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl p-6 border border-primary/20" data-testid="bills-footnote">
         <p className="text-stone-600 leading-relaxed text-center">
-          Update anything anytime \u2014 your Attic Mind will always remind you gently.
+          Update anything anytime. Your Attic Mind will always remind you gently.
         </p>
       </div>
     </div>
