@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Edit2, MoveRight, X, Check } from "lucide-react";
 import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -11,6 +11,9 @@ export default function Tasks() {
   const [tasks, setTasks] = useState({ today: [], this_week: [], later: [] });
   const [newTask, setNewTask] = useState({ title: "", category: "today" });
   const [loading, setLoading] = useState(true);
+  const [editingTask, setEditingTask] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [movingTask, setMovingTask] = useState(null);
 
   useEffect(() => {
     fetchTasks();
