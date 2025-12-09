@@ -83,11 +83,11 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-[#F0EFEA] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-b from-background to-[#F0EFEA] flex items-center justify-center p-4 sm:p-6">
       <div className="max-w-2xl w-full">
         {/* Progress */}
-        <div className="mb-8" data-testid="onboarding-progress">
-          <div className="flex justify-between mb-2">
+        <div className="mb-6 sm:mb-8 mt-4 sm:mt-0" data-testid="onboarding-progress">
+          <div className="flex justify-between mb-3">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
               <div
                 key={s}
@@ -101,7 +101,7 @@ export default function Onboarding() {
         </div>
 
         {/* Content Card */}
-        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 md:p-12">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8 md:p-12">
           {/* Step 1: Welcome */}
           {step === 1 && (
             <div className="space-y-6 text-center" data-testid="onboarding-step-1">
