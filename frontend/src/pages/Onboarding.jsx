@@ -349,12 +349,12 @@ export default function Onboarding() {
           )}
 
           {/* Navigation */}
-          <div className="flex gap-3 mt-8">
+          <div className="flex gap-3 mt-8 sm:mt-10">
             {step > 1 && (
               <button
                 onClick={prevStep}
                 data-testid="onboarding-back-btn"
-                className="flex-1 bg-stone-100 text-stone-600 hover:bg-stone-200 transition-all duration-300 py-4 rounded-full flex items-center justify-center gap-2"
+                className="flex-1 bg-stone-100 text-stone-600 hover:bg-stone-200 transition-all duration-300 py-3 sm:py-4 rounded-full flex items-center justify-center gap-2"
               >
                 <ArrowLeft strokeWidth={1.5} size={18} />
                 Back
@@ -364,7 +364,7 @@ export default function Onboarding() {
               <button
                 onClick={nextStep}
                 data-testid="onboarding-next-btn"
-                className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-4 rounded-full flex items-center justify-center gap-2"
+                className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-3 sm:py-4 rounded-full flex items-center justify-center gap-2"
               >
                 {step === 1 ? "Begin" : "Continue"}
                 <ArrowRight strokeWidth={1.5} size={18} />
@@ -374,7 +374,7 @@ export default function Onboarding() {
                 onClick={completeOnboarding}
                 disabled={saving}
                 data-testid="onboarding-complete-btn"
-                className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-4 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-3 sm:py-4 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? "Preparing your space..." : "Enter The Attic Mind"}
               </button>
