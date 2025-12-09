@@ -263,18 +263,34 @@ export default function Routines() {
                       data-testid={`routine-${routine.id}`}
                     >
                       <div className="flex items-start justify-between mb-4">
-                        <h3 className="text-xl font-fraunces">{routine.name}</h3>
-                        <button
-                          onClick={() => completeRoutine(routine.id)}
-                          data-testid={`complete-routine-btn-${routine.id}`}
-                          className={`${
-                            routine.completed_today
-                              ? "text-success"
-                              : "text-stone-300 hover:text-primary"
-                          } transition-colors duration-300`}
-                        >
-                          <CheckCircle2 strokeWidth={1.5} size={24} />
-                        </button>
+                        <h3 className="text-xl font-fraunces flex-1">{routine.name}</h3>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => startEditRoutine(routine)}
+                            data-testid={`edit-routine-btn-${routine.id}`}
+                            className="text-stone-400 hover:text-primary transition-colors duration-300"
+                          >
+                            <Edit2 strokeWidth={1.5} size={18} />
+                          </button>
+                          <button
+                            onClick={() => deleteRoutine(routine.id)}
+                            data-testid={`delete-routine-btn-${routine.id}`}
+                            className="text-stone-400 hover:text-red-500 transition-colors duration-300"
+                          >
+                            <Trash2 strokeWidth={1.5} size={18} />
+                          </button>
+                          <button
+                            onClick={() => completeRoutine(routine.id)}
+                            data-testid={`complete-routine-btn-${routine.id}`}
+                            className={`${
+                              routine.completed_today
+                                ? "text-success"
+                                : "text-stone-300 hover:text-primary"
+                            } transition-colors duration-300`}
+                          >
+                            <CheckCircle2 strokeWidth={1.5} size={24} />
+                          </button>
+                        </div>
                       </div>
                       <ul className="space-y-2">
                         {routine.items.map((item, idx) => (
