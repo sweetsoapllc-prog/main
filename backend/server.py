@@ -338,6 +338,25 @@ async def pay_bill(bill_id: str):
     await db.bills.update_one({"id": bill_id}, {"$set": {"paid": True}})
     return {"message": "Bill marked as paid"}
 
+@api_router.patch("/bills/{bill_id}", response_model=Bill)
+async def update_bill(bill_id: str, update: BillCreate):
+    update_data = update.model_dump()
+    if update_data:
+        await db.bills.update_one({"id": bill_id}, {"$set": update_data})
+    bill = await db.bills.find_one({"id": bill_id}, {"_id": 0})
+    if not bill:
+        raise HTTPException(status_code=404, detail="Bill not found")
+    if isinstance(bill['created_at'], str):
+        bill['created_at'] = datetime.fromisoformat(bill['created_at'])
+    return bill
+
+@api_router.delete("/bills/{bill_id}")
+async def delete_bill(bill_id: str):
+    result = await db.bills.delete_one({"id": bill_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Bill not found")
+    return {"message": "Bill deleted"}
+
 # Energy check-in routes
 @api_router.post("/energy", response_model=EnergyCheckIn)
 async def create_energy_checkin(checkin: EnergyCheckInCreate):
