@@ -118,7 +118,7 @@ Be gentle and supportive. Extract clear, actionable items.`;
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Everything on my mind right now...\n\nExample:\nPick up groceries\nCall mom\nKids dentist appointment\nPay electric bill\nMeal prep for week\nRemember to breathe..."
+            placeholder="What's on your mind?"
             disabled={processing}
             data-testid="brain-offload-textarea"
             className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-6 outline-none resize-none font-mono text-stone-700"
