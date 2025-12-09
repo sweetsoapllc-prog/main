@@ -84,9 +84,9 @@ export default function WeeklyView() {
   return (
     <div className="space-y-8" data-testid="weekly-view-page">
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">This Week in Your MindAttic</h1>
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">This Week in Your AtticMind</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          A calm overview to help your week feel lighter, not heavier.
+          A calm overview to help your week feel lighter.
         </p>
       </div>
 
@@ -312,7 +312,7 @@ export default function WeeklyView() {
         <p className="text-2xl font-caveat text-stone-700 leading-relaxed">
           You have {todayTasks.length + weekTasks.length} tasks and {upcomingBills.length} bills this week.
           <br />
-          Weeks don't have to be packed to be meaningful. A few intentional steps are enough.
+          A meaningful week doesn't have to be full. Just intentional.
         </p>
       </div>
     </div>

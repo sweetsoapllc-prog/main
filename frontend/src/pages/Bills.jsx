@@ -276,8 +276,7 @@ export default function Bills() {
             <h2 className="text-2xl">Due Soon (Next 7 Days)</h2>
           </div>
           <p className="text-stone-600 font-caveat text-lg mb-6">
-            These are the bills that need your attention soon.<br />
-            You can handle them one at a time — there's no rush.
+            These bills need gentle attention soon — no pressure, just awareness.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             {dueSoon.map((bill) => (
@@ -310,7 +309,7 @@ export default function Bills() {
       <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl p-6 border border-primary/20" data-testid="bills-footnote">
         <p className="text-stone-600 leading-relaxed text-center">
           If anything changes — dates, amounts, or autopay — you can update it anytime.<br />
-          Your MindAttic will always remind you gently before something becomes urgent.
+          Your AtticMind will remind you softly.
         </p>
       </div>
     </div>
