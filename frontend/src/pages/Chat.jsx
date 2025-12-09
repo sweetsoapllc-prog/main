@@ -138,7 +138,7 @@ export default function Chat() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Share what's on your mind..."
+              placeholder="Tell me what's on your mind…"
               disabled={loading}
               data-testid="chat-input"
               className="flex-1 bg-white border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
@@ -152,6 +152,9 @@ export default function Chat() {
               <Send strokeWidth={1.5} size={18} />
             </button>
           </form>
+          <p className="text-xs text-stone-400 text-center mt-3 font-caveat">
+            There's no right way to use this space. You can ramble, brain-dump, ask a question — I'll follow your lead gently.
+          </p>
         </div>
       </div>
     </div>
