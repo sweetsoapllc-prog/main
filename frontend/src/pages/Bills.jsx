@@ -106,7 +106,7 @@ export default function Bills() {
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="text-4xl md:text-5xl mb-4" data-testid="bills-title">Bills & Payments</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          I'll hold these gently, so you don't have to remember everything.
+          I'll keep track of these softly, so your mind doesn't have to hold them.
         </p>
       </div>
 
@@ -210,7 +210,8 @@ export default function Bills() {
             <h2 className="text-2xl">Due Soon (Next 7 Days)</h2>
           </div>
           <p className="text-stone-600 font-caveat text-lg mb-4">
-            These need attention soon. It's okay to handle them one at a time.
+            These are the bills that need your attention soon.<br />
+            You can handle them one at a time — there's no rush.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             {dueSoon.map((bill) => (
@@ -329,7 +330,10 @@ export default function Bills() {
                 data-testid={`paid-bill-${bill.id}`}
               >
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="text-success" strokeWidth={1.5} size={20} />
+                  <span className="text-xs bg-success/10 text-success px-3 py-1 rounded-full flex items-center gap-1">
+                    <CheckCircle2 strokeWidth={1.5} size={12} />
+                    Paid
+                  </span>
                   <span>{bill.name}</span>
                 </div>
                 <span className="text-stone-600">${bill.amount.toFixed(2)}</span>
@@ -338,6 +342,14 @@ export default function Bills() {
           </div>
         </div>
       )}
+
+      {/* Footnote */}
+      <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl p-6 border border-primary/20" data-testid="bills-footnote">
+        <p className="text-stone-600 leading-relaxed text-center">
+          If anything changes — dates, amounts, autopay — you can update it anytime.<br />
+          I'll always remind you gently before something becomes urgent.
+        </p>
+      </div>
     </div>
   );
 }
