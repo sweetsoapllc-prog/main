@@ -194,6 +194,36 @@ async def get_user(user_id: str):
         user['created_at'] = datetime.fromisoformat(user['created_at'])
     return user
 
+# Onboarding routes
+@api_router.post("/onboarding", response_model=OnboardingProfile)
+async def save_onboarding_profile(profile: OnboardingProfileCreate):
+    profile_obj = OnboardingProfile(**profile.model_dump())
+    doc = profile_obj.model_dump()
+    doc['completed_at'] = doc['completed_at'].isoformat()
+    
+    # Check if profile already exists for this user
+    existing = await db.onboarding_profiles.find_one({"user_id": profile_obj.user_id})
+    if existing:
+        # Update existing profile
+        await db.onboarding_profiles.update_one(
+            {"user_id": profile_obj.user_id}, 
+            {"$set": doc}
+        )
+    else:
+        # Insert new profile
+        await db.onboarding_profiles.insert_one(doc)
+    
+    return profile_obj
+
+@api_router.get("/onboarding/{user_id}", response_model=OnboardingProfile)
+async def get_onboarding_profile(user_id: str):
+    profile = await db.onboarding_profiles.find_one({"user_id": user_id}, {"_id": 0})
+    if not profile:
+        raise HTTPException(status_code=404, detail="Onboarding profile not found")
+    if isinstance(profile['completed_at'], str):
+        profile['completed_at'] = datetime.fromisoformat(profile['completed_at'])
+    return profile
+
 # Task routes
 @api_router.post("/tasks", response_model=Task)
 async def create_task(task: TaskCreate):
