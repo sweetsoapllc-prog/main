@@ -1,37 +1,46 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Sparkles, Heart } from "lucide-react";
+import { Sparkles, Heart, Sunrise, Sun, Moon } from "lucide-react";
 import { toast } from "sonner";
 import EnergyCheckIn from "@/components/EnergyCheckIn";
+import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
-
-// Demo user ID - in production this would come from auth
 const USER_ID = "demo-user-123";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [userName, setUserName] = useState("there");
   const [loading, setLoading] = useState(true);
   const [showEnergyCheckIn, setShowEnergyCheckIn] = useState(false);
+  const [timeOfDay, setTimeOfDay] = useState("morning");
 
   useEffect(() => {
+    // Check if onboarding is complete
+    const onboardingComplete = localStorage.getItem("onboarding_complete");
+    if (!onboardingComplete) {
+      navigate("/onboarding");
+      return;
+    }
+
+    // Determine time of day
+    const hour = new Date().getHours();
+    if (hour < 12) setTimeOfDay("morning");
+    else if (hour < 18) setTimeOfDay("midday");
+    else setTimeOfDay("evening");
+
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const fetchData = async () => {
     try {
-      // Create or get user
-      try {
-        const userRes = await axios.get(`${API}/users/${USER_ID}`);
-        setUserName(userRes.data.name);
-      } catch {
-        await axios.post(`${API}/users`, {
-          name: "Friend",
-          email: "demo@example.com",
-        });
-        setUserName("Friend");
+      // Get user profile
+      const userProfile = localStorage.getItem("user_profile");
+      if (userProfile) {
+        const profile = JSON.parse(userProfile);
+        setUserName(profile.name || "there");
       }
 
       // Get today's tasks
@@ -39,7 +48,6 @@ export default function Dashboard() {
       setTasks(tasksRes.data.filter((t) => !t.completed));
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error("Failed to load data");
     } finally {
       setLoading(false);
     }
@@ -49,11 +57,11 @@ export default function Dashboard() {
     try {
       await axios.patch(`${API}/tasks/${taskId}`, { completed: true });
       setTasks(tasks.filter((t) => t.id !== taskId));
-      toast.success("Task completed", {
+      toast.success("Well done", {
         icon: <Heart className="text-success" size={16} />,
       });
     } catch (error) {
-      toast.error("Failed to complete task");
+      toast.error("Something went wrong");
     }
   };
 
@@ -75,9 +83,40 @@ export default function Dashboard() {
     );
   }
 
+  const getCompassContent = () => {
+    if (timeOfDay === "morning") {
+      return {
+        icon: Sunrise,
+        title: "Morning Compass",
+        greeting: `Good morning, ${userName}`,
+        message: "Here are 1-3 gentle essentials for today. You don't have to do everything.",
+        grounding: "Take a breath. This is enough.",
+      };
+    } else if (timeOfDay === "midday") {
+      return {
+        icon: Sun,
+        title: "Midday Check-in",
+        greeting: `Hello, ${userName}`,
+        message: "How's your day unfolding? It's okay if things didn't go as planned.",
+        grounding: "You're doing your best, and that's more than enough.",
+      };
+    } else {
+      return {
+        icon: Moon,
+        title: "Evening Closeout",
+        greeting: `Good evening, ${userName}`,
+        message: "The day is winding down. Let's gently close what needs closing.",
+        grounding: "You made it through today. Rest now.",
+      };
+    }
+  };
+
+  const compass = getCompassContent();
+  const CompassIcon = compass.icon;
+
   return (
     <div className="space-y-8" data-testid="dashboard-page">
-      {/* Greeting */}
+      {/* Daily Compass */}
       <div
         className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 md:p-12"
         style={{
@@ -86,43 +125,26 @@ export default function Dashboard() {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
+        data-testid="daily-compass"
       >
         <div className="backdrop-blur-sm bg-white/70 rounded-3xl p-8">
           <div className="flex items-center gap-3 mb-3">
-            <Sparkles className="text-primary" strokeWidth={1.5} size={28} />
-            <h1 className="text-4xl md:text-5xl" data-testid="dashboard-greeting">
-              Hello, {userName}
-            </h1>
+            <CompassIcon className="text-primary" strokeWidth={1.5} size={28} />
+            <h2 className="text-2xl font-fraunces">{compass.title}</h2>
           </div>
-          <p className="text-xl text-stone-600 leading-relaxed font-caveat">
-            How are you feeling today? I'm here to help you feel lighter.
+          <h1 className="text-4xl md:text-5xl mb-3" data-testid="dashboard-greeting">
+            {compass.greeting}
+          </h1>
+          <p className="text-xl text-stone-600 leading-relaxed mb-4">
+            {compass.message}
+          </p>
+          <p className="text-lg font-caveat text-primary">
+            {compass.grounding}
           </p>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Energy Check-in */}
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-500 p-8"
-          data-testid="energy-checkin-card"
-        >
-          <h2 className="text-2xl mb-4">Energy Check-in</h2>
-          <p className="text-stone-600 leading-relaxed mb-6">
-            Let me know how you're feeling, so I can adjust your day.
-          </p>
-          {!showEnergyCheckIn ? (
-            <button
-              onClick={() => setShowEnergyCheckIn(true)}
-              data-testid="show-energy-checkin-btn"
-              className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full"
-            >
-              Check in now
-            </button>
-          ) : (
-            <EnergyCheckIn userId={USER_ID} onComplete={handleEnergyChecked} />
-          )}
-        </div>
-
         {/* Today's Focus */}
         <div
           className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-500 p-8"
@@ -155,6 +177,28 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* Energy Check-in */}
+        <div
+          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-500 p-8"
+          data-testid="energy-checkin-card"
+        >
+          <h2 className="text-2xl mb-4">How are you feeling?</h2>
+          <p className="text-stone-600 leading-relaxed mb-6">
+            Let me know your energy level, so I can adjust your day gently.
+          </p>
+          {!showEnergyCheckIn ? (
+            <button
+              onClick={() => setShowEnergyCheckIn(true)}
+              data-testid="show-energy-checkin-btn"
+              className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full"
+            >
+              Check in now
+            </button>
+          ) : (
+            <EnergyCheckIn userId={USER_ID} onComplete={handleEnergyChecked} />
           )}
         </div>
       </div>
