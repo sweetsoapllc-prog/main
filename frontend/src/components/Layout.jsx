@@ -16,6 +16,14 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-[#F0EFEA]">
+      {/* App Title */}
+      <div className="fixed top-6 left-6 z-50 flex items-center gap-2">
+        <div className="text-stone-700">
+          <h1 className="text-xl font-fraunces font-light">MindAttic</h1>
+          <p className="text-xs text-stone-500">Declutter your mind. Keep your peace.</p>
+        </div>
+      </div>
+
       {/* Navigation */}
       <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-white/20 rounded-full shadow-sm px-4 py-3">
         <ul className="flex gap-2" data-testid="main-nav">
