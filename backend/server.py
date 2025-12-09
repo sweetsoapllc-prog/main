@@ -172,6 +172,17 @@ class ChatResponse(BaseModel):
     message: str
     created_at: datetime
 
+class BrainOffloadRequest(BaseModel):
+    user_id: str
+    raw_text: str
+
+class SortedTask(BaseModel):
+    title: str
+    category: str  # today, this_week, later
+
+class BrainOffloadResponse(BaseModel):
+    tasks: List[SortedTask]
+
 # Routes
 @api_router.get("/")
 async def root():
