@@ -72,6 +72,7 @@ class OnboardingProfile(BaseModel):
     completed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class OnboardingProfileCreate(BaseModel):
+    user_id: str = "demo-user-123"
     name: str
     tone_preference: str = "gentle"
     day_type: str = ""
