@@ -131,10 +131,16 @@ export default function Tasks() {
         {["today", "this_week", "later"].map((category) => {
           const categoryTasks = tasks[category];
           const label = category === "today" ? "Today" : category === "this_week" ? "This Week" : "Later";
+          const subtitle = category === "today" ? "Just for today — only what truly matters." : 
+                          category === "this_week" ? "Gentle intentions for the days ahead." : 
+                          "Important, but not for right now. Stored safely in your AtticMind.";
 
           return (
             <div key={category} data-testid={`tasks-category-${category}`}>
-              <h2 className="text-2xl mb-4">{label}</h2>
+              <div className="mb-4">
+                <h2 className="text-2xl">{label}</h2>
+                <p className="text-sm text-stone-500 mt-1">{subtitle}</p>
+              </div>
               {categoryTasks.length === 0 ? (
                 <p className="text-stone-500 font-caveat text-lg">Nothing here yet. You're doing great.</p>
               ) : (
