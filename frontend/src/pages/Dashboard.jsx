@@ -210,11 +210,11 @@ export default function Dashboard() {
   };
 
   const shortcuts = [
-    { icon: Brain, label: "Offload", subtitle: "Empty your mind into a safe space", path: "/brain-offload" },
-    { icon: CheckSquare, label: "Tasks", subtitle: "Today, this week, and later — softly organized", path: "/tasks" },
-    { icon: Calendar, label: "Routines", subtitle: "Small rituals to anchor your days", path: "/routines" },
-    { icon: DollarSign, label: "Bills", subtitle: "I'll remember dates so you don't have to", path: "/bills" },
-    { icon: CalendarDays, label: "Weekly", subtitle: "A calm overview of your week", path: "/weekly" },
+    { icon: Brain, label: "Offload", subtitle: "Empty your mind into a safe space. I'll sort it for you.", path: "/brain-offload" },
+    { icon: CheckSquare, label: "Tasks", subtitle: "Today, this week, and later — softly organized so you don't feel overwhelmed.", path: "/tasks" },
+    { icon: Calendar, label: "Routines", subtitle: "Small rituals to anchor your days.", path: "/routines" },
+    { icon: DollarSign, label: "Bills", subtitle: "I'll remember dates so you don't have to.", path: "/bills" },
+    { icon: CalendarDays, label: "Weekly", subtitle: "A calm overview of your week.", path: "/weekly" },
   ];
 
   if (loading) {
