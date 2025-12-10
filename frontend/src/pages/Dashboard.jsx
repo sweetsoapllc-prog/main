@@ -16,6 +16,8 @@ export default function Dashboard() {
   const [showEnergyResponse, setShowEnergyResponse] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [timeOfDay, setTimeOfDay] = useState("");
+  const [bills, setBills] = useState([]);
+  const [routines, setRoutines] = useState([]);
 
   // Determine time of day
   useEffect(() => {
