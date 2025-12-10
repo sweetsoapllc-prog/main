@@ -521,6 +521,23 @@ Do not include any other text, explanations, or markdown - just the JSON array."
         logging.error(f"Brain offload error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error organizing thoughts: {str(e)}")
 
+# Weekly Reset routes
+@api_router.post("/weekly-reset", response_model=WeeklyReset)
+async def create_weekly_reset(reset: WeeklyResetCreate):
+    reset_obj = WeeklyReset(**reset.model_dump())
+    doc = reset_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.weekly_resets.insert_one(doc)
+    return reset_obj
+
+@api_router.get("/weekly-reset/{user_id}", response_model=List[WeeklyReset])
+async def get_weekly_resets(user_id: str):
+    resets = await db.weekly_resets.find({"user_id": user_id}, {"_id": 0}).sort("created_at", -1).limit(10).to_list(10)
+    for reset in resets:
+        if isinstance(reset['created_at'], str):
+            reset['created_at'] = datetime.fromisoformat(reset['created_at'])
+    return resets
+
 # Include the router in the main app
 app.include_router(api_router)
 
