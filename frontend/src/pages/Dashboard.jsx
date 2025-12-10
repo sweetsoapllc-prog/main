@@ -71,12 +71,32 @@ export default function Dashboard() {
   };
 
   const getEnergyResponse = () => {
+    const tone = userProfile?.tone_preference || "gentle";
+    
     if (energyLevel === "low") {
-      return "Thank you for letting me know. Let's keep the rest of today very light.";
+      if (tone === "softest") {
+        return "Thank you for telling me. Rest is what matters today. Everything else can wait.";
+      } else if (tone === "neutral") {
+        return "Noted. I'll keep your day light.";
+      } else {
+        return "Thank you for letting me know. Let's keep the rest of today very light.";
+      }
     } else if (energyLevel === "okay") {
-      return "Perfect. We can tuck in one or two helpful things and still leave space to breathe.";
+      if (tone === "softest") {
+        return "That's okay. We'll add just one or two gentle things, with plenty of space around them.";
+      } else if (tone === "neutral") {
+        return "Got it. I'll suggest a few tasks but keep it manageable.";
+      } else {
+        return "Perfect. We can tuck in one or two helpful things and still leave space to breathe.";
+      }
     } else {
-      return "Lovely. If you'd like, we can gently tackle a bit more — still with lots of room for rest.";
+      if (tone === "softest") {
+        return "Wonderful. If you'd like, we can explore a little more today — but only if it feels right.";
+      } else if (tone === "neutral") {
+        return "Good. You can take on more if you'd like.";
+      } else {
+        return "Lovely. If you'd like, we can gently tackle a bit more — still with lots of room for rest.";
+      }
     }
   };
 
