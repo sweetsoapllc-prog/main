@@ -104,43 +104,28 @@ export default function Dashboard() {
 
   const getTimeAwareGreeting = () => {
     const name = userProfile?.name || "Friend";
-    const tone = userProfile?.tone_preference || "gentle";
     
     if (timeOfDay === "morning") {
-      if (tone === "softest") {
-        return `Good morning, ${name}.`;
-      } else if (tone === "neutral") {
-        return `Morning, ${name}.`;
-      } else {
-        return `Good morning, ${name}.`;
-      }
+      return `Good morning, ${name}.`;
     } else if (timeOfDay === "midday") {
-      if (tone === "softest") {
-        return `Hello, ${name}.`;
-      } else if (tone === "neutral") {
-        return `Hello, ${name}.`;
-      } else {
-        return `Good afternoon, ${name}.`;
-      }
+      return `Good afternoon, ${name}.`;
     } else if (timeOfDay === "evening") {
-      if (tone === "softest") {
-        return `Good evening, ${name}.`;
-      } else if (tone === "neutral") {
-        return `Evening, ${name}.`;
-      } else {
-        return `Good evening, ${name}.`;
-      }
+      return `Good evening, ${name}.`;
     } else {
-      if (tone === "softest") {
-        return `Hello, ${name}.`;
-      } else {
-        return `Hello, ${name}.`;
-      }
+      return `Good evening, ${name}.`;
     }
   };
 
   const getTimeAwareSubtext = () => {
-    return "Let's take a gentle look at your day so you don't have to hold it all alone.";
+    if (timeOfDay === "morning") {
+      return "Let's begin the day gently. I'll help you see what truly needs your attention.";
+    } else if (timeOfDay === "midday") {
+      return "Let's take a gentle look at your day so you don't have to hold it all alone.";
+    } else if (timeOfDay === "evening") {
+      return "You've carried enough today. Let's wind down gently together.";
+    } else {
+      return "You've carried enough today. Let's wind down gently together.";
+    }
   };
 
   const getSoftFocusTitle = () => {
@@ -149,14 +134,58 @@ export default function Dashboard() {
     } else if (timeOfDay === "midday") {
       return "Afternoon Overview";
     } else if (timeOfDay === "evening") {
-      return "Evening Overview";
+      return "Evening Wrap-Up";
     } else {
-      return "Tonight's Overview";
+      return "Evening Wrap-Up";
     }
   };
 
-  const getSoftFocusMessage = () => {
-    return "A calm snapshot of what still needs your attention.";
+  const getSoftFocusSubtitle = () => {
+    if (timeOfDay === "morning") {
+      return "A soft start to what matters today.";
+    } else if (timeOfDay === "midday") {
+      return "A calm snapshot of what still needs your attention.";
+    } else if (timeOfDay === "evening") {
+      return "Only what truly needs your attention before you rest.";
+    } else {
+      return "Only what truly needs your attention before you rest.";
+    }
+  };
+
+  const getSoftFocusBody = () => {
+    if (timeOfDay === "morning") {
+      return {
+        line1: "You don't have to tackle everything at once.",
+        line2: "Here are the small things that may help your morning feel lighter."
+      };
+    } else if (timeOfDay === "midday") {
+      return {
+        line1: "You're doing your best — and that's enough for today.",
+        line2: "Here are the small things that may still need care."
+      };
+    } else if (timeOfDay === "evening") {
+      return {
+        line1: "You've shown up today, and that matters.",
+        line2: "Here are the last small things you may want to finish before settling in."
+      };
+    } else {
+      return {
+        line1: "You've shown up today, and that matters.",
+        line2: "Here are the last small things you may want to finish before settling in."
+      };
+    }
+  };
+
+  const getSoftFocusFooter = () => {
+    if (timeOfDay === "morning") {
+      return "Start where you are. One calm step forward.";
+    } else if (timeOfDay === "midday") {
+      return "No rush. No pressure. One soft step at a time.";
+    } else if (timeOfDay === "evening") {
+      return "Rest is productive too. You can stop when you're ready.";
+    } else {
+      return "Rest is productive too. You can stop when you're ready.";
+    }
   };
 
   const getDueSoonBills = () => {
