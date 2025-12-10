@@ -212,9 +212,11 @@ export default function Dashboard() {
         className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
         data-testid="todays-soft-focus"
       >
-        <h2 className="text-2xl mb-2">Today's Soft Focus</h2>
+        <h2 className="text-2xl mb-2">
+          {timeOfDay === "morning" ? "Morning Focus" : timeOfDay === "midday" ? "Afternoon Check-In" : timeOfDay === "evening" ? "Evening Wrap-Up" : "Soft Focus"}
+        </h2>
         <p className="text-sm text-stone-500 mb-6">
-          Just one or two small steps to keep your day moving without overwhelm.
+          {getSoftFocusMessage()}
         </p>
         {tasks.length === 0 ? (
           <p className="text-stone-600 leading-relaxed font-caveat text-lg">
