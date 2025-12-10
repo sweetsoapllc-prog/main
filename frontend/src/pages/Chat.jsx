@@ -81,14 +81,9 @@ export default function Chat() {
       <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] overflow-hidden">
         {/* Header */}
         <div className="p-6 border-b border-stone-100 bg-gradient-to-r from-stone-50 to-white">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-              <Sparkles className="text-primary" strokeWidth={1.5} size={20} />
-            </div>
-            <div>
-              <h1 className="text-2xl" data-testid="chat-title">Chat</h1>
-              <p className="text-sm text-stone-500 font-caveat">Your gentle second brain</p>
-            </div>
+          <div>
+            <h1 className="text-2xl" data-testid="chat-title">Chat</h1>
+            <p className="text-sm text-stone-500 font-caveat">Your gentle second brain</p>
           </div>
         </div>
 
