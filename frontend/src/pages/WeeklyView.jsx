@@ -125,14 +125,55 @@ export default function WeeklyView() {
     return dueDate >= today && dueDate <= nextWeek;
   });
 
+  const getGreeting = () => {
+    const name = userProfile?.name || "";
+    return name ? `This Week for ${name}` : "This Week in The Attic Mind";
+  };
+
   return (
     <div className="space-y-8" data-testid="weekly-view-page">
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">This Week in The Attic Mind</h1>
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">{getGreeting()}</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
           A calm overview to help your week feel lighter.
         </p>
       </div>
+
+      {/* Most Recent Reset */}
+      {previousResets.length > 0 && !showReset && (
+        <div 
+          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
+          data-testid="previous-reset-display"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-fraunces">Your Last Reset</h2>
+            <p className="text-xs text-stone-500">
+              {new Date(previousResets[0].created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </p>
+          </div>
+          <div className="space-y-4">
+            {previousResets[0].feeling && (
+              <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
+                <p className="text-sm text-stone-600 mb-1">How you wanted to feel:</p>
+                <p className="font-caveat text-lg text-stone-800">{previousResets[0].feeling}</p>
+              </div>
+            )}
+            {previousResets[0].anchors && previousResets[0].anchors.length > 0 && (
+              <div>
+                <p className="text-sm text-stone-600 mb-2">Your anchors:</p>
+                <ul className="space-y-2">
+                  {previousResets[0].anchors.map((anchor, idx) => (
+                    <li key={idx} className="text-stone-700 flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      <span>{anchor}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Weekly Reset Flow */}
       {!showReset ? (
