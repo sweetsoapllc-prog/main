@@ -57,17 +57,43 @@ export default function WeeklyView() {
     }
   };
 
-  const completeReset = () => {
-    toast.success("Your week is gently reset", {
-      icon: <Heart className="text-success" size={16} />,
-    });
-    setShowReset(false);
-    setResetData({
-      wins: "",
-      challenges: "",
-      feeling: "",
-      anchors: ["", "", ""],
-    });
+  const completeReset = async () => {
+    try {
+      // Save the reset data to backend
+      await axios.post(`${API}/weekly-reset`, {
+        user_id: USER_ID,
+        wins: resetData.wins,
+        challenges: resetData.challenges,
+        feeling: resetData.feeling,
+        anchors: resetData.anchors.filter(a => a.trim() !== ""),
+      });
+      
+      const tone = userProfile?.tone_preference || "gentle";
+      let message = "Your week is gently reset";
+      if (tone === "softest") {
+        message = "Your reset is complete. I'm proud of you for taking this time.";
+      } else if (tone === "neutral") {
+        message = "Weekly reset saved.";
+      }
+      
+      toast.success(message, {
+        icon: <Heart className="text-success" size={16} />,
+      });
+      
+      setShowReset(false);
+      setResetData({
+        wins: "",
+        challenges: "",
+        feeling: "",
+        anchors: ["", "", ""],
+      });
+      
+      // Refresh the data to show the new reset
+      fetchData();
+    } catch (error) {
+      console.error("Error saving reset:", error);
+      toast.error("I couldn't save your reset. Let's try that again.");
+    }
   };
 
   const updateAnchor = (index, value) => {
