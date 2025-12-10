@@ -163,6 +163,26 @@ export default function Dashboard() {
     }
   };
 
+  const getDueSoonBills = () => {
+    const today = new Date();
+    const sevenDaysFromNow = new Date();
+    sevenDaysFromNow.setDate(today.getDate() + 7);
+    
+    return bills.filter(bill => {
+      if (bill.paid) return false;
+      const dueDate = new Date(bill.due_date);
+      return dueDate >= today && dueDate <= sevenDaysFromNow;
+    });
+  };
+
+  const getTodaysRoutines = () => {
+    return routines.filter(routine => {
+      if (timeOfDay === "morning") return routine.time_of_day === "morning";
+      if (timeOfDay === "evening") return routine.time_of_day === "evening";
+      return false;
+    });
+  };
+
   const getEnergyResponse = () => {
     const tone = userProfile?.tone_preference || "gentle";
     
