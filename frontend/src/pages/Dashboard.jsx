@@ -97,9 +97,6 @@ export default function Dashboard() {
         <h1 className="text-4xl md:text-5xl mb-4" data-testid="dashboard-greeting">
           Welcome back to The Attic Mind.
         </h1>
-        <p className="text-lg text-stone-600 mb-6">
-          A calm place to organize what you're carrying — one soft step at a time.
-        </p>
         <p className="text-base text-stone-500 leading-relaxed">
           A quiet home for everything on your mind — tasks, routines, reminders, and worries — organized gently so your day feels lighter.
         </p>
