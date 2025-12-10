@@ -146,39 +146,44 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* How Are You Feeling */}
+      {/* Energy Check-in */}
       <div
-        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8"
+        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
         data-testid="energy-section"
       >
-        <h2 className="text-2xl mb-3">How are you feeling?</h2>
-        <p className="text-stone-600 leading-relaxed mb-6">
-          Tell me your energy, and I'll shape your day with care.
+        <h2 className="text-2xl mb-2">How are you feeling today?</h2>
+        <p className="text-sm text-stone-500 mb-6">
+          Tell me your energy level, and I'll shape your day with care.
         </p>
         {!showEnergyResponse ? (
-          <div className="flex gap-3">
-            <button
-              onClick={() => handleEnergySelection("low")}
-              data-testid="energy-low-btn"
-              className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
-            >
-              Low
-            </button>
-            <button
-              onClick={() => handleEnergySelection("okay")}
-              data-testid="energy-okay-btn"
-              className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
-            >
-              Okay
-            </button>
-            <button
-              onClick={() => handleEnergySelection("good")}
-              data-testid="energy-good-btn"
-              className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
-            >
-              Good
-            </button>
-          </div>
+          <>
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
+              <button
+                onClick={() => handleEnergySelection("low")}
+                data-testid="energy-low-btn"
+                className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
+              >
+                Low
+              </button>
+              <button
+                onClick={() => handleEnergySelection("okay")}
+                data-testid="energy-okay-btn"
+                className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
+              >
+                Okay
+              </button>
+              <button
+                onClick={() => handleEnergySelection("good")}
+                data-testid="energy-good-btn"
+                className="flex-1 bg-stone-100 hover:bg-primary/10 text-stone-700 hover:text-primary border-2 border-transparent hover:border-primary/20 py-3 px-6 rounded-full transition-all duration-300"
+              >
+                Good
+              </button>
+            </div>
+            <p className="text-sm text-stone-500 text-center font-caveat">
+              Your pace is enough. I'll match you where you are.
+            </p>
+          </>
         ) : (
           <div className="bg-primary/5 rounded-2xl p-6 border border-primary/20">
             <p className="text-stone-700 leading-relaxed font-caveat text-lg">
