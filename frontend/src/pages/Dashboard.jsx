@@ -104,7 +104,7 @@ export default function Dashboard() {
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="text-4xl md:text-5xl mb-4" data-testid="dashboard-greeting">
-          Welcome back to The Attic Mind.
+          {userProfile?.name ? `Welcome back, ${userProfile.name}.` : "Welcome back to The Attic Mind."}
         </h1>
         <p className="text-base text-stone-500 leading-relaxed">
           A quiet home for everything on your mind — tasks, routines, reminders, and worries — organized gently so your day feels lighter.
