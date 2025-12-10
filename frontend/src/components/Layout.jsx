@@ -25,8 +25,8 @@ export default function Layout({ children }) {
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-white/20 rounded-full shadow-sm px-2 sm:px-4 py-3">
-        <ul className="flex gap-1 sm:gap-2 overflow-x-auto" data-testid="main-nav">
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-white/20 rounded-full shadow-sm px-2 sm:px-4 py-2 sm:py-3">
+        <ul className="flex gap-1 sm:gap-2 overflow-x-auto scrollbar-hide" data-testid="main-nav" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -35,14 +35,14 @@ export default function Layout({ children }) {
                 <Link
                   to={item.path}
                   data-testid={`nav-${item.label.toLowerCase()}`}
-                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full transition-all duration-300 whitespace-nowrap ${
+                  className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-full transition-all duration-300 whitespace-nowrap ${
                     isActive
                       ? "bg-primary text-white shadow-sm"
                       : "text-stone-600 hover:bg-stone-100"
                   }`}
                 >
-                  <Icon strokeWidth={1.5} size={18} />
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <Icon strokeWidth={1.5} size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <span className="text-xs sm:text-sm font-medium">{item.label}</span>
                 </Link>
               </li>
             );
