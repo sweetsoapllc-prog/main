@@ -33,6 +33,22 @@ export default function WeeklyView() {
       ]);
       setTasks(tasksRes.data.filter((t) => !t.completed));
       setBills(billsRes.data.filter((b) => !b.paid));
+      
+      // Fetch user profile for personalization
+      try {
+        const profileRes = await axios.get(`${API}/onboarding/${USER_ID}`);
+        setUserProfile(profileRes.data);
+      } catch (profileError) {
+        console.log("No onboarding profile found");
+      }
+      
+      // Fetch previous weekly resets
+      try {
+        const resetsRes = await axios.get(`${API}/weekly-reset/${USER_ID}`);
+        setPreviousResets(resetsRes.data);
+      } catch (resetsError) {
+        console.log("No previous resets found");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error("I'm having trouble loading your weekly view right now. Can we try again in a moment?");
