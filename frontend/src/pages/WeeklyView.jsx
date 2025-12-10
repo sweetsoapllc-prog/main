@@ -125,17 +125,12 @@ export default function WeeklyView() {
     return dueDate >= today && dueDate <= nextWeek;
   });
 
-  const getGreeting = () => {
-    const name = userProfile?.name || "";
-    return name ? `This Week for ${name}` : "This Week in The Attic Mind";
-  };
-
   return (
     <div className="space-y-8" data-testid="weekly-view-page">
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">{getGreeting()}</h1>
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">Your Week at a Glance</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          A calm overview to help your week feel lighter.
+          A calm overview to help you move through your week with clarity.
         </p>
       </div>
 
