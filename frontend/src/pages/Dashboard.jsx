@@ -287,6 +287,70 @@ export default function Dashboard() {
         </p>
       </div>
 
+      {/* Quick Glance - Bills & Routines */}
+      {(getDueSoonBills().length > 0 || getTodaysRoutines().length > 0) && (
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* Due Soon Bills */}
+          {getDueSoonBills().length > 0 && (
+            <div
+              className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6"
+              data-testid="due-soon-bills"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <DollarSign className="text-primary" strokeWidth={1.5} size={20} />
+                <h3 className="text-lg font-fraunces">Due Soon</h3>
+              </div>
+              <div className="space-y-3">
+                {getDueSoonBills().slice(0, 3).map((bill) => (
+                  <div key={bill.id} className="flex items-start justify-between gap-3 p-3 bg-stone-50 rounded-xl">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-stone-800">{bill.name}</p>
+                      <p className="text-xs text-stone-500 mt-1">Due {new Date(bill.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                    </div>
+                    <p className="text-sm font-medium text-stone-700">${bill.amount}</p>
+                  </div>
+                ))}
+              </div>
+              {getDueSoonBills().length > 3 && (
+                <button
+                  onClick={() => navigate("/bills")}
+                  className="text-xs text-primary hover:underline mt-3"
+                >
+                  View all bills →
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Today's Routines */}
+          {getTodaysRoutines().length > 0 && (
+            <div
+              className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6"
+              data-testid="todays-routines"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Calendar className="text-primary" strokeWidth={1.5} size={20} />
+                <h3 className="text-lg font-fraunces">
+                  {timeOfDay === "morning" ? "Morning Ritual" : "Evening Ritual"}
+                </h3>
+              </div>
+              <div className="space-y-3">
+                {getTodaysRoutines().slice(0, 2).map((routine) => (
+                  <div key={routine.id} className="p-3 bg-stone-50 rounded-xl">
+                    <p className="text-sm font-medium text-stone-800 mb-2">{routine.name}</p>
+                    <div className="space-y-1">
+                      {routine.items.slice(0, 3).map((item, idx) => (
+                        <p key={idx} className="text-xs text-stone-600 pl-3">• {item}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Energy Check-in */}
       {userProfile?.energy_checkins !== "never" && (
         <div
