@@ -58,14 +58,14 @@ export default function Dashboard() {
       // Fetch bills and routines data for live integration
       try {
         const billsRes = await axios.get(`${API}/bills/${USER_ID}`);
-        console.log("Bills data:", billsRes.data);
+        setBills(billsRes.data);
       } catch (billsError) {
         console.log("Error fetching bills:", billsError);
       }
 
       try {
         const routinesRes = await axios.get(`${API}/routines/${USER_ID}`);
-        console.log("Routines data:", routinesRes.data);
+        setRoutines(routinesRes.data);
       } catch (routinesError) {
         console.log("Error fetching routines:", routinesError);
       }
