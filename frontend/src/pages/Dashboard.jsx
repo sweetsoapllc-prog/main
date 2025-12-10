@@ -246,41 +246,49 @@ export default function Dashboard() {
         data-testid="todays-soft-focus"
       >
         <h2 className="text-2xl mb-2">
-          {timeOfDay === "morning" ? "Morning Focus" : timeOfDay === "midday" ? "Afternoon Check-In" : timeOfDay === "evening" ? "Evening Wrap-Up" : "Soft Focus"}
+          {getSoftFocusTitle()}
         </h2>
         <p className="text-sm text-stone-500 mb-6">
           {getSoftFocusMessage()}
         </p>
         {tasks.length === 0 ? (
-          <p className="text-stone-600 leading-relaxed font-caveat text-lg">
-            You have a clear day ahead. Rest, or add something small if you'd like.
-          </p>
-        ) : (
-          <div className="space-y-3">
-            {tasks.slice(0, 2).map((task) => (
-              <div
-                key={task.id}
-                className="flex items-start gap-3 p-4 bg-stone-50 rounded-2xl"
-                data-testid={`task-item-${task.id}`}
-              >
-                <button
-                  onClick={() => completeTask(task.id)}
-                  data-testid={`complete-task-${task.id}`}
-                  className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary hover:border-primary transition-colors duration-300 flex-shrink-0"
-                />
-                <div className="flex-1">
-                  <p className="text-stone-700">{task.title}</p>
-                  {task.description && (
-                    <p className="text-sm text-stone-500 mt-1">{task.description}</p>
-                  )}
-                </div>
-              </div>
-            ))}
+          <div className="space-y-3 text-stone-600 leading-relaxed">
+            <p>You're doing your best — and that's enough for today.</p>
+            <p>Here are the small things that may still need care.</p>
+            <p className="font-caveat text-lg">No rush. No pressure. One soft step at a time.</p>
           </div>
+        ) : (
+          <>
+            <div className="space-y-3 mb-6">
+              <p className="text-stone-600 leading-relaxed">You're doing your best — and that's enough for today.</p>
+              <p className="text-stone-600 leading-relaxed">Here are the small things that may still need care.</p>
+            </div>
+            <div className="space-y-3">
+              {tasks.slice(0, 2).map((task) => (
+                <div
+                  key={task.id}
+                  className="flex items-start gap-3 p-4 bg-stone-50 rounded-2xl"
+                  data-testid={`task-item-${task.id}`}
+                >
+                  <button
+                    onClick={() => completeTask(task.id)}
+                    data-testid={`complete-task-${task.id}`}
+                    className="mt-0.5 w-5 h-5 rounded-full border-2 border-primary hover:bg-primary hover:border-primary transition-colors duration-300 flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <p className="text-stone-700">{task.title}</p>
+                    {task.description && (
+                      <p className="text-sm text-stone-500 mt-1">{task.description}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-stone-600 mt-6 font-caveat">
+              No rush. No pressure. One soft step at a time.
+            </p>
+          </>
         )}
-        <p className="text-sm text-stone-500 mt-6 font-caveat">
-          You don't have to finish everything. One small step is enough.
-        </p>
       </div>
 
       {/* Quick Glance - Bills & Routines */}
