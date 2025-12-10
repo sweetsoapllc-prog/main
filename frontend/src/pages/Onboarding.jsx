@@ -106,9 +106,15 @@ export default function Onboarding() {
           {step === 1 && (
             <div className="space-y-6 text-center" data-testid="onboarding-step-1">
               <h1 className="text-4xl md:text-5xl font-fraunces font-light">Welcome to The Attic Mind</h1>
-              <p className="text-xl text-stone-600 leading-relaxed">
-                A quiet place for everything you're carrying.
+              <p className="text-xl text-stone-600 leading-relaxed mb-4">
+                A quiet place for everything you're carrying — gathered, organized, and held for you.
               </p>
+              <div className="space-y-3 text-stone-600 leading-relaxed max-w-xl mx-auto">
+                <p>Here, your thoughts won't pile up.</p>
+                <p>Your tasks won't slip away.</p>
+                <p>And everything that matters will have a calm, clear place to land.</p>
+                <p className="pt-2 font-caveat text-lg">Let's begin softly.</p>
+              </div>
             </div>
           )}
 
