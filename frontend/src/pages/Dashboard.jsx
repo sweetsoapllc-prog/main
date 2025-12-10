@@ -278,19 +278,19 @@ export default function Dashboard() {
           {getSoftFocusTitle()}
         </h2>
         <p className="text-sm text-stone-500 mb-6">
-          {getSoftFocusMessage()}
+          {getSoftFocusSubtitle()}
         </p>
         {tasks.length === 0 ? (
           <div className="space-y-3 text-stone-600 leading-relaxed">
-            <p>You're doing your best — and that's enough for today.</p>
-            <p>Here are the small things that may still need care.</p>
-            <p className="font-caveat text-lg">No rush. No pressure. One soft step at a time.</p>
+            <p>{getSoftFocusBody().line1}</p>
+            <p>{getSoftFocusBody().line2}</p>
+            <p className="font-caveat text-lg mt-4">{getSoftFocusFooter()}</p>
           </div>
         ) : (
           <>
             <div className="space-y-3 mb-6">
-              <p className="text-stone-600 leading-relaxed">You're doing your best — and that's enough for today.</p>
-              <p className="text-stone-600 leading-relaxed">Here are the small things that may still need care.</p>
+              <p className="text-stone-600 leading-relaxed">{getSoftFocusBody().line1}</p>
+              <p className="text-stone-600 leading-relaxed">{getSoftFocusBody().line2}</p>
             </div>
             <div className="space-y-3">
               {tasks.slice(0, 2).map((task) => (
@@ -314,7 +314,7 @@ export default function Dashboard() {
               ))}
             </div>
             <p className="text-sm text-stone-600 mt-6 font-caveat">
-              No rush. No pressure. One soft step at a time.
+              {getSoftFocusFooter()}
             </p>
           </>
         )}
