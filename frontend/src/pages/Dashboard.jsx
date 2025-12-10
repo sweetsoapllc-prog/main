@@ -85,6 +85,67 @@ export default function Dashboard() {
     }
   };
 
+  const getTimeAwareGreeting = () => {
+    const name = userProfile?.name || "";
+    const tone = userProfile?.tone_preference || "gentle";
+    
+    if (timeOfDay === "morning") {
+      if (tone === "softest") {
+        return name ? `Good morning, ${name}.` : "Good morning.";
+      } else if (tone === "neutral") {
+        return name ? `Morning, ${name}.` : "Morning.";
+      } else {
+        return name ? `Good morning, ${name}.` : "Good morning.";
+      }
+    } else if (timeOfDay === "midday") {
+      if (tone === "softest") {
+        return name ? `Hello, ${name}.` : "Hello there.";
+      } else if (tone === "neutral") {
+        return name ? `Hello, ${name}.` : "Hello.";
+      } else {
+        return name ? `Good afternoon, ${name}.` : "Good afternoon.";
+      }
+    } else if (timeOfDay === "evening") {
+      if (tone === "softest") {
+        return name ? `Good evening, ${name}.` : "Good evening.";
+      } else if (tone === "neutral") {
+        return name ? `Evening, ${name}.` : "Evening.";
+      } else {
+        return name ? `Good evening, ${name}.` : "Good evening.";
+      }
+    } else {
+      if (tone === "softest") {
+        return name ? `Hello, ${name}.` : "It's late. Let's be gentle.";
+      } else {
+        return name ? `Hello, ${name}.` : "Hello.";
+      }
+    }
+  };
+
+  const getTimeAwareSubtext = () => {
+    if (timeOfDay === "morning") {
+      return "Let's ease into the day together, one soft step at a time.";
+    } else if (timeOfDay === "midday") {
+      return "How's your day unfolding? Let's check in and adjust.";
+    } else if (timeOfDay === "evening") {
+      return "The day is winding down. Let's see what still matters.";
+    } else {
+      return "It's late. Whatever's left can wait until tomorrow.";
+    }
+  };
+
+  const getSoftFocusMessage = () => {
+    if (timeOfDay === "morning") {
+      return "Just one or two small steps to start your day gently.";
+    } else if (timeOfDay === "midday") {
+      return "A few calm tasks to keep your afternoon moving softly.";
+    } else if (timeOfDay === "evening") {
+      return "Only what truly needs attention before you rest.";
+    } else {
+      return "Nothing urgent. Your rest matters more.";
+    }
+  };
+
   const getEnergyResponse = () => {
     const tone = userProfile?.tone_preference || "gentle";
     
