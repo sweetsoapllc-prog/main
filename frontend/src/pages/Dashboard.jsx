@@ -431,7 +431,9 @@ export default function Dashboard() {
       {/* Footer */}
       <div className="max-w-3xl mx-auto text-center" data-testid="dashboard-footer">
         <p className="text-stone-500 leading-relaxed">
-          You don't have to hold everything alone.<br />
+          You don't have to hold everything alone.
+        </p>
+        <p className="text-stone-500 leading-relaxed mt-2">
           Your Attic Mind will hold it for you.
         </p>
       </div>
