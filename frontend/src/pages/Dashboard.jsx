@@ -107,12 +107,12 @@ export default function Dashboard() {
 
       {/* Today's Soft Focus */}
       <div
-        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8"
+        className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
         data-testid="todays-soft-focus"
       >
-        <h2 className="text-2xl mb-3">Today's Soft Focus</h2>
-        <p className="text-stone-600 leading-relaxed mb-6">
-          Just one or two small things that help today feel lighter.
+        <h2 className="text-2xl mb-2">Today's Soft Focus</h2>
+        <p className="text-sm text-stone-500 mb-6">
+          Just one or two small steps to keep your day moving without overwhelm.
         </p>
         {tasks.length === 0 ? (
           <p className="text-stone-600 leading-relaxed font-caveat text-lg">
@@ -141,7 +141,7 @@ export default function Dashboard() {
             ))}
           </div>
         )}
-        <p className="text-sm text-stone-500 mt-4 font-caveat">
+        <p className="text-sm text-stone-500 mt-6 font-caveat">
           You don't have to finish everything. One small step is enough.
         </p>
       </div>
