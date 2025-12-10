@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [energyLevel, setEnergyLevel] = useState(null);
   const [showEnergyResponse, setShowEnergyResponse] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
     const onboardingComplete = localStorage.getItem("onboarding_complete");
@@ -28,6 +29,14 @@ export default function Dashboard() {
     try {
       const tasksRes = await axios.get(`${API}/tasks/${USER_ID}?category=today`);
       setTasks(tasksRes.data.filter((t) => !t.completed));
+      
+      // Fetch user's onboarding profile for personalization
+      try {
+        const profileRes = await axios.get(`${API}/onboarding/${USER_ID}`);
+        setUserProfile(profileRes.data);
+      } catch (profileError) {
+        console.log("No onboarding profile found, using defaults");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
