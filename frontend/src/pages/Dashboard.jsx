@@ -94,12 +94,14 @@ export default function Dashboard() {
     <div className="space-y-8" data-testid="dashboard-page">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-3" data-testid="dashboard-greeting">
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="dashboard-greeting">
           Welcome back to The Attic Mind.
         </h1>
-        <p className="text-xl text-stone-600 font-caveat">
-          A quiet place for everything you're carrying.<br />
-          One soft step at a time.
+        <p className="text-lg text-stone-600 mb-6">
+          A calm place to organize what you're carrying — one soft step at a time.
+        </p>
+        <p className="text-base text-stone-500 leading-relaxed">
+          A quiet home for everything on your mind — tasks, routines, reminders, and worries — organized gently so your day feels lighter.
         </p>
       </div>
 
