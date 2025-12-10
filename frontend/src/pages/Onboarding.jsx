@@ -372,8 +372,8 @@ export default function Onboarding() {
                 data-testid="onboarding-next-btn"
                 className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-3 sm:py-4 rounded-full flex items-center justify-center gap-2"
               >
-                {step === 1 ? "Begin" : "Continue"}
-                <ArrowRight strokeWidth={1.5} size={18} />
+                {step === 1 ? "Begin →" : "Continue"}
+                {step !== 1 && <ArrowRight strokeWidth={1.5} size={18} />}
               </button>
             ) : (
               <button
