@@ -386,13 +386,19 @@ export default function WeeklyView() {
 
       {/* Summary Card */}
       <div
-        className="bg-gradient-to-br from-primary/5 to-info/5 rounded-[2rem] border border-stone-100 p-8 text-center"
+        className="bg-gradient-to-br from-primary/5 to-info/5 rounded-[2rem] border border-stone-100 p-8"
         data-testid="weekly-summary-card"
       >
-        <p className="text-2xl font-caveat text-stone-700 leading-relaxed">
-          You have {todayTasks.length + weekTasks.length} tasks and {upcomingBills.length} bills this week.
-          <br />
-          A meaningful week doesn't have to be full. Just intentional.
+        <h2 className="text-2xl mb-4">Weekly Overview</h2>
+        <p className="text-stone-600 leading-relaxed mb-3">
+          Here's what's coming up — gently organized for you.
+        </p>
+        <div className="space-y-3 text-stone-600 leading-relaxed">
+          <p>You don't have to keep everything in your head.</p>
+          <p>Here are the priorities, reminders, and small steps that will guide your week.</p>
+        </div>
+        <p className="text-stone-600 font-caveat text-lg mt-6">
+          Move at your pace. A steady rhythm is all you need.
         </p>
       </div>
     </div>
