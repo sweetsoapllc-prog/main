@@ -12,6 +12,8 @@ export default function WeeklyView() {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showReset, setShowReset] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const [previousResets, setPreviousResets] = useState([]);
   const [resetData, setResetData] = useState({
     wins: "",
     challenges: "",
