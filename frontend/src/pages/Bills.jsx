@@ -308,23 +308,16 @@ export default function Bills() {
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
 
-            <input
-              type="date"
-              value={newBill.due_date}
-              onChange={(e) => setNewBill({ ...newBill, due_date: e.target.value })}
-              data-testid="bill-date-input"
-              className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
-            />
-
             <select
               value={newBill.frequency}
               onChange={(e) => setNewBill({ ...newBill, frequency: e.target.value })}
               data-testid="bill-frequency-select"
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             >
+              <option value="">Select frequency…</option>
               <option value="Monthly">Monthly</option>
               <option value="Quarterly">Quarterly</option>
-              <option value="Yearly">Yearly</option>
+              <option value="Annually">Annually</option>
             </select>
 
             <div className="space-y-2">
