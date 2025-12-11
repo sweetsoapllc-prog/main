@@ -178,7 +178,7 @@ export default function Bills() {
 
   const BillCard = ({ bill, isPaid }) => (
     <div
-      className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 space-y-4"
+      className="bg-white rounded-2xl border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 space-y-4 h-full flex flex-col"
       data-testid={`bill-${bill.id}`}
     >
       {/* Bill Header */}
@@ -192,11 +192,11 @@ export default function Bills() {
             <p className="text-sm text-stone-500 font-light">Due: {formatDate(bill.due_date)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => startEditBill(bill)}
             data-testid={`edit-bill-btn-${bill.id}`}
-            className="text-stone-400 hover:text-primary transition-colors duration-300 p-1"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-primary transition-colors duration-300"
             title="Edit bill"
           >
             <Edit2 strokeWidth={1.5} size={18} />
@@ -204,7 +204,7 @@ export default function Bills() {
           <button
             onClick={() => deleteBill(bill.id)}
             data-testid={`delete-bill-btn-${bill.id}`}
-            className="text-stone-400 hover:text-red-500 transition-colors duration-300 p-1"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-red-500 transition-colors duration-300"
             title="Delete bill"
           >
             <Trash2 strokeWidth={1.5} size={18} />
