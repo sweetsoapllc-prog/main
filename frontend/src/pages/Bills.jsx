@@ -20,6 +20,7 @@ export default function Bills() {
     autopay: false,
     frequency: "Monthly",
   });
+  const [amountError, setAmountError] = useState("");
 
   useEffect(() => {
     fetchBills();
