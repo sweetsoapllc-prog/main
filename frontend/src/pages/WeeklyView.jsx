@@ -92,7 +92,7 @@ export default function WeeklyView() {
       fetchData();
     } catch (error) {
       console.error("Error saving reset:", error);
-      toast.error("I couldn't save your reset. Let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
