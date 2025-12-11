@@ -132,9 +132,9 @@ export default function Bills() {
     try {
       await axios.delete(`${API}/bills/${billId}`);
       fetchBills();
-      toast.success("Stored away safely.");
+      toast.success("Removed. You won't see reminders for this anymore.");
     } catch (error) {
-      toast.error("That didn't go through. Let's try that again slowly.");
+      toast.error("That didn't save this time. Try again in a moment.");
     }
   };
 
