@@ -11,7 +11,7 @@ const Toaster = ({
       theme={theme}
       className="toaster group"
       position="bottom-center"
-      offset="24px"
+      offset="28px"
       toastOptions={{
         classNames: {
           toast:
