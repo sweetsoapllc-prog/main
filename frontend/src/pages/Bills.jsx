@@ -31,7 +31,7 @@ export default function Bills() {
       setBills(res.data.sort((a, b) => new Date(a.due_date) - new Date(b.due_date)));
     } catch (error) {
       console.error("Error fetching bills:", error);
-      toast.error("I'm having trouble loading your bills right now. Can we try again in a moment?");
+      toast.error("We couldn't save this right now. Your information is safe — try again in a moment.");
     } finally {
       setLoading(false);
     }
