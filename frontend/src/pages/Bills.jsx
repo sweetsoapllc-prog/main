@@ -386,7 +386,7 @@ export default function Bills() {
         {unpaidBills.length === 0 ? (
           <p className="text-stone-500 font-caveat text-lg">Nothing due yet. I'll let you know when something needs attention.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {unpaidBills.map((bill) => (
               <BillCard key={bill.id} bill={bill} isPaid={false} />
             ))}
