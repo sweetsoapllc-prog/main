@@ -182,7 +182,7 @@ export default function Bills() {
       data-testid={`bill-${bill.id}`}
     >
       {/* Bill Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
             <DollarSign className="text-primary" strokeWidth={1.5} size={20} />
@@ -192,11 +192,11 @@ export default function Bills() {
             <p className="text-sm text-stone-500 font-light">Due: {formatDate(bill.due_date)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 pr-0">
           <button
             onClick={() => startEditBill(bill)}
             data-testid={`edit-bill-btn-${bill.id}`}
-            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-primary transition-colors duration-300"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-primary transition-colors duration-300 rounded-lg hover:bg-stone-50"
             title="Edit bill"
           >
             <Edit2 strokeWidth={1.5} size={18} />
@@ -204,7 +204,7 @@ export default function Bills() {
           <button
             onClick={() => deleteBill(bill.id)}
             data-testid={`delete-bill-btn-${bill.id}`}
-            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-red-500 transition-colors duration-300"
+            className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-red-500 transition-colors duration-300 rounded-lg hover:bg-stone-50"
             title="Delete bill"
           >
             <Trash2 strokeWidth={1.5} size={18} />
