@@ -278,13 +278,23 @@ export default function Bills() {
       {/* Add/Edit Bill Form */}
       {(showAdd || editingBill) && (
         <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6">
+          <h2 className="text-2xl mb-6">{editingBill ? "Edit Bill" : "Add a New Bill"}</h2>
           <form onSubmit={editingBill ? saveEditBill : addBill} className="space-y-4" data-testid="add-bill-form">
             <input
               type="text"
               value={newBill.name}
               onChange={(e) => setNewBill({ ...newBill, name: e.target.value })}
-              placeholder="Electric bill, water bill, phone plan…"
+              placeholder="Enter bill name…"
               data-testid="bill-name-input"
+              className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
+            />
+
+            <input
+              type="date"
+              value={newBill.due_date}
+              onChange={(e) => setNewBill({ ...newBill, due_date: e.target.value })}
+              placeholder="Choose due date…"
+              data-testid="bill-date-input"
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
 
@@ -293,7 +303,7 @@ export default function Bills() {
               step="0.01"
               value={newBill.amount}
               onChange={(e) => setNewBill({ ...newBill, amount: e.target.value })}
-              placeholder="Enter the amount due…"
+              placeholder="Enter amount…"
               data-testid="bill-amount-input"
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
