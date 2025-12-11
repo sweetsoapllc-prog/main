@@ -384,22 +384,7 @@ export default function Bills() {
         )}
       </div>
 
-      {/* Upcoming Bills */}
-      {unpaidBills.filter(b => !dueSoon.includes(b)).length > 0 && (
-        <div data-testid="upcoming-bills-section">
-          <div className="mb-4">
-            <h2 className="text-2xl">Upcoming</h2>
-            <p className="text-sm text-stone-500 mt-1">Coming up later this month.</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            {unpaidBills.filter(b => !dueSoon.includes(b)).map((bill) => (
-              <BillCard key={bill.id} bill={bill} isPaid={false} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Paid Bills */}
+      {/* Paid Bills Section */}
       {paidBills.length > 0 && (
         <div data-testid="paid-bills-section">
           <div className="mb-4">
