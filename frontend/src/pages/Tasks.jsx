@@ -169,9 +169,9 @@ export default function Tasks() {
         {["today", "this_week", "later"].map((category) => {
           const categoryTasks = tasks[category];
           const label = category === "today" ? "Today" : category === "this_week" ? "This Week" : "Later";
-          const subtitle = category === "today" ? "Just the few things that matter for today." : 
-                          category === "this_week" ? "Gentle intentions for the days ahead." : 
-                          "Important, but not for right now — safely stored in your Attic Mind.";
+          const subtitle = category === "today" ? "Only what needs care today — nothing more." : 
+                          category === "this_week" ? "A soft look at what's coming up soon." : 
+                          "Held safely for another time.";
 
           return (
             <div key={category} data-testid={`tasks-category-${category}`}>
