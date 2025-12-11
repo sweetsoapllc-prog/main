@@ -164,12 +164,12 @@ export default function Bills() {
   const today = new Date();
   const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
   
-  const unpaidBills = bills.filter((b) => !b.paid);
+  const unpaidBills = bills.filter((b) => !b.paid).sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
   const dueSoon = unpaidBills.filter((b) => {
     const dueDate = new Date(b.due_date);
     return dueDate >= today && dueDate <= nextWeek;
   });
-  const paidBills = bills.filter((b) => b.paid);
+  const paidBills = bills.filter((b) => b.paid).sort((a, b) => new Date(b.created_at || b.due_date) - new Date(a.created_at || a.due_date));
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
