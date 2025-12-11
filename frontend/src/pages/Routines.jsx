@@ -198,7 +198,7 @@ export default function Routines() {
               type="text"
               value={newRoutine.name}
               onChange={(e) => setNewRoutine({ ...newRoutine, name: e.target.value })}
-              placeholder="Routine name (e.g., Morning Self-Care)"
+              placeholder="Name this ritual…"
               data-testid="routine-name-input"
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
