@@ -281,10 +281,8 @@ export default function Dashboard() {
           {getSoftFocusSubtitle()}
         </p>
         {tasks.length === 0 ? (
-          <div className="space-y-3 text-stone-600 leading-relaxed">
-            <p>{getSoftFocusBody().line1}</p>
-            <p>{getSoftFocusBody().line2}</p>
-            <p className="font-caveat text-lg mt-4">{getSoftFocusFooter()}</p>
+          <div className="text-stone-600 leading-relaxed">
+            <p className="font-caveat text-lg">Nothing urgent here. Choose one small thing if you'd like.</p>
           </div>
         ) : (
           <>
