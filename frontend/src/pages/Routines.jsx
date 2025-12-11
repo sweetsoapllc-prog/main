@@ -48,10 +48,10 @@ export default function Routines() {
       setNewRoutine({ name: "", time_of_day: "morning", items: [""] });
       setShowAdd(false);
       fetchRoutines();
-      toast.success("I've saved this ritual for you. It's here whenever you need it.");
+      toast.success("Your ritual is set. A small anchor for your day.");
     } catch (error) {
       console.error("Error adding routine:", error);
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
