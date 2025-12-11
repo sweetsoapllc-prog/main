@@ -80,11 +80,9 @@ export default function Dashboard() {
     try {
       await axios.patch(`${API}/tasks/${taskId}`, { completed: true });
       setTasks(tasks.filter((t) => t.id !== taskId));
-      toast.success("Well done for showing up for yourself today.", {
-        icon: <Heart className="text-success" size={16} />,
-      });
+      toast.success("Done. One soft step forward.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
