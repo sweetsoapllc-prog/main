@@ -93,9 +93,9 @@ export default function Tasks() {
       setEditingTask(null);
       setEditTitle("");
       fetchTasks();
-      toast.success("Updated. I've got that saved.");
+      toast.success("Captured. One less thing to hold in your mind.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
