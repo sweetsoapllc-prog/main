@@ -51,7 +51,7 @@ export default function Bills() {
       return;
     }
     
-    if (!newBill.amount) {
+    if (newBill.amount === "" || newBill.amount === null || newBill.amount === undefined) {
       toast.error("Please enter an amount.");
       return;
     }
