@@ -69,7 +69,7 @@ export default function Tasks() {
     try {
       await axios.delete(`${API}/tasks/${taskId}`);
       fetchTasks();
-      toast.success("Stored away safely.");
+      toast.success("Removed. You're in control of your space.");
     } catch (error) {
       toast.error("That didn't go through. Let's try that again slowly.");
     }
