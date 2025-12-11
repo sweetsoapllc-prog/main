@@ -409,10 +409,10 @@ export default function Bills() {
         </div>
       )}
 
-      {/* Footnote */}
-      <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl p-6 border border-primary/20" data-testid="bills-footnote">
-        <p className="text-stone-600 leading-relaxed text-center">
-          Update anything anytime. Your Attic Mind will always remind you gently.
+      {/* Footer Note */}
+      <div className="max-w-3xl mx-auto text-center" data-testid="bills-footer">
+        <p className="text-stone-500 leading-relaxed font-caveat text-lg">
+          You're not doing this alone. I'll keep track of the details so you don't have to.
         </p>
       </div>
     </div>
