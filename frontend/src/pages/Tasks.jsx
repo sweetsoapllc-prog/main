@@ -124,9 +124,9 @@ export default function Tasks() {
   return (
     <div className="space-y-8" data-testid="tasks-page">
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="tasks-title">Tasks</h1>
+        <h1 className="text-4xl md:text-5xl mb-4" data-testid="tasks-title">Your Tasks</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          Small steps, taken gently. No pressure.
+          Small steps, taken softly. No pressure.
         </p>
       </div>
 
