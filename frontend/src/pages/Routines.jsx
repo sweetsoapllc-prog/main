@@ -222,7 +222,7 @@ export default function Routines() {
                   type="text"
                   value={item}
                   onChange={(e) => updateItem(index, e.target.value)}
-                  placeholder="One gentle step for this ritual…"
+                  placeholder="Describe the small step you want to add to this routine…"
                   data-testid={`routine-item-input-${index}`}
                   className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
                 />
