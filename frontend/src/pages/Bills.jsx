@@ -235,7 +235,7 @@ export default function Bills() {
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="text-4xl md:text-5xl mb-4" data-testid="bills-title">Bills & Payments</h1>
         <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          I'll remember these softly, so your mind doesn't have to.
+          I'll keep track of these softly, so your mind doesn't have to hold them.
         </p>
       </div>
 
