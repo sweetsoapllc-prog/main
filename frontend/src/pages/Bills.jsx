@@ -271,7 +271,7 @@ export default function Bills() {
               step="0.01"
               value={newBill.amount}
               onChange={(e) => setNewBill({ ...newBill, amount: e.target.value })}
-              placeholder="Amount ($)"
+              placeholder="Enter the amount due…"
               data-testid="bill-amount-input"
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
