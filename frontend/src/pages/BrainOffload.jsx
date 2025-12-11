@@ -66,11 +66,11 @@ export default function BrainOffload() {
         )
       );
 
-      toast.success("I've organized everything for you. Your mind can rest now.");
+      toast.success("Thank you for sharing that. It's held here gently.");
       navigate("/tasks");
     } catch (error) {
       console.error("Error saving tasks:", error);
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
