@@ -38,7 +38,10 @@ export default function Tasks() {
 
   const addTask = async (e) => {
     e.preventDefault();
-    if (!newTask.title.trim()) return;
+    if (!newTask.title.trim()) {
+      toast.error("Looks like you didn't add anything. Try again whenever you're ready.");
+      return;
+    }
 
     try {
       await axios.post(`${API}/tasks`, {
@@ -51,7 +54,7 @@ export default function Tasks() {
       toast.success("Captured. One less thing to hold in your mind.");
     } catch (error) {
       console.error("Error adding task:", error);
-      toast.error("That didn't go through. Let's try that again slowly.");
+      toast.error("That didn't save this time. Let's try again slowly.");
     }
   };
 
