@@ -39,15 +39,27 @@ export default function Bills() {
 
   const addBill = async (e) => {
     e.preventDefault();
-    if (!newBill.name.trim() || !newBill.amount || !newBill.due_date) {
-      toast.error("Looks like something is missing. Try again whenever you're ready.");
+    
+    // Validate each field individually
+    if (!newBill.name.trim()) {
+      toast.error("Please enter a bill name.");
+      return;
+    }
+    
+    if (!newBill.due_date) {
+      toast.error("Please choose a due date.");
+      return;
+    }
+    
+    if (!newBill.amount) {
+      toast.error("Please enter an amount.");
       return;
     }
 
     // Validate amount
     const amount = parseFloat(newBill.amount);
     if (isNaN(amount) || amount <= 0) {
-      toast.error("That amount doesn't look right. Let's adjust it gently.");
+      toast.error("Please enter a valid amount.");
       return;
     }
 
@@ -64,7 +76,7 @@ export default function Bills() {
       setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
       setShowAdd(false);
       fetchBills();
-      toast.success("I'll remember this date for you.");
+      toast.success("Your bill has been added.");
     } catch (error) {
       console.error("Error adding bill:", error);
       toast.error("That didn't save this time. Try again in a moment.");
