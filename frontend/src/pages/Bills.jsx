@@ -375,6 +375,7 @@ export default function Bills() {
                 type="button"
                 onClick={() => {
                   setShowAdd(false);
+                  setAmountError("");
                   cancelEdit();
                 }}
                 data-testid="cancel-bill-btn"
