@@ -59,9 +59,9 @@ export default function Routines() {
     try {
       await axios.patch(`${API}/routines/${routineId}/complete`);
       fetchRoutines();
-      toast.success("You completed this ritual. That's something to feel good about.");
+      toast.success("Done. One soft step forward.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
