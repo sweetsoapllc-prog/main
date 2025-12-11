@@ -403,7 +403,7 @@ export default function Bills() {
       {/* Empty State */}
       {bills.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-stone-500 font-caveat text-lg">No bills yet. You're all clear.</p>
+          <p className="text-stone-500 font-caveat text-lg">No reminders yet. Add the next important date and I'll remember it for you.</p>
         </div>
       )}
 
