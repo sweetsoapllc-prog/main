@@ -1,21 +1,34 @@
-// Gentle toast messages for Quiet Housekeeper
+// Centralized toast messages for The Attic Mind
+// Following the microcopy library standards
 
 export const toastMessages = {
-  // Success messages
-  taskAdded: "I've got this down for you. Well done for adding it.",
-  taskCompleted: "Well done for showing up for yourself today.",
-  taskDeleted: "Got it — I've taken care of that.",
-  routineAdded: "I've saved this ritual for you. It's here whenever you need it.",
-  routineCompleted: "You completed this ritual. That's something to feel good about.",
-  billAdded: "I've got this bill noted. You don't have to remember it now.",
-  billPaid: (billName) => `Got it. I've marked ${billName} as paid.`,
-  brainOffloadSaved: "I've organized everything for you. Your mind can rest now.",
-  energyChecked: "Thank you for checking in",
-  onboardingComplete: "Welcome! Your space is ready.",
+  // Success Messages
+  success: {
+    taskAdded: "Captured. One less thing to hold in your mind.",
+    taskCompleted: "Done. One soft step forward.",
+    taskArchived: "Stored away safely.",
+    routineAdded: "Your ritual is set. A small anchor for your day.",
+    routineStepAdded: "Perfect. One more soft detail added.",
+    billAdded: "I'll remember this date for you.",
+    billPaid: "Noted. You're all set.",
+    weeklyIntention: "Your week has a calm direction.",
+    feelingLogged: "Thank you for telling me. I'm right here with you.",
+    offloadSaved: "Thank you for sharing that. It's held here gently.",
+    autoSave: "Saved automatically."
+  },
   
-  // Gentle error messages
-  loadError: "I'm having trouble loading this right now. Can we try again in a moment?",
-  saveError: "Something didn't save properly. It's okay — let's try that again.",
-  connectionError: "I can't quite reach the server right now. Maybe check your connection?",
-  genericError: "Something unexpected happened. Take a breath — we'll figure this out.",
+  // Error Messages
+  error: {
+    missingField: "Looks like something is missing. Try again when you're ready.",
+    invalidInput: "That doesn't seem to fit. Let's adjust it together.",
+    networkError: "We couldn't save this right now. Your information is safe — try again in a moment.",
+    serverError: "Something didn't load correctly. You're not doing anything wrong.",
+    failedSave: "That didn't go through. Let's try that again slowly.",
+    offloadFailed: "Your words didn't save this time, but they're still yours. Please try again."
+  },
+  
+  // Loading States
+  loading: {
+    saving: "Saving softly…"
+  }
 };
