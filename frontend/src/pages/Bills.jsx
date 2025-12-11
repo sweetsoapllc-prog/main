@@ -307,6 +307,7 @@ export default function Bills() {
             <input
               type="number"
               step="0.01"
+              min="0.01"
               value={newBill.amount}
               onChange={(e) => setNewBill({ ...newBill, amount: e.target.value })}
               placeholder="Enter amount…"
