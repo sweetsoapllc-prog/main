@@ -374,6 +374,7 @@ export default function Bills() {
             </div>
           </form>
         </div>
+        </div>
       )}
 
       {/* Upcoming Bills Section */}
