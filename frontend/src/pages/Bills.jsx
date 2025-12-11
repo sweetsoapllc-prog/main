@@ -282,7 +282,8 @@ export default function Bills() {
 
       {/* Add/Edit Bill Form */}
       {(showAdd || editingBill) && (
-        <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 my-8">
+        <div className="flex items-center justify-center py-12">
+        <div className="max-w-2xl w-full mx-4 bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8">
           <h2 className="text-2xl mb-6 font-fraunces">{editingBill ? "Edit Bill" : "Add a New Bill"}</h2>
           <form onSubmit={editingBill ? saveEditBill : addBill} className="space-y-4" data-testid="add-bill-form">
             <input
