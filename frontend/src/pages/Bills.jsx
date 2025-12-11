@@ -261,7 +261,7 @@ export default function Bills() {
               type="text"
               value={newBill.name}
               onChange={(e) => setNewBill({ ...newBill, name: e.target.value })}
-              placeholder="Bill name (e.g., Electric, Rent)"
+              placeholder="Electric bill, water bill, rent…"
               data-testid="bill-name-input"
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
