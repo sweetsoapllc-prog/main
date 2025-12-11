@@ -182,33 +182,62 @@ export default function Bills() {
       data-testid={`bill-${bill.id}`}
     >
       {/* Bill Header */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3 flex-1">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
             <DollarSign className="text-primary" strokeWidth={1.5} size={20} />
           </div>
-          <div className="flex-1">
-            <h3 className="font-fraunces text-lg text-stone-800">{bill.name}</h3>
-            <p className="text-sm text-stone-500">Due: {formatDate(bill.due_date)}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-medium text-lg text-stone-800 truncate">{bill.name}</h3>
+            <p className="text-sm text-stone-500 font-light">Due: {formatDate(bill.due_date)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-3 flex-shrink-0">
           <button
             onClick={() => startEditBill(bill)}
             data-testid={`edit-bill-btn-${bill.id}`}
-            className="text-stone-400 hover:text-primary transition-colors duration-300"
+            className="text-stone-400 hover:text-primary transition-colors duration-300 p-1"
+            title="Edit bill"
           >
             <Edit2 strokeWidth={1.5} size={18} />
           </button>
           <button
             onClick={() => deleteBill(bill.id)}
             data-testid={`delete-bill-btn-${bill.id}`}
-            className="text-stone-400 hover:text-red-500 transition-colors duration-300"
+            className="text-stone-400 hover:text-red-500 transition-colors duration-300 p-1"
+            title="Delete bill"
           >
             <Trash2 strokeWidth={1.5} size={18} />
           </button>
+        </div>
+      </div>
+
+      {/* Bill Details */}
+      <div className="border-t border-stone-100 pt-4 space-y-3">
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-stone-500 font-light">Amount</span>
+          <span className="text-2xl font-semibold text-primary">${bill.amount.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-stone-500 font-light">Autopay</span>
+          <span className="text-sm text-stone-700">
+            {bill.autopay ? (
+              <span className="flex items-center gap-1 text-success font-medium">
+                <Zap size={14} />
+                Yes
+              </span>
+            ) : (
+              <span className="font-light">No</span>
+            )}
+          </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-stone-500 font-light">Frequency</span>
+          <span className="text-sm text-stone-700 font-light">{bill.frequency || "Monthly"}</span>
+        </div>
+        <div className="flex justify-between items-center pt-2">
           {isPaid ? (
-            <span className="text-xs bg-success/10 text-success px-3 py-1.5 rounded-full flex items-center gap-1 font-medium">
+            <span className="text-xs bg-success/10 text-success px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium ml-auto">
               <CheckCircle2 strokeWidth={2} size={14} />
               Paid
             </span>
@@ -216,37 +245,13 @@ export default function Bills() {
             <button
               onClick={() => payBill(bill)}
               data-testid={`pay-bill-btn-${bill.id}`}
-              className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium whitespace-nowrap"
+              className="text-sm bg-stone-100 hover:bg-success/10 text-stone-600 hover:text-success px-4 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 font-medium whitespace-nowrap ml-auto"
+              title="Mark as paid"
             >
               <CheckCircle2 strokeWidth={1.5} size={16} />
               Mark as Paid
             </button>
           )}
-        </div>
-      </div>
-
-      {/* Bill Details */}
-      <div className="border-t border-stone-100 pt-4 space-y-2">
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-stone-500">Amount</span>
-          <span className="text-2xl font-fraunces text-primary">${bill.amount.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-stone-500">Autopay</span>
-          <span className="text-sm text-stone-700">
-            {bill.autopay ? (
-              <span className="flex items-center gap-1 text-success">
-                <Zap size={14} />
-                Yes
-              </span>
-            ) : (
-              "No"
-            )}
-          </span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-stone-500">Frequency</span>
-          <span className="text-sm text-stone-700">{bill.frequency || "Monthly"}</span>
         </div>
       </div>
     </div>
