@@ -360,7 +360,7 @@ export default function Bills() {
         <div data-testid="due-soon-section">
           <div className="mb-4">
             <h2 className="text-2xl">Due Soon (Next 7 Days)</h2>
-            <p className="text-sm text-stone-500 mt-1">Gentle reminders for what needs your attention soon.</p>
+            <p className="text-sm text-stone-500 mt-1">These are coming up. You can handle them one at a time—there's no rush.</p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             {dueSoon.map((bill) => (
