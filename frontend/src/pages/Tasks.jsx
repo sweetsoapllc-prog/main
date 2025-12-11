@@ -137,7 +137,7 @@ export default function Tasks() {
             type="text"
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            placeholder="What would you like to remember…?"
+            placeholder="Add a small step or thought…"
             data-testid="task-input"
             className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
           />
