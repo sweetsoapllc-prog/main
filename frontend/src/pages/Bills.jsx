@@ -401,7 +401,7 @@ export default function Bills() {
             <h2 className="text-2xl">Paid Recently</h2>
             <p className="text-sm text-stone-500 mt-1">These are taken care of.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {paidBills.map((bill) => (
               <BillCard key={bill.id} bill={bill} isPaid={true} />
             ))}
