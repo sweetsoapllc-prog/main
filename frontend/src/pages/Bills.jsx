@@ -367,20 +367,22 @@ export default function Bills() {
         </div>
       )}
 
-      {/* Due Soon Section */}
-      {dueSoon.length > 0 && (
-        <div data-testid="due-soon-section">
-          <div className="mb-4">
-            <h2 className="text-2xl">Due Soon (Next 7 Days)</h2>
-            <p className="text-sm text-stone-500 mt-1">These are coming up. You can handle them one at a time—there's no rush.</p>
-          </div>
+      {/* Upcoming Bills Section */}
+      <div data-testid="upcoming-bills-section">
+        <div className="mb-4">
+          <h2 className="text-2xl">Upcoming Bills</h2>
+          <p className="text-sm text-stone-500 mt-1">These are coming up soon.</p>
+        </div>
+        {unpaidBills.length === 0 ? (
+          <p className="text-stone-500 font-caveat text-lg">Nothing due yet. I'll let you know when something needs attention.</p>
+        ) : (
           <div className="grid md:grid-cols-2 gap-4">
-            {dueSoon.map((bill) => (
+            {unpaidBills.map((bill) => (
               <BillCard key={bill.id} bill={bill} isPaid={false} />
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Upcoming Bills */}
       {unpaidBills.filter(b => !dueSoon.includes(b)).length > 0 && (
