@@ -53,6 +53,7 @@ export default function Bills() {
     }
     
     if (newBill.amount === "" || newBill.amount === null || newBill.amount === undefined) {
+      setAmountError("Please enter an amount.");
       toast.error("Please enter an amount.");
       return;
     }
@@ -60,9 +61,13 @@ export default function Bills() {
     // Validate amount
     const amount = parseFloat(newBill.amount);
     if (isNaN(amount) || amount <= 0) {
+      setAmountError("Please enter a valid amount.");
       toast.error("Please enter a valid amount.");
       return;
     }
+    
+    // Clear error if validation passes
+    setAmountError("");
 
     try {
       await axios.post(`${API}/bills`, {
