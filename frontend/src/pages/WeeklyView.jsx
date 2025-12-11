@@ -68,17 +68,7 @@ export default function WeeklyView() {
         anchors: resetData.anchors.filter(a => a.trim() !== ""),
       });
       
-      const tone = userProfile?.tone_preference || "gentle";
-      let message = "Your week is gently reset";
-      if (tone === "softest") {
-        message = "Your reset is complete. I'm proud of you for taking this time.";
-      } else if (tone === "neutral") {
-        message = "Weekly reset saved.";
-      }
-      
-      toast.success(message, {
-        icon: <Heart className="text-success" size={16} />,
-      });
+      toast.success("Your week has a calm direction.");
       
       setShowReset(false);
       setResetData({
