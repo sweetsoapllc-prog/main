@@ -134,12 +134,37 @@ class Bill(BaseModel):
 
 class BillCreate(BaseModel):
     user_id: str
-    name: str
-    amount: float
-    due_date: str
+    name: str = Field(..., min_length=1, description="Bill name is required")
+    amount: float = Field(..., gt=0, description="Amount must be greater than 0")
+    due_date: str = Field(..., min_length=1, description="Due date is required")
     recurring: bool = False
     autopay: bool = False
     frequency: str = "Monthly"
+    
+    @validator('name')
+    def validate_name(cls, v):
+        if not v or not v.strip():
+            raise ValueError('Please enter a bill name.')
+        return v.strip()
+    
+    @validator('due_date')
+    def validate_due_date(cls, v):
+        if not v or not v.strip():
+            raise ValueError('Please choose a due date.')
+        # Try to parse the date to ensure it's valid
+        try:
+            datetime.fromisoformat(v)
+        except:
+            raise ValueError('Please enter a valid date.')
+        return v
+    
+    @validator('amount')
+    def validate_amount(cls, v):
+        if v is None:
+            raise ValueError('Please enter an amount.')
+        if v <= 0:
+            raise ValueError('Please enter a valid amount.')
+        return v
 
 class EnergyCheckIn(BaseModel):
     model_config = ConfigDict(extra="ignore")
