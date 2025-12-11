@@ -94,10 +94,10 @@ export default function Routines() {
       setNewRoutine({ name: "", time_of_day: "morning", items: [""] });
       setEditingRoutine(null);
       fetchRoutines();
-      toast.success("Routine updated. I've got that saved.");
+      toast.success("Your ritual is set. A small anchor for your day.");
     } catch (error) {
       console.error("Error updating routine:", error);
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
