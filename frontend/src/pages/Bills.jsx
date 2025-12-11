@@ -341,7 +341,7 @@ export default function Bills() {
                 />
                 <span className="text-stone-600 flex items-center gap-2">
                   <Zap className="text-success" size={16} />
-                  On autopay
+                  Is this on autopay?
                 </span>
               </label>
             </div>
