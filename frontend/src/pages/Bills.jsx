@@ -65,9 +65,9 @@ export default function Bills() {
     try {
       await axios.patch(`${API}/bills/${bill.id}/pay`);
       fetchBills();
-      toast.success(`Got it. I've marked ${bill.name} as paid.`);
+      toast.success("Noted. You're all set.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
