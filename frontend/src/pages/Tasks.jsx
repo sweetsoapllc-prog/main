@@ -180,7 +180,11 @@ export default function Tasks() {
                 <p className="text-sm text-stone-500">{subtitle}</p>
               </div>
               {categoryTasks.length === 0 ? (
-                <p className="text-stone-500 font-caveat text-lg">Nothing here yet. You're doing great.</p>
+                <p className="text-stone-500 font-caveat text-lg">
+                  {category === "today" ? "Nothing urgent here. Choose one small thing if you'd like." :
+                   category === "this_week" ? "Nothing added yet. Capture what's on your mind — even the small things matter." :
+                   "Nothing here yet. I'll hold things for later when you're ready."}
+                </p>
               ) : (
                 <div className="space-y-3">
                   {categoryTasks.map((task) => (
