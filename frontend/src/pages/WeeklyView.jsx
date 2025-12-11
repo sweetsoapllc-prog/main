@@ -51,7 +51,7 @@ export default function WeeklyView() {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error("I'm having trouble loading your weekly view right now. Can we try again in a moment?");
+      toast.error("We couldn't save this right now. Your information is safe — try again in a moment.");
     } finally {
       setLoading(false);
     }
