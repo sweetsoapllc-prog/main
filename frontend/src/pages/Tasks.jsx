@@ -48,10 +48,10 @@ export default function Tasks() {
       });
       setNewTask({ title: "", category: "today" });
       fetchTasks();
-      toast.success("I've got this down for you. Well done for adding it.");
+      toast.success("Captured. One less thing to hold in your mind.");
     } catch (error) {
       console.error("Error adding task:", error);
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
@@ -59,9 +59,9 @@ export default function Tasks() {
     try {
       await axios.patch(`${API}/tasks/${taskId}`, { completed: true });
       fetchTasks();
-      toast.success("Well done for showing up for yourself today.");
+      toast.success("Done. One soft step forward.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
@@ -69,9 +69,9 @@ export default function Tasks() {
     try {
       await axios.delete(`${API}/tasks/${taskId}`);
       fetchTasks();
-      toast.success("Got it — I've taken care of that.");
+      toast.success("Stored away safely.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
