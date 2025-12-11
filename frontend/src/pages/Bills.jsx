@@ -39,13 +39,23 @@ export default function Bills() {
 
   const addBill = async (e) => {
     e.preventDefault();
-    if (!newBill.name.trim() || !newBill.amount || !newBill.due_date) return;
+    if (!newBill.name.trim() || !newBill.amount || !newBill.due_date) {
+      toast.error("Looks like something is missing. Try again whenever you're ready.");
+      return;
+    }
+
+    // Validate amount
+    const amount = parseFloat(newBill.amount);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("That amount doesn't look right. Let's adjust it gently.");
+      return;
+    }
 
     try {
       await axios.post(`${API}/bills`, {
         user_id: USER_ID,
         name: newBill.name,
-        amount: parseFloat(newBill.amount),
+        amount: amount,
         due_date: newBill.due_date,
         recurring: newBill.recurring,
         autopay: newBill.autopay,
@@ -57,7 +67,7 @@ export default function Bills() {
       toast.success("I'll remember this date for you.");
     } catch (error) {
       console.error("Error adding bill:", error);
-      toast.error("That didn't go through. Let's try that again slowly.");
+      toast.error("That didn't save this time. Try again in a moment.");
     }
   };
 
