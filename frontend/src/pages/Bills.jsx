@@ -121,10 +121,10 @@ export default function Bills() {
       setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
       setEditingBill(null);
       fetchBills();
-      toast.success("I'll remember this date for you.");
+      toast.success("All updated — I'll keep track of it.");
     } catch (error) {
       console.error("Error updating bill:", error);
-      toast.error("That didn't go through. Let's try that again slowly.");
+      toast.error("That didn't save this time. Try again in a moment.");
     }
   };
 
