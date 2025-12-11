@@ -213,10 +213,10 @@ export default function Bills() {
       </div>
 
       {/* Bill Details */}
-      <div className="border-t border-stone-100 pt-4 space-y-3">
+      <div className="border-t border-stone-100 pt-4 space-y-3 flex-1 flex flex-col">
         <div className="flex justify-between items-center">
           <span className="text-sm text-stone-500 font-light">Amount</span>
-          <span className="text-2xl font-semibold text-primary">${bill.amount.toFixed(2)}</span>
+          <span className="text-2xl font-bold text-primary">${bill.amount.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm text-stone-500 font-light">Autopay</span>
@@ -235,7 +235,7 @@ export default function Bills() {
           <span className="text-sm text-stone-500 font-light">Frequency</span>
           <span className="text-sm text-stone-700 font-light">{bill.frequency || "Monthly"}</span>
         </div>
-        <div className="flex justify-between items-center pt-2">
+        <div className="flex justify-between items-center pt-2 mt-auto">
           {isPaid ? (
             <span className="text-xs bg-success/10 text-success px-3 py-1.5 rounded-full flex items-center gap-1.5 font-medium ml-auto">
               <CheckCircle2 strokeWidth={2} size={14} />
