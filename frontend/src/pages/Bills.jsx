@@ -310,16 +310,26 @@ export default function Bills() {
               className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
             />
 
-            <input
-              type="number"
-              step="0.01"
-              min="0.01"
-              value={newBill.amount}
-              onChange={(e) => setNewBill({ ...newBill, amount: e.target.value })}
-              placeholder="Enter amount…"
-              data-testid="bill-amount-input"
-              className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
-            />
+            <div className="w-full">
+              <input
+                type="number"
+                step="0.01"
+                min="0.01"
+                value={newBill.amount}
+                onChange={(e) => {
+                  setNewBill({ ...newBill, amount: e.target.value });
+                  setAmountError(""); // Clear error on input
+                }}
+                placeholder="Enter amount…"
+                data-testid="bill-amount-input"
+                className={`w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none ${amountError ? 'border-red-300 focus:border-red-400' : ''}`}
+              />
+              {amountError && (
+                <p className="text-xs text-red-500 mt-2 ml-1" data-testid="amount-error">
+                  {amountError}
+                </p>
+              )}
+            </div>
 
             <select
               value={newBill.frequency}
