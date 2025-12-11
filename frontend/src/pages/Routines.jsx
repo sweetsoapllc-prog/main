@@ -105,9 +105,9 @@ export default function Routines() {
     try {
       await axios.delete(`${API}/routines/${routineId}`);
       fetchRoutines();
-      toast.success("Routine removed gently.");
+      toast.success("Stored away safely.");
     } catch (error) {
-      toast.error("Something didn't save properly. It's okay — let's try that again.");
+      toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
