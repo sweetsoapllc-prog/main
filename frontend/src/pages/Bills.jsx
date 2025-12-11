@@ -80,6 +80,7 @@ export default function Bills() {
         frequency: newBill.frequency,
       });
       setNewBill({ name: "", amount: "", due_date: "", recurring: false, autopay: false, frequency: "Monthly" });
+      setAmountError("");
       setShowAdd(false);
       fetchBills();
       toast.success("Your bill has been added.");
