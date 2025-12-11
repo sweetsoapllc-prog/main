@@ -39,7 +39,7 @@ export default function BrainOffload() {
       setOrganized(tasksByCategory);
     } catch (error) {
       console.error("Error processing offload:", error);
-      toast.error("I'm having trouble organizing this right now. Take a breath — let's try again.");
+      toast.error("Your words didn't save this time, but they're still yours. Please try again.");
     } finally {
       setProcessing(false);
     }
