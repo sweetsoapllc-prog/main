@@ -576,6 +576,23 @@ async def get_weekly_resets(user_id: str):
             reset['created_at'] = datetime.fromisoformat(reset['created_at'])
     return resets
 
+# Morning Check-In routes
+@api_router.post("/morning-checkin", response_model=MorningCheckIn)
+async def create_morning_checkin(checkin: MorningCheckInCreate):
+    checkin_obj = MorningCheckIn(**checkin.model_dump())
+    doc = checkin_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.morning_checkins.insert_one(doc)
+    return checkin_obj
+
+@api_router.get("/morning-checkin/{user_id}/{date}")
+async def get_morning_checkin(user_id: str, date: str):
+    checkin = await db.morning_checkins.find_one({"user_id": user_id, "date": date}, {"_id": 0})
+    if checkin:
+        if isinstance(checkin.get('created_at'), str):
+            checkin['created_at'] = datetime.fromisoformat(checkin['created_at'])
+    return checkin
+
 # Include the router in the main app
 app.include_router(api_router)
 
