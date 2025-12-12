@@ -208,6 +208,19 @@ class SortedTask(BaseModel):
 class BrainOffloadResponse(BaseModel):
     tasks: List[SortedTask]
 
+class MorningCheckIn(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    feeling: str
+    date: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class MorningCheckInCreate(BaseModel):
+    user_id: str
+    feeling: str
+    date: str
+
 class WeeklyReset(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
