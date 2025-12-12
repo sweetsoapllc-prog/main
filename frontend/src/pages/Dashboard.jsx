@@ -306,6 +306,43 @@ export default function Dashboard() {
         </p>
       </div>
 
+      {/* Morning Check-In (only show in morning) */}
+      {timeOfDay === "morning" && !hasCheckedIn && (
+        <div
+          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
+          data-testid="morning-checkin-section"
+        >
+          <h2 className="text-2xl mb-2">Morning Check-In</h2>
+          <p className="text-base text-stone-600 mb-2">How are you feeling as you start today?</p>
+          <p className="text-sm text-stone-500 mb-4 font-light">A word or two is enough. This won't turn into tasks.</p>
+          
+          <textarea
+            value={morningCheckin}
+            onChange={(e) => {
+              setMorningCheckin(e.target.value);
+              setShowCheckinEmpty(false);
+            }}
+            placeholder="You can write here if you'd like…"
+            data-testid="morning-checkin-input"
+            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-4 outline-none resize-none h-24 font-light"
+          />
+          
+          {showCheckinEmpty && (
+            <p className="text-stone-500 font-caveat text-base mt-3">
+              That's okay. We can still move gently.
+            </p>
+          )}
+          
+          <button
+            onClick={saveMorningCheckin}
+            data-testid="save-checkin-btn"
+            className="mt-4 bg-stone-100 text-stone-600 hover:bg-stone-200 px-6 py-2.5 rounded-full transition-all duration-300 text-sm font-medium"
+          >
+            Save Check-In
+          </button>
+        </div>
+      )}
+
       {/* Today's Soft Focus */}
       <div
         className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
