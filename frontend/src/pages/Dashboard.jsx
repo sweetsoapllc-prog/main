@@ -18,6 +18,9 @@ export default function Dashboard() {
   const [timeOfDay, setTimeOfDay] = useState("");
   const [bills, setBills] = useState([]);
   const [routines, setRoutines] = useState([]);
+  const [morningCheckin, setMorningCheckin] = useState("");
+  const [showCheckinEmpty, setShowCheckinEmpty] = useState(false);
+  const [hasCheckedIn, setHasCheckedIn] = useState(false);
 
   // Determine time of day
   useEffect(() => {
