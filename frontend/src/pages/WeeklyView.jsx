@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Calendar, Sparkles, Heart } from "lucide-react";
+import { Calendar, ArrowRight, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -10,16 +10,11 @@ const USER_ID = "demo-user-123";
 export default function WeeklyView() {
   const [tasks, setTasks] = useState([]);
   const [bills, setBills] = useState([]);
+  const [routines, setRoutines] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showReset, setShowReset] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-  const [previousResets, setPreviousResets] = useState([]);
-  const [resetData, setResetData] = useState({
-    wins: "",
-    challenges: "",
-    feeling: "",
-    anchors: ["", "", ""],
-  });
+  const [resetStep, setResetStep] = useState(0); // 0=not started, 1=intro, 2=review, 3=adjust, 4=anchor, 5=complete
+  const [weeklyAnchor, setWeeklyAnchor] = useState("");
+  const [hasCompletedReset, setHasCompletedReset] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -27,27 +22,30 @@ export default function WeeklyView() {
 
   const fetchData = async () => {
     try {
-      const [tasksRes, billsRes] = await Promise.all([
+      const [tasksRes, billsRes, routinesRes] = await Promise.all([
         axios.get(`${API}/tasks/${USER_ID}`),
         axios.get(`${API}/bills/${USER_ID}`),
+        axios.get(`${API}/routines/${USER_ID}`),
       ]);
+      
       setTasks(tasksRes.data.filter((t) => !t.completed));
       setBills(billsRes.data.filter((b) => !b.paid));
+      setRoutines(routinesRes.data);
       
-      // Fetch user profile for personalization
+      // Check if reset was completed this week
       try {
-        const profileRes = await axios.get(`${API}/onboarding/${USER_ID}`);
-        setUserProfile(profileRes.data);
-      } catch (profileError) {
-        console.log("No onboarding profile found");
-      }
-      
-      // Fetch previous weekly resets
-      try {
+        const today = new Date().toISOString().split('T')[0];
         const resetsRes = await axios.get(`${API}/weekly-reset/${USER_ID}`);
-        setPreviousResets(resetsRes.data);
-      } catch (resetsError) {
-        console.log("No previous resets found");
+        const recentReset = resetsRes.data.find(r => {
+          const resetDate = new Date(r.created_at);
+          const daysDiff = Math.floor((new Date() - resetDate) / (1000 * 60 * 60 * 24));
+          return daysDiff < 7;
+        });
+        if (recentReset) {
+          setHasCompletedReset(true);
+        }
+      } catch (error) {
+        console.log("No recent resets found");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -57,340 +55,281 @@ export default function WeeklyView() {
     }
   };
 
+  const startReset = () => {
+    setResetStep(1);
+  };
+
   const completeReset = async () => {
     try {
-      // Save the reset data to backend
       await axios.post(`${API}/weekly-reset`, {
         user_id: USER_ID,
-        wins: resetData.wins,
-        challenges: resetData.challenges,
-        feeling: resetData.feeling,
-        anchors: resetData.anchors.filter(a => a.trim() !== ""),
-      });
-      
-      toast.success("Your week has a calm direction.");
-      
-      setShowReset(false);
-      setResetData({
         wins: "",
         challenges: "",
         feeling: "",
-        anchors: ["", "", ""],
+        anchors: weeklyAnchor ? [weeklyAnchor] : [],
       });
       
-      // Refresh the data to show the new reset
-      fetchData();
+      toast.success("Weekly reset complete. You're allowed to move at your own pace.");
+      setResetStep(0);
+      setHasCompletedReset(true);
+      setWeeklyAnchor("");
     } catch (error) {
       console.error("Error saving reset:", error);
       toast.error("That didn't go through. Let's try that again slowly.");
     }
   };
 
-  const updateAnchor = (index, value) => {
-    const updated = [...resetData.anchors];
-    updated[index] = value;
-    setResetData({ ...resetData, anchors: updated });
+  const getThisWeekTasks = () => {
+    return tasks.filter(t => t.category === 'this_week' || t.category === 'today');
+  };
+
+  const getThisWeekBills = () => {
+    const today = new Date();
+    const nextWeek = new Date();
+    nextWeek.setDate(today.getDate() + 7);
+    
+    return bills.filter(b => {
+      const dueDate = new Date(b.due_date);
+      return dueDate >= today && dueDate <= nextWeek;
+    });
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading weekly view...</p>
+        <p className="text-stone-500">Loading your week...</p>
+      </div>
+    );
+  }
+
+  // Step 0: Main weekly view (no reset started)
+  if (resetStep === 0) {
+    return (
+      <div className="space-y-8" data-testid="weekly-view-page">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto">
+          <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">Weekly Reset</h1>
+          <p className="text-lg text-stone-600 leading-relaxed font-caveat">
+            A calm place to see what's ahead and steady the week with clarity.
+          </p>
+        </div>
+
+        {/* Empty State or Start Button */}
+        {!hasCompletedReset && tasks.length === 0 && bills.length === 0 ? (
+          <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 text-center">
+            <p className="text-stone-600 leading-relaxed mb-6">
+              Nothing scheduled yet. When you're ready, the weekly reset is here to help you see things clearly.
+            </p>
+            <button
+              onClick={startReset}
+              data-testid="start-reset-btn"
+              className="bg-primary text-white px-8 py-3 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center gap-2 mx-auto"
+            >
+              <span>✨</span>
+              Start Weekly Reset
+            </button>
+          </div>
+        ) : (
+          <div className="max-w-2xl mx-auto">
+            <button
+              onClick={startReset}
+              data-testid="start-reset-btn"
+              className="w-full bg-primary text-white px-8 py-4 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2 text-lg"
+            >
+              <span>✨</span>
+              Start Weekly Reset
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Step 1: Intro Screen
+  if (resetStep === 1) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-8">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 sm:p-12">
+          <h1 className="text-3xl md:text-4xl font-fraunces mb-6">Let's gently reset the week.</h1>
+          <div className="space-y-4 text-stone-600 leading-relaxed mb-8">
+            <p>This is a quiet check-in with what already exists — not a place to push or optimize.</p>
+            <p>We'll look at what's coming up and leave space where it's needed.</p>
+          </div>
+          <button
+            onClick={() => setResetStep(2)}
+            data-testid="begin-reset-btn"
+            className="w-full bg-primary text-white px-8 py-4 rounded-full hover:bg-primary/90 transition-all duration-300"
+          >
+            Begin
+          </button>
         </div>
       </div>
     );
   }
 
-  const todayTasks = tasks.filter((t) => t.category === "today");
-  const weekTasks = tasks.filter((t) => t.category === "this_week");
-  const laterTasks = tasks.filter((t) => t.category === "later");
-
-  // Get bills due this week
-  const today = new Date();
-  const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-  const upcomingBills = bills.filter((b) => {
-    const dueDate = new Date(b.due_date);
-    return dueDate >= today && dueDate <= nextWeek;
-  });
-
-  return (
-    <div className="space-y-8" data-testid="weekly-view-page">
-      <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl md:text-5xl mb-4" data-testid="weekly-title">Your Week at a Glance</h1>
-        <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          A calm overview to help you move through your week with clarity.
-        </p>
-      </div>
-
-      {/* Most Recent Reset */}
-      {previousResets.length > 0 && !showReset && (
-        <div 
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8"
-          data-testid="previous-reset-display"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-fraunces">Your Last Reset</h2>
-            <p className="text-xs text-stone-500">
-              {new Date(previousResets[0].created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </p>
-          </div>
-          <div className="space-y-4">
-            {previousResets[0].feeling && (
-              <div className="bg-primary/5 rounded-2xl p-4 border border-primary/20">
-                <p className="text-sm text-stone-600 mb-1">How you wanted to feel:</p>
-                <p className="font-caveat text-lg text-stone-800">{previousResets[0].feeling}</p>
-              </div>
-            )}
-            {previousResets[0].anchors && previousResets[0].anchors.length > 0 && (
-              <div>
-                <p className="text-sm text-stone-600 mb-2">Your anchors:</p>
-                <ul className="space-y-2">
-                  {previousResets[0].anchors.map((anchor, idx) => (
-                    <li key={idx} className="text-stone-700 flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      <span>{anchor}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Weekly Reset Flow */}
-      {!showReset ? (
-        <div className="text-center">
-          <button
-            onClick={() => setShowReset(true)}
-            data-testid="start-weekly-reset-btn"
-            className="bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full inline-flex items-center gap-2"
-          >
-            <Sparkles strokeWidth={1.5} size={18} />
-            Start Weekly Reset
-          </button>
-        </div>
-      ) : (
-        <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8" data-testid="weekly-reset-form">
-          <h2 className="text-2xl mb-6 font-fraunces">Weekly Reset Flow</h2>
-          <p className="text-stone-600 leading-relaxed font-caveat text-lg mb-6">
-            Let's gently close last week and set soft intentions for the next.
-          </p>
+  // Step 2: Review What's Scheduled
+  if (resetStep === 2) {
+    const thisWeekTasks = getThisWeekTasks();
+    const thisWeekBills = getThisWeekBills();
+    
+    return (
+      <div className="max-w-3xl mx-auto space-y-8">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8">
+          <h2 className="text-3xl font-fraunces mb-2">Here's what's already on your plate.</h2>
+          <p className="text-stone-500 mb-8 font-light">No need to do anything yet. Just take a look.</p>
           
           <div className="space-y-6">
+            {/* Tasks */}
             <div>
-              <label className="text-sm text-stone-600 mb-2 block">What went well last week?</label>
-              <textarea
-                value={resetData.wins}
-                onChange={(e) => setResetData({ ...resetData, wins: e.target.value })}
-                placeholder="Even small wins matter. You showed up, you tried..."
-                data-testid="reset-wins-input"
-                className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-4 outline-none resize-none"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <label className="text-sm text-stone-600 mb-2 block">What felt heavy?</label>
-              <textarea
-                value={resetData.challenges}
-                onChange={(e) => setResetData({ ...resetData, challenges: e.target.value })}
-                placeholder="It's okay to name what was hard. You're not complaining."
-                data-testid="reset-challenges-input"
-                className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-4 outline-none resize-none"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <label className="text-sm text-stone-600 mb-2 block">How do you want to feel this week?</label>
-              <input
-                type="text"
-                value={resetData.feeling}
-                onChange={(e) => setResetData({ ...resetData, feeling: e.target.value })}
-                placeholder="Calm? Grounded? Supported? Lighter?"
-                data-testid="reset-feeling-input"
-                className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm text-stone-600 mb-2 block">3 gentle anchors for this week</label>
-              <p className="text-xs text-stone-500 mb-3">Not a to-do list. Just 3 things that matter.</p>
-              <div className="space-y-2">
-                {[0, 1, 2].map((idx) => (
-                  <input
-                    key={idx}
-                    type="text"
-                    value={resetData.anchors[idx]}
-                    onChange={(e) => updateAnchor(idx, e.target.value)}
-                    placeholder={`Anchor ${idx + 1}`}
-                    data-testid={`reset-anchor-${idx}`}
-                    className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-primary/5 rounded-2xl p-6 border border-primary/20">
-              <p className="font-caveat text-lg text-primary leading-relaxed">
-                Remember: This week doesn't have to be perfect. You're allowed to adjust, rest, and change your mind. I'm here.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-3 mt-6">
-            <button
-              onClick={() => setShowReset(false)}
-              data-testid="cancel-reset-btn"
-              className="flex-1 bg-stone-100 text-stone-600 hover:bg-stone-200 transition-all duration-300 py-3 rounded-full"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={completeReset}
-              data-testid="complete-reset-btn"
-              className="flex-1 bg-primary text-white hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300 py-3 rounded-full"
-            >
-              Complete Reset
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* Today */}
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6"
-          data-testid="today-summary"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-              <Calendar className="text-primary" strokeWidth={1.5} size={20} />
-            </div>
-            <h2 className="text-xl font-fraunces">Today</h2>
-          </div>
-          {todayTasks.length === 0 ? (
-            <div className="space-y-3">
-              <p className="text-stone-500 text-sm font-caveat">Nothing planned. Rest if you need to.</p>
-              <a href="/tasks" className="text-xs text-primary hover:text-primary/80 transition-colors">
-                Add a task if something comes up →
-              </a>
-            </div>
-          ) : (
-            <ul className="space-y-2">
-              {todayTasks.map((task) => (
-                <li key={task.id} className="text-sm text-stone-600 flex items-start gap-2">
-                  <span className="text-primary mt-1">•</span>
-                  <span>{task.title}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* This Week */}
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6"
-          data-testid="week-summary"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-info/10 rounded-full flex items-center justify-center">
-              <Calendar className="text-info" strokeWidth={1.5} size={20} />
-            </div>
-            <h2 className="text-xl font-fraunces">This Week</h2>
-          </div>
-          {weekTasks.length === 0 ? (
-            <div className="space-y-3">
-              <p className="text-stone-500 text-sm font-caveat">Nothing scheduled yet.</p>
-              <a href="/tasks" className="text-xs text-primary hover:text-primary/80 transition-colors">
-                Plan something gently →
-              </a>
-            </div>
-          ) : (
-            <ul className="space-y-2">
-              {weekTasks.map((task) => (
-                <li key={task.id} className="text-sm text-stone-600 flex items-start gap-2">
-                  <span className="text-info mt-1">•</span>
-                  <span>{task.title}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Later */}
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6"
-          data-testid="later-summary"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-muted/50 rounded-full flex items-center justify-center">
-              <Calendar className="text-muted-foreground" strokeWidth={1.5} size={20} />
-            </div>
-            <h2 className="text-xl font-fraunces">Later</h2>
-          </div>
-          {laterTasks.length === 0 ? (
-            <div className="space-y-3">
-              <p className="text-stone-500 text-sm font-caveat">Nothing parked here.</p>
-              <a href="/brain-offload" className="text-xs text-primary hover:text-primary/80 transition-colors">
-                Offload some thoughts →
-              </a>
-            </div>
-          ) : (
-            <p className="text-stone-600 text-sm">
-              {laterTasks.length} {laterTasks.length === 1 ? "item" : "items"} gently parked
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Upcoming Bills */}
-      {upcomingBills.length > 0 && (
-        <div
-          className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8"
-          data-testid="upcoming-bills-section"
-        >
-          <h2 className="text-2xl mb-4">Bills Due This Week</h2>
-          <div className="space-y-3">
-            {upcomingBills.map((bill) => (
-              <div
-                key={bill.id}
-                className="flex items-center justify-between p-4 bg-warning/5 rounded-2xl"
-                data-testid={`upcoming-bill-${bill.id}`}
-              >
-                <div>
-                  <p className="font-medium text-stone-700">{bill.name}</p>
-                  <p className="text-sm text-stone-500">
-                    Due: {new Date(bill.due_date).toLocaleDateString()}
-                  </p>
+              <h3 className="text-lg font-medium mb-3 text-stone-700">Tasks due this week</h3>
+              {thisWeekTasks.length === 0 ? (
+                <p className="text-stone-500 font-light italic">Nothing scheduled</p>
+              ) : (
+                <div className="space-y-2">
+                  {thisWeekTasks.map((task) => (
+                    <div key={task.id} className="bg-stone-50 rounded-xl p-3 text-stone-700">
+                      {task.title}
+                    </div>
+                  ))}
                 </div>
-                <span className="text-xl font-fraunces text-primary">${bill.amount.toFixed(2)}</span>
-              </div>
-            ))}
+              )}
+            </div>
+
+            {/* Bills */}
+            <div>
+              <h3 className="text-lg font-medium mb-3 text-stone-700">Bills due this week</h3>
+              {thisWeekBills.length === 0 ? (
+                <p className="text-stone-500 font-light italic">Nothing scheduled</p>
+              ) : (
+                <div className="space-y-2">
+                  {thisWeekBills.map((bill) => (
+                    <div key={bill.id} className="bg-stone-50 rounded-xl p-3 flex justify-between items-center">
+                      <span className="text-stone-700">{bill.name}</span>
+                      <span className="text-stone-500 text-sm">
+                        {new Date(bill.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Routines */}
+            <div>
+              <h3 className="text-lg font-medium mb-3 text-stone-700">Routines scheduled</h3>
+              {routines.length === 0 ? (
+                <p className="text-stone-500 font-light italic">Nothing scheduled</p>
+              ) : (
+                <div className="space-y-2">
+                  {routines.map((routine) => (
+                    <div key={routine.id} className="bg-stone-50 rounded-xl p-3 text-stone-700">
+                      {routine.name} — {routine.time_of_day}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <button
+            onClick={() => setResetStep(3)}
+            data-testid="continue-btn"
+            className="w-full mt-8 bg-primary text-white px-8 py-4 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            Continue
+            <ArrowRight size={20} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 3: Adjust Gently (Optional)
+  if (resetStep === 3) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-8">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8">
+          <h2 className="text-3xl font-fraunces mb-2">Would you like to adjust anything?</h2>
+          <p className="text-stone-500 mb-8 font-light">
+            You can move, remove, or leave things exactly as they are.
+          </p>
+          
+          <div className="space-y-4">
+            <button
+              onClick={() => setResetStep(4)}
+              className="w-full bg-stone-100 text-stone-700 px-6 py-3 rounded-full hover:bg-stone-200 transition-all duration-300"
+            >
+              Make a small adjustment
+            </button>
+            <button
+              onClick={() => setResetStep(4)}
+              data-testid="leave-unchanged-btn"
+              className="w-full bg-primary text-white px-6 py-3 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              Leave things as they are
+              <ArrowRight size={20} />
+            </button>
           </div>
         </div>
-      )}
-
-      {/* Summary Card */}
-      <div
-        className="bg-gradient-to-br from-primary/5 to-info/5 rounded-[2rem] border border-stone-100 p-8"
-        data-testid="weekly-summary-card"
-      >
-        <h2 className="text-2xl mb-4">Weekly Overview</h2>
-        <p className="text-stone-600 leading-relaxed mb-3">
-          Here's what's coming up — gently organized for you.
-        </p>
-        <div className="space-y-3 text-stone-600 leading-relaxed">
-          <p>You don't have to keep everything in your head.</p>
-          <p>Here are the priorities, reminders, and small steps that will guide your week.</p>
-        </div>
-        <p className="text-stone-600 font-caveat text-lg mt-6">
-          Move at your pace. A steady rhythm is all you need.
-        </p>
       </div>
-    </div>
-  );
+    );
+  }
+
+  // Step 4: Choose One Anchor (Optional)
+  if (resetStep === 4) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-8">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8">
+          <h2 className="text-3xl font-fraunces mb-2">Choose one small anchor for the week.</h2>
+          <p className="text-stone-500 mb-8 font-light">
+            Just one thing that would help the week feel steadier.
+          </p>
+          
+          <textarea
+            value={weeklyAnchor}
+            onChange={(e) => setWeeklyAnchor(e.target.value)}
+            placeholder="One thing to hold onto this week..."
+            data-testid="anchor-input"
+            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-4 outline-none resize-none h-24 mb-6 font-light"
+          />
+          
+          <button
+            onClick={() => setResetStep(5)}
+            data-testid="continue-to-complete-btn"
+            className="w-full bg-primary text-white px-8 py-4 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            Continue
+            <ArrowRight size={20} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 5: Close the Reset
+  if (resetStep === 5) {
+    return (
+      <div className="max-w-2xl mx-auto space-y-8">
+        <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 sm:p-12 text-center">
+          <div className="flex justify-center mb-6">
+            <CheckCircle2 className="text-success" size={48} strokeWidth={1.5} />
+          </div>
+          <h2 className="text-3xl font-fraunces mb-4">Your week is set.</h2>
+          <div className="space-y-3 text-stone-600 leading-relaxed mb-8">
+            <p>Nothing more is required right now.</p>
+            <p>You can come back if something changes.</p>
+          </div>
+          <button
+            onClick={completeReset}
+            data-testid="done-reset-btn"
+            className="bg-primary text-white px-12 py-4 rounded-full hover:bg-primary/90 transition-all duration-300 text-lg"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 }
