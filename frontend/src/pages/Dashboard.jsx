@@ -72,10 +72,46 @@ export default function Dashboard() {
       } catch (routinesError) {
         console.log("Error fetching routines:", routinesError);
       }
+      
+      // Fetch morning check-in if it's morning
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 12) {
+        try {
+          const today = new Date().toISOString().split('T')[0];
+          const checkinRes = await axios.get(`${API}/morning-checkin/${USER_ID}/${today}`);
+          if (checkinRes.data && checkinRes.data.feeling) {
+            setMorningCheckin(checkinRes.data.feeling);
+            setHasCheckedIn(true);
+          }
+        } catch (checkinError) {
+          console.log("No morning check-in found");
+        }
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const saveMorningCheckin = async () => {
+    if (!morningCheckin.trim()) {
+      setShowCheckinEmpty(true);
+      return;
+    }
+    
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      await axios.post(`${API}/morning-checkin`, {
+        user_id: USER_ID,
+        feeling: morningCheckin,
+        date: today
+      });
+      setHasCheckedIn(true);
+      toast.success("Thank you for sharing. I'm holding this softly.");
+    } catch (error) {
+      console.error("Error saving check-in:", error);
+      toast.error("That didn't save. You can try again whenever you're ready.");
     }
   };
 
