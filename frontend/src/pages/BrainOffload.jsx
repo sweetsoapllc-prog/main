@@ -66,7 +66,7 @@ export default function BrainOffload() {
         )
       );
 
-      toast.success("Thank you for sharing that. It's held here gently.");
+      toast.success("I've got this. You don't need to hold it anymore.");
       navigate("/tasks");
     } catch (error) {
       console.error("Error saving tasks:", error);
