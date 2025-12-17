@@ -13,6 +13,7 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   useEffect(() => {
     loadHistory();
