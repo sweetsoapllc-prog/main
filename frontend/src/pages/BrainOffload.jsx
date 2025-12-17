@@ -76,30 +76,28 @@ export default function BrainOffload() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8" data-testid="brain-offload-page">
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <Brain className="text-primary" strokeWidth={1.5} size={32} />
-          <h1 className="text-4xl md:text-5xl" data-testid="brain-offload-title">Brain Offload</h1>
+      <div className="text-center max-w-2xl mx-auto">
+        <h1 className="text-4xl md:text-5xl mb-4 font-fraunces" data-testid="brain-offload-title">Brain Offload</h1>
+        <div className="text-stone-600 leading-relaxed space-y-1">
+          <p>Empty your mind here.</p>
+          <p>I'll quietly sort and hold things for you.</p>
         </div>
-        <p className="text-lg text-stone-600 leading-relaxed font-caveat">
-          Empty your mind here. I'll organize it for you.
-        </p>
       </div>
 
       {!organized ? (
         <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-6 sm:p-8">
-          <p className="text-stone-600 mb-6 leading-relaxed">
-            Type everything that's swirling in your head. Tasks, worries, reminders, ideas — anything. Don't worry about organizing it. Just let it out.
-          </p>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="What would you like to release?"
+            placeholder="Type everything that's swirling in your head…"
             disabled={processing}
             data-testid="brain-offload-textarea"
-            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl pt-8 px-6 pb-6 outline-none resize-none font-mono text-stone-700"
-            rows={10}
+            className="w-full bg-stone-50 border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl p-6 outline-none resize-none text-stone-700 font-light"
+            rows={12}
           />
+          <p className="text-sm text-stone-500 mt-4 font-light">
+            Tasks, reminders, worries, ideas — no organizing needed.
+          </p>
           <button
             onClick={processOffload}
             disabled={!input.trim() || processing}
@@ -109,7 +107,7 @@ export default function BrainOffload() {
             {processing ? (
               <>
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                Organizing your thoughts...
+                Organizing quietly...
               </>
             ) : (
               <>
