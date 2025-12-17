@@ -81,23 +81,20 @@ export default function Chat() {
     <div className="max-w-4xl mx-auto" data-testid="chat-page">
       <div className="bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] overflow-hidden">
         {/* Header */}
-        <div className="p-6 border-b border-stone-100 bg-gradient-to-r from-stone-50 to-white">
-          <div>
-            <h1 className="text-2xl" data-testid="chat-title">Chat</h1>
-            <p className="text-sm text-stone-500 font-caveat">Your gentle second brain</p>
+        <div className="p-6 sm:p-8 border-b border-stone-100">
+          <h1 className="text-3xl md:text-4xl mb-2 font-fraunces" data-testid="chat-title">A quiet place to think things through</h1>
+          <div className="text-stone-600 leading-relaxed space-y-1">
+            <p>You don't need to arrive with clarity.</p>
+            <p>You can talk things out here, slowly and without pressure.</p>
           </div>
         </div>
 
         {/* Messages */}
         <div className="h-[500px] overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
           {messages.length === 0 && (
-            <div className="text-center text-stone-400 mt-20 max-w-md mx-auto">
-              <p className="font-caveat text-xl mb-4">Start a conversation…</p>
-              <p className="text-sm leading-relaxed">
-                I'm here whenever you need a soft place to land — whether you're overwhelmed, trying to organize your day, or just need someone to hold a few thoughts for you.
-              </p>
-              <p className="text-sm leading-relaxed mt-3">
-                You can talk to me about anything you're carrying. I'll help you sort it, soften it, or make it feel more manageable.
+            <div className="text-center text-stone-500 mt-20 max-w-md mx-auto">
+              <p className="font-caveat text-lg leading-relaxed">
+                I'll listen and reflect. We don't have to solve anything.
               </p>
             </div>
           )}
