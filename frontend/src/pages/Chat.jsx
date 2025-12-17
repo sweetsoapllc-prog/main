@@ -130,16 +130,16 @@ export default function Chat() {
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-stone-100 bg-stone-50">
+        <div className="p-6 border-t border-stone-100 bg-stone-50">
           <form onSubmit={sendMessage} className="flex gap-3">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Tell me what's on your mind…"
+              placeholder="What would you like to talk through?"
               disabled={loading}
               data-testid="chat-input"
-              className="flex-1 bg-white border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none"
+              className="flex-1 bg-white border-transparent focus:border-primary/20 focus:ring-2 focus:ring-primary/10 rounded-2xl h-12 px-4 outline-none font-light"
             />
             <button
               type="submit"
@@ -150,8 +150,8 @@ export default function Chat() {
               <Send strokeWidth={1.5} size={18} />
             </button>
           </form>
-          <p className="text-xs text-stone-400 text-center mt-3 font-caveat">
-            There's no right way to use this space. You can ramble, brain-dump, ask a question — I'll follow your lead gently.
+          <p className="text-sm text-stone-500 text-center mt-3 font-light">
+            I'll listen and reflect. We don't have to solve anything.
           </p>
         </div>
       </div>
