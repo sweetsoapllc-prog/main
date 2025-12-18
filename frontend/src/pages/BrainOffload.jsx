@@ -163,7 +163,7 @@ export default function BrainOffload() {
             <div>
               <h3 className="text-lg font-fraunces text-muted-foreground mb-3">Later (parked for now)</h3>
               {organized.later.length === 0 ? (
-                <p className="text-stone-500 font-caveat">Nothing parked.</p>
+                <p className="text-stone-500">Nothing to park for later.</p>
               ) : (
                 <ul className="space-y-2">
                   {organized.later.map((task, idx) => (
