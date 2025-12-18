@@ -354,13 +354,14 @@ export default function Dashboard() {
         </p>
         {tasks.length === 0 ? (
           <div className="text-stone-600 leading-relaxed">
+            <p className="text-stone-600 mb-2">{getSoftFocusSupportLine()}</p>
             <p className="font-caveat text-lg">Nothing urgent here. Choose one small thing if you'd like.</p>
           </div>
         ) : (
           <>
             <div className="space-y-3 mb-6">
-              <p className="text-stone-600 leading-relaxed">{getSoftFocusBody().line1}</p>
-              <p className="text-stone-600 leading-relaxed">{getSoftFocusBody().line2}</p>
+              <p className="text-stone-600 leading-relaxed">{getSoftFocusSupportLine()}</p>
+              <p className="text-stone-600 leading-relaxed">{getSoftFocusTaskIntro()}</p>
             </div>
             <div className="space-y-3">
               {tasks.slice(0, 2).map((task) => (
