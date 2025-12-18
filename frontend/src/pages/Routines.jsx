@@ -271,7 +271,10 @@ export default function Routines() {
             <div key={timeOfDay} data-testid={`routines-${timeOfDay}`}>
               <h2 className="text-2xl mb-4">{label}</h2>
               {timeRoutines.length === 0 ? (
-                <p className="text-stone-500 font-caveat text-lg">You haven't added any rituals yet. Choose a few gentle anchors whenever you're ready.</p>
+                <div className="text-stone-600 leading-relaxed space-y-2">
+                  <p className="text-lg text-stone-700">No {timeOfDay} rituals yet.</p>
+                  <p className="text-stone-500">When you're ready, add a small anchor to start or end your {timeOfDay === "weekly" ? "week" : "day"}.</p>
+                </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-4">
                   {timeRoutines.map((routine) => (
