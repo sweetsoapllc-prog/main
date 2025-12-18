@@ -183,9 +183,10 @@ export default function Tasks() {
                 <p className="text-sm text-stone-500">{subtitle}</p>
               </div>
               {categoryTasks.length === 0 ? (
-                <p className="text-stone-500 font-caveat text-lg">
-                  Nothing here yet. Add anything you're holding — even the small things count.
-                </p>
+                <div className="text-stone-600 leading-relaxed space-y-2">
+                  <p className="text-lg text-stone-700">You don't have any tasks right now.</p>
+                  <p className="text-stone-500">If something needs your attention {category === "today" ? "today" : category === "this_week" ? "this week" : "later"}, you can add it above.</p>
+                </div>
               ) : (
                 <div className="space-y-3">
                   {categoryTasks.map((task) => (
