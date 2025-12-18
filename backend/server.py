@@ -483,32 +483,12 @@ async def chat(request: ChatRequest):
     user_doc['created_at'] = user_doc['created_at'].isoformat()
     await db.chat_messages.insert_one(user_doc)
     
-    # Get chat history
-    history = await db.chat_messages.find(
-        {"user_id": request.user_id, "session_id": request.session_id},
-        {"_id": 0}
-    ).sort("created_at", 1).to_list(100)
-    
-    # Get user context (tasks, energy level, etc.)
-    tasks = await db.tasks.find({"user_id": request.user_id, "completed": False}, {"_id": 0}).to_list(100)
-    recent_energy = await db.energy_checkins.find({"user_id": request.user_id}, {"_id": 0}).sort("created_at", -1).limit(1).to_list(1)
-    
-    # Build context
-    context = f"""Current context:
-- User has {len([t for t in tasks if t['category'] == 'today'])} tasks for today
-- User has {len([t for t in tasks if t['category'] == 'this_week'])} tasks this week
-"""
-    if recent_energy:
-        context += f"- User's recent energy level: {recent_energy[0]['energy_level']}/5\n"
-    
-    full_message = f"{context}\n\nUser message: {request.message}"
-    
-    # Call AI
+    # Call AI with reflective listener prompt (presence only, no action)
     try:
         chat_client = LlmChat(
             api_key=os.environ.get('EMERGENT_LLM_KEY'),
             session_id=request.session_id,
-            system_message=QUIET_HOUSEKEEPER_PROMPT
+            system_message=REFLECTIVE_LISTENER_PROMPT
         ).with_model("openai", "gpt-5.1")
         
         user_message = UserMessage(text=full_message)
