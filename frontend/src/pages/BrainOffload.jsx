@@ -129,7 +129,7 @@ export default function BrainOffload() {
             <div className="mb-8">
               <h3 className="text-lg font-fraunces text-primary mb-3">Today (1-3 gentle steps)</h3>
               {organized.today.length === 0 ? (
-                <p className="text-stone-500 font-caveat">Nothing urgent. Rest if you need to.</p>
+                <p className="text-stone-500">Nothing urgent for today. That's okay.</p>
               ) : (
                 <ul className="space-y-2">
                   {organized.today.map((task, idx) => (
