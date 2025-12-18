@@ -116,14 +116,13 @@ export default function WeeklyView() {
 
         {/* Empty State or Start Button */}
         {!hasCompletedReset && tasks.length === 0 && bills.length === 0 ? (
-          <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 text-center">
-            <p className="text-stone-600 leading-relaxed mb-6">
-              Nothing scheduled yet. When you're ready, the weekly reset is here to help you see things clearly.
-            </p>
+          <div className="max-w-2xl mx-auto bg-white rounded-[2rem] border border-stone-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] p-8 text-center space-y-4">
+            <p className="text-lg text-stone-700">Nothing scheduled for the week yet.</p>
+            <p className="text-stone-500">When you're ready, the weekly reset can help you see things clearly.</p>
             <button
               onClick={startReset}
               data-testid="start-reset-btn"
-              className="bg-primary text-white px-8 py-3 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center gap-2 mx-auto"
+              className="bg-primary text-white px-8 py-3 rounded-full hover:bg-primary/90 transition-all duration-300 flex items-center gap-2 mx-auto mt-4"
             >
               <span>✨</span>
               Start Weekly Reset
