@@ -491,7 +491,8 @@ async def chat(request: ChatRequest):
             system_message=REFLECTIVE_LISTENER_PROMPT
         ).with_model("openai", "gpt-5.1")
         
-        user_message = UserMessage(text=full_message)
+        # Send only the user's message - no task context for reflective listening
+        user_message = UserMessage(text=request.message)
         response = await chat_client.send_message(user_message)
         
         # Save assistant message
