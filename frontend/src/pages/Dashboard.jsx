@@ -187,27 +187,27 @@ export default function Dashboard() {
     }
   };
 
-  const getSoftFocusBody = () => {
+  const getSoftFocusSupportLine = () => {
     if (timeOfDay === "morning") {
-      return {
-        line1: "You don't have to tackle everything at once.",
-        line2: "Here are the small things that may help your morning feel lighter."
-      };
+      return "You don't have to tackle everything at once.";
     } else if (timeOfDay === "midday") {
-      return {
-        line1: "You're doing your best — and that's enough for today.",
-        line2: "Here are the small things that may still need care."
-      };
+      return "You're doing your best — and that's enough for today.";
     } else if (timeOfDay === "evening") {
-      return {
-        line1: "You've shown up today, and that matters.",
-        line2: "Here are the last small things you may want to finish before settling in."
-      };
+      return "You showed up today, and that's enough.";
     } else {
-      return {
-        line1: "You've shown up today, and that matters.",
-        line2: "Here are the last small things you may want to finish before settling in."
-      };
+      return "You showed up today, and that's enough.";
+    }
+  };
+
+  const getSoftFocusTaskIntro = () => {
+    if (timeOfDay === "morning") {
+      return "Here are the small things that may help your morning feel lighter.";
+    } else if (timeOfDay === "midday") {
+      return "Here are the small things that may still need care.";
+    } else if (timeOfDay === "evening") {
+      return "Here are a few small things you may want to close out — only if it feels helpful.";
+    } else {
+      return "Here are a few small things you may want to close out — only if it feels helpful.";
     }
   };
 
@@ -217,9 +217,9 @@ export default function Dashboard() {
     } else if (timeOfDay === "midday") {
       return "No rush. No pressure. One soft step at a time.";
     } else if (timeOfDay === "evening") {
-      return "Rest is productive too. You can stop when you're ready.";
+      return "Rest counts too. You can stop whenever you're ready.";
     } else {
-      return "Rest is productive too. You can stop when you're ready.";
+      return "Rest counts too. You can stop whenever you're ready.";
     }
   };
 
