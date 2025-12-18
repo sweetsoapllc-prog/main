@@ -403,7 +403,10 @@ export default function Bills() {
           <p className="text-sm text-stone-500 mt-1">These are coming up soon.</p>
         </div>
         {unpaidBills.length === 0 ? (
-          <p className="text-stone-500 font-caveat text-lg">Nothing due yet. I'll let you know when something needs attention.</p>
+          <div className="text-stone-600 leading-relaxed space-y-2">
+            <p className="text-lg text-stone-700">No bills need your attention right now.</p>
+            <p className="text-stone-500">When something is due, it will appear here.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {unpaidBills.map((bill) => (
