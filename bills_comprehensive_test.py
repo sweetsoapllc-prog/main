@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any
 
 class BillsPaymentsComprehensiveTester:
-    def __init__(self, base_url="https://peace-keeper.preview.emergentagent.com"):
+    def __init__(self, base_url="https://attic-mind.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.user_id = "demo-user-123"
