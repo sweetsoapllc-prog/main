@@ -146,7 +146,7 @@ export default function BrainOffload() {
             <div className="mb-8">
               <h3 className="text-lg font-fraunces text-info mb-3">This Week</h3>
               {organized.this_week.length === 0 ? (
-                <p className="text-stone-500 font-caveat">Nothing here yet.</p>
+                <p className="text-stone-500">Nothing for this week. Space is good.</p>
               ) : (
                 <ul className="space-y-2">
                   {organized.this_week.map((task, idx) => (
