@@ -92,10 +92,9 @@ export default function Chat() {
         {/* Messages */}
         <div className="h-[500px] overflow-y-auto p-6 space-y-4" data-testid="chat-messages">
           {messages.length === 0 && (
-            <div className="text-center text-stone-500 mt-20 max-w-md mx-auto">
-              <p className="font-caveat text-lg leading-relaxed">
-                I'll listen and reflect. We don't have to solve anything.
-              </p>
+            <div className="text-center mt-20 max-w-md mx-auto space-y-3">
+              <p className="text-lg text-stone-700">Nothing here yet.</p>
+              <p className="text-stone-500">This space is resting until something appears.</p>
             </div>
           )}
           {messages.map((msg) => (
