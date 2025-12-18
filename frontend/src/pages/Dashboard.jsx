@@ -140,16 +140,14 @@ export default function Dashboard() {
   };
 
   const getTimeAwareGreeting = () => {
-    const name = userProfile?.name || "Friend";
-    
     if (timeOfDay === "morning") {
-      return `Good morning, ${name}.`;
+      return "Good morning.";
     } else if (timeOfDay === "midday") {
-      return `Good afternoon, ${name}.`;
+      return "Good afternoon.";
     } else if (timeOfDay === "evening") {
-      return `Good evening, ${name}.`;
+      return "Good evening.";
     } else {
-      return `Good evening, ${name}.`;
+      return "Good evening.";
     }
   };
 
@@ -159,9 +157,9 @@ export default function Dashboard() {
     } else if (timeOfDay === "midday") {
       return "Let's take a gentle look at your day so you don't have to hold it all alone.";
     } else if (timeOfDay === "evening") {
-      return "You've carried enough today. Let's wind down gently together.";
+      return "You've carried enough today. Let's wind down gently.";
     } else {
-      return "You've carried enough today. Let's wind down gently together.";
+      return "You've carried enough today. Let's wind down gently.";
     }
   };
 
