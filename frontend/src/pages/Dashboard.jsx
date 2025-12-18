@@ -353,9 +353,16 @@ export default function Dashboard() {
           {getSoftFocusSubtitle()}
         </p>
         {tasks.length === 0 ? (
-          <div className="text-stone-600 leading-relaxed">
-            <p className="text-stone-600 mb-2">{getSoftFocusSupportLine()}</p>
-            <p className="font-caveat text-lg">Nothing urgent here. Choose one small thing if you'd like.</p>
+          <div className="text-stone-600 leading-relaxed space-y-4">
+            <p className="text-lg text-stone-700 font-medium">Nothing needs you right now.</p>
+            <div className="space-y-2">
+              <p>You're not behind.</p>
+              <p>You're simply between moments.</p>
+            </div>
+            <div className="pt-2 space-y-2">
+              <p>When something needs your attention, it will appear here.</p>
+              <p>Until then, this space is yours.</p>
+            </div>
           </div>
         ) : (
           <>
